@@ -1,0 +1,79 @@
+@import 'variables';
+
+.hero {
+    height: 400px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+
+    &.homepage { background: url('../images/brisbane-skyline.jpg') no-repeat center center/cover; }
+    &.aboutpage { background: url('../images/brisbane-city.jpg') no-repeat center center/cover; }
+    &.contactpage { background: url('../images/brisbane-parks.jpg') no-repeat center center/cover; }
+    &.resourcespage { background: url('../images/brisbane-river.jpg') no-repeat center center/cover; }
+
+    h2 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 1.2em;
+    }
+
+    .hero-text {
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        border-radius: $border-radius;
+    }
+}
+
+.highlight-section-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+.highlight-section {
+    flex: 1 1 45%;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    padding: 40px 20px;
+    margin: 20px;
+    border-radius: $border-radius;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+
+    .content-box {
+        max-width: 90%;
+        margin: 0 auto;
+
+        ul {
+            padding: 0;
+
+            li {
+                list-style-type: none;
+            }
+        }
+    }
+
+    h2 {
+        font-size: 2em;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: $text-color;
+        text-align: left;
+    }
+
+    p {
+        font-size: 1.2em;
+        color: $light-text-color;
+        margin-bottom: 30px;
+    }
+}

@@ -1,0 +1,43 @@
+@import 'variables';
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: $background-color;
+    color: $text-color;
+    overflow-x: hidden;
+}
+
+header {
+    background-color: $header-footer-bg;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+footer {
+    background-color: $header-footer-bg;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+
+    p {
+        margin: 0;
+    }
+}
+
+.logo {
+    h1 {
+        margin: 0;
+        font-size: 1.8em;
+
+        a, a:visited {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+}
