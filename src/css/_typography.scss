@@ -1,0 +1,31 @@
+@import 'variables';
+
+.section-heading {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: $text-color;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.section-text {
+    font-size: 1.2em;
+    color: $light-text-color;
+    margin-bottom: 30px;
+    text-align: left;
+    line-height: 1.6;
+
+    strong {
+        color: $text-color;
+    }
+
+    a {
+        color: $primary-color;
+        text-decoration: none;
+        font-weight: bold;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
