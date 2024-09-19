@@ -6,10 +6,9 @@ document.addEventListener('DOMContentLoaded', function () {
         myLinks.classList.toggle('show');
     });
 
-    const rssFeedUrl = "https://feeds.feedburner.com/brisbanetimes/uKmh0BzaZDA";
-    const rss2jsonApiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssFeedUrl)}`;
+    const newsApiUrl = `https://news.data.viabrisbane.com`;
 
-    fetch(rss2jsonApiUrl)
+    fetch(newsApiUrl)
         .then(response => response.json())
         .then(data => {
             let rssFeedContainer = document.getElementById("rss-feed");
@@ -42,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const eventsSection = document.getElementById("events-section");
     const eventsCount = eventsSection.getAttribute("data-events-count") || 6;
-    const eventsApiUrl = `https://viabrisbane-events.syanix.workers.dev?limit=${eventsCount}`;
+    const eventsApiUrl = `https://events.data.viabrisbane.com?limit=${eventsCount}`;
     
     fetch(eventsApiUrl)
         .then(response => {
