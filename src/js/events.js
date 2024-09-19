@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const eventsSection = document.getElementById("events-section");
     const eventsCount = eventsSection.getAttribute("data-events-count") || 6;
-    const eventsApiUrl = `https://viabrisbane-events.syanix.workers.dev?limit=${eventsCount}`;
+    const eventsApiUrl = `https://events.data.viabrisbane.com?limit=${eventsCount}`;
 
     fetch(eventsApiUrl)
         .then(response => {
