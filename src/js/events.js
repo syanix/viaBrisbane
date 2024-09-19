@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const eventsSection = document.getElementById("events-section");
     const eventsCount = eventsSection.getAttribute("data-events-count") || 6;
-    const eventsApiUrl = `https://data.brisbane.qld.gov.au/api/explore/v2.1/catalog/datasets/brisbane-city-council-events/records?order_by=start_datetime&limit=${eventsCount}`;
+    const eventsApiUrl = `https://viabrisbane-events.syanix.workers.dev?limit=${eventsCount}`;
 
     fetch(eventsApiUrl)
         .then(response => {
