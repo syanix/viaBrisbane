@@ -46,11 +46,13 @@ const canonicalUrl = `${baseUrl}${url}`; // Combine base URL and current path
     <meta name="twitter:image" content={image}>
 
     <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script async is:inline src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>
-        (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-5940787516364793",
-            enable_page_level_ads: true
-        });
+        if (typeof window !== 'undefined') {
+            (window.adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-5940787516364793",
+                enable_page_level_ads: true
+            });
+        }
     </script>
 </head>
