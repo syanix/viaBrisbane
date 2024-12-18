@@ -1,0 +1,76 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getEventsWithCache } from '../../utils/cache';
+import type { Event } from '../../types/types';
+
+export async function getStaticPaths() {
+    const events = await getEventsWithCache();
+
+    return events.map(event => ({
+        params: { slug: createSlug(event.subject) },
+        props: { event },
+    }));
+}
+
+// Helper function to create consistent slugs
+function createSlug(subject?: string): string {
+    if (!subject) return `event-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return subject
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+}
+
+// Get the current slug from params
+const { slug } = Astro.params;
+
+// Fetch all events and find the matching one
+const events = await getEventsWithCache();
+const event = events.find((e: Event) => createSlug(e.subject) === slug) || {};
+
+const title = `${event?.subject || 'Event'} - Via Brisbane`;
+const description = event?.description || 'Event details in Brisbane';
+const keywords = `Brisbane events, ${event?.subject || 'local event'}, events Brisbane`;
+
+// Redirect to events page if event not found
+if (!event?.subject) {
+    return Astro.redirect('/events');
+}
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <main>
+        <section class="highlight-section">
+            <div class="content-box">
+                <h1 class="section-heading">{event.subject}</h1>
+                <div class="event-detail">
+                    <img 
+                        src={event.eventimage || '/images/default-image.jpg'} 
+                        alt={event.subject} 
+                        class="event-image"
+                    />
+                    <div class="event-info">
+                        <p><strong>Date:</strong> {event.formatteddatetime || 'No Date'}</p>
+                        <p><strong>Location:</strong> {event.location || 'No Location'}</p>
+                        <p><strong>Cost:</strong> {event.cost || 'Free'}</p>
+                        <p><strong>Booking Information:</strong> {event.bookings || 'No booking information available'}</p>
+                        <div class="event-description">
+                            <h2>Description</h2>
+                            <p>{event.description || 'No description available'}</p>
+                        </div>
+                        <div class="event-actions">
+                            {event.web_link && (
+                                <a href={event.web_link} target="_blank" class="button primary">
+                                    Visit Event Website
+                                </a>
+                            )}
+                            <a href="/events" class="button secondary">
+                                Back to Events
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>
