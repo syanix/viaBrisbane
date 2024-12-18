@@ -44,11 +44,13 @@ if (!event?.subject) {
             <div class="content-box">
                 <h1 class="section-heading">{event.subject}</h1>
                 <div class="event-detail">
-                    <img 
-                        src={event.eventimage || '/images/default-image.jpg'} 
-                        alt={event.subject} 
-                        class="event-image"
-                    />
+                    <div class="image-container">
+                        <img 
+                            src={event.eventimage || '/images/default-image.jpg'} 
+                            alt={event.subject} 
+                            class="event-image"
+                        />
+                    </div>
                     <div class="event-info">
                         <p><strong>Date:</strong> {event.formatteddatetime || 'No Date'}</p>
                         <p><strong>Location:</strong> {event.location || 'No Location'}</p>

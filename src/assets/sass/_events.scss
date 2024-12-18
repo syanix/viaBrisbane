@@ -95,4 +95,69 @@
             }
         }
     }
+
+    .image-container {
+        aspect-ratio: 16 / 9;
+        width: 100%;
+        position: relative;
+        background: #f0f0f0;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.events-section {
+    a {
+        text-decoration: none !important;
+
+        .image-container {
+            aspect-ratio: 16 / 9;
+            width: 100%;
+            position: relative;
+            background: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h3.title {
+            color: #4A9EFF;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+            text-decoration: none !important;
+        }
+
+        &:hover,
+        &:visited,
+        &:active,
+        &:link {
+            text-decoration: none !important;
+
+            h3.title {
+                text-decoration: none !important;
+            }
+        }
+
+        &:hover h3.title {
+            color: #3B8BEB;
+        }
+    }
 } 

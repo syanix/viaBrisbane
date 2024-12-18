@@ -15,7 +15,7 @@ function createSlug(subject?: string): string {
 ---
 
 <!-- Events Section -->
-<section id="events-section" class="highlight-section" data-events-count={limit}>
+<section id="events-section" class="highlight-section events-section" data-events-count={limit}>
     <div class="content-box">
         <h2 class="section-heading">Upcoming Events in Brisbane</h2>
         <div id="events-container">
@@ -23,10 +23,14 @@ function createSlug(subject?: string): string {
                 <ul>
                     {limitedEvents.map((event) => (
                         <li>
-                            <img src={event.eventimage || '/images/default-image.jpg'} alt={event.subject || 'No Title'} />
                             <div>
-                                <a href={`/events/${createSlug(event.subject)}`} class="title">
-                                    {event.subject || 'No Title'}
+                                <a href={`/events/${createSlug(event.subject)}`}>
+                                    <div class="image-container">
+                                        <img src={event.eventimage || '/images/default-image.jpg'} alt={event.subject || 'No Title'} />
+                                    </div>
+                                    <h3 class="title">
+                                        {event.subject || 'No Title'}
+                                    </h3>
                                 </a>
                                 <p>Date: {event.formatteddatetime || 'No Date'}</p>
                                 <p>Location: {event.location || 'No Location'}</p>
