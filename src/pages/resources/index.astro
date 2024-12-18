@@ -1,0 +1,43 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LinksSection from '../../components/links.astro'
+const title = "Resources for Exploring Brisbane: Travel Tips, Guides & More - Via Brisbane";
+const description = "Access a curated selection of resources to help you explore Brisbane. From travel tips to local guides, Via Brisbane has everything you need for your adventure.";
+const keywords = "Brisbane resources, travel tips Brisbane, local guides Brisbane, Brisbane planning, travel resources Brisbane, explore Brisbane tips";
+---
+<Layout title={title} description={description} keywords={keywords}>
+<main>
+    <section class="hero resourcespage">
+        <div class="hero-text">
+            <h2>Resources</h2>
+            <p>Explore these resources to make the most of your time in Brisbane.</p>
+        </div>
+    </section>
+
+    <section class="highlight-section">
+        <div class="content-box">
+            <h2 class="section-heading">Useful Links</h2>
+            <p class="section-text">We've compiled a list of useful resources and links to help you navigate Brisbane and make the most of your visit.</p>
+            <ul class="section-text">
+                <li><a href="https://translink.com.au/" target="_blank">TransLink - Public Transport Information</a></li>
+                <li><a href="https://www.bom.gov.au/qld/forecasts/brisbane.shtml" target="_blank">Bureau of Meteorology - Brisbane Weather</a></li>
+                <li><a href="https://www.brisbane.qld.gov.au/" target="_blank">Brisbane City Council</a></li>
+                <li><a href="https://www.visitbrisbane.com.au/" target="_blank">Visit Brisbane - Official Visitor Guide</a></li>
+                <li><a href="https://www.qld.gov.au/about/contact-government/contact-council" target="_blank">Queensland Government - Contact Your Local Council</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="highlight-section">
+        <div class="content-box">
+            <h2 class="section-heading">Emergency Contacts</h2>
+            <p class="section-text">In case of an emergency, here are some important contacts:</p>
+            <ul class="section-text">
+                <li><strong>Emergency Services:</strong> 000 (Police, Fire, Ambulance)</li>
+                <li><strong>Poison Information Centre:</strong> 13 11 26</li>
+            </ul>
+        </div>
+    </section>
+    <LinksSection />
+</main>
+</Layout>

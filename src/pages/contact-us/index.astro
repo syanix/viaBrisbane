@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LinksSection from '../../components/links.astro'
+const title = "Contact Us - Reach Out to Via Brisbane for Inquiries & Support";
+const description = "Have questions or need assistance? Get in touch with Via Brisbane for inquiries about events, attractions, or general support. We're here to help!";
+const keywords = "Contact Via Brisbane, Brisbane inquiries, event support, attractions support, contact page, get in touch Brisbane";
+---
+<Layout title={title} description={description} keywords={keywords}>
+<main>
+    <section class="hero contactpage">
+        <div class="hero-text">
+            <h2>Contact Us</h2>
+            <p>Have questions or feedback? Get in touch with us.</p>
+        </div>
+    </section>
+
+    <section class="highlight-section">
+        <div class="content-box">
+            <h2 class="section-heading">Get in Touch</h2>
+            <p class="section-text">If you have any questions, suggestions, or just want to say hi, feel free to reach out to us. We're here to help you make the most of your time in Brisbane.</p>
+            <p class="section-text"><strong>Email:</strong> <a href="mailto:info@viabrisbane.com">info@viabrisbane.com</a></p>
+            <!-- <p class="section-text"><strong>Phone:</strong> +61 7 1234 5678</p> -->
+        </div>
+    </section>
+
+    <LinksSection />
+</main>
+</Layout>

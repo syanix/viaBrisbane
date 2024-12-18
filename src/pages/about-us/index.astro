@@ -1,0 +1,33 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LinksSection from '../../components/links.astro'
+const title = "About Us - Learn About Via Brisbane's Mission & Story";
+const description = "Discover Via Brisbane's mission to connect locals and visitors with the best of Brisbane. Learn more about our story and passion for showcasing Brisbane's hidden gems.";
+const keywords = "About Via Brisbane, Brisbane mission, Brisbane story, local events team, Brisbane experiences, community guide Brisbane";
+---
+<Layout title={title} description={description} keywords={keywords}>
+    <main>
+        <section class="hero aboutpage">
+            <div class="hero-text">
+                <h2>About Us</h2>
+                <p>Discover who we are and what drives us to bring you the best of Brisbane.</p>
+            </div>
+        </section>
+
+        <section class="highlight-section">
+            <div class="content-box">
+                <h2 class="section-heading">Our Mission</h2>
+                <p class="section-text">At Via Brisbane, our mission is to connect locals and visitors with the best experiences Brisbane has to offer. Whether you're looking for the latest events, top attractions, or hidden gems, we're here to guide you every step of the way.</p>
+            </div>
+        </section>
+
+        <section class="highlight-section">
+            <div class="content-box">
+                <h2 class="section-heading">Our Story</h2>
+                <p class="section-text">Via Brisbane was founded by a group of passionate Brisbane locals who wanted to share their love for the city. What started as a small blog has grown into a comprehensive guide, helping thousands of people explore Brisbane each year.</p>
+            </div>
+        </section>
+
+        <LinksSection />
+    </main>
+</Layout>

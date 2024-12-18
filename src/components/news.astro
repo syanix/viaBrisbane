@@ -1,0 +1,89 @@
+---
+declare var globalThis: {
+    _newsCache?: Record<string, { data: any; expiry: number }>;
+};
+const newsApiUrl = `https://news.data.viabrisbane.com`;
+const CACHE_EXPIRY_MS = 60 * 60 * 1000 * 24; // Cache expiry time: 1 minute
+const cache = globalThis._newsCache || (globalThis._newsCache = {}); // Global cache object
+
+let newsData = [];
+
+// Function to fetch data with caching
+async function fetchWithCache(url:string) {
+    const now = Date.now();
+
+    // Check if cached data exists and is still valid
+    if (cache[url] && now < cache[url].expiry) {
+        console.log("Serving news data from cache.");
+        return cache[url].data;
+    }
+
+    // Fetch fresh data and update cache
+    try {
+        console.log("Fetching fresh news data...");
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            cache[url] = {
+                data,
+                expiry: now + CACHE_EXPIRY_MS, // Set cache expiry time
+            };
+            return data;
+        }
+    } catch (error) {
+        console.error("Error fetching news data:", error instanceof Error ? error.message : error);
+    }
+
+    return { items: [] }; // Return empty array on error
+}
+
+// Fetch News Data with Cache
+try {
+    const newsJson = await fetchWithCache(newsApiUrl);
+    newsData = newsJson.items.slice(0, 6); // Limit to 6 items
+} catch (error) {
+    console.error("Failed to fetch news:", error instanceof Error ? error.message : error);
+}
+---
+
+<!-- RSS Feed Section -->
+<section class="highlight-section">
+    <div class="content-box">
+        <h2 class="section-heading">Latest News from Brisbane Times</h2>
+        <div id="rss-feed">
+            {newsData.length > 0 ? (
+                <ul>
+                    {newsData.map((item: {
+                                    title: string; 
+                                    link: string; 
+                                    pubDate: string; 
+                                    description: string; 
+                                    enclosure?: { link: string }
+                                }) => (
+                        <li>
+                            {item.enclosure?.link ? (
+                                <img src={item.enclosure.link} alt={item.title} />
+                            ) : (
+                                ''
+                            )}
+                            <div>
+                                <a href={item.link} target="_blank">{item.title}</a>
+                                <p>
+                                    Published on{' '}
+                                    {new Date(item.pubDate).toLocaleDateString('en-AU', {
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric',
+                                    })}
+                                </p>
+                                <p>{item.description}</p>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>Error loading the latest news. Please try again later.</p>
+            )}
+        </div>
+    </div>
+</section>

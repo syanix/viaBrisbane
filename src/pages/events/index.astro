@@ -1,0 +1,14 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LinksSection from '../../components/links.astro'
+import Events from '../../components/events.astro';
+const title = "Upcoming Events in Brisbane - Discover Festivals, Gatherings & More - Via Brisbane";
+const description = "Stay updated with the latest events in Brisbane. From festivals to community gatherings, explore everything happening in Brisbane with Via Brisbane's event guide.";
+const keywords = "Brisbane events, upcoming events Brisbane, Brisbane festivals, community gatherings Brisbane, things to do Brisbane, event guide Brisbane";
+---
+<Layout title={title} description={description} keywords={keywords}>
+<main>
+    <Events limit=24 />
+    <LinksSection />
+</main>
+</Layout>
