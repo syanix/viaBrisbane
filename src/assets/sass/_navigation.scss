@@ -1,0 +1,57 @@
+@import 'variables';
+
+nav {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        background-color: $nav-bg;
+        border-radius: 5px;
+
+        li {
+            margin-left: 20px;
+
+            a {
+                color: white;
+                text-decoration: none;
+                padding: 10px;
+                display: block;
+            }
+
+            &:hover {
+                background-color: $nav-hover-bg;
+            }
+        }
+    }
+}
+
+.menu-toggle {
+    background: none;         // Removes background
+    border: none;             // Removes border
+    font-size: 48px;          // Icon size
+    color: white;             // White icon color
+    cursor: pointer;          // Pointer cursor on hover
+    display: flex;            // Ensures the icon aligns properly
+    align-items: center;      // Vertically centers the icon
+    justify-content: center;  // Horizontally centers the icon
+    padding: 10px;            // Adds some padding for clickability
+    line-height: 1;           // Ensures no extra spacing
+    display: none;
+
+    &:hover {
+        opacity: 0.8;         // Slight fade effect on hover
+    }
+
+    svg, img {
+        width: 24px;          // Ensure proper icon size
+        height: 24px;
+    }
+}

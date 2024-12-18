@@ -1,0 +1,21 @@
+<header>
+    <div class="logo">
+        <h1><a href="/">Via Brisbane</a></h1>
+    </div>
+    <nav>
+        <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle Menu">☰</button>
+        <ul class="menu-links" id="myLinks">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about-us">About Us</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/contact-us">Contact Us</a></li>
+            <li><a href="/resources">Resources</a></li>
+        </ul>
+    </nav>
+    <script defer>
+        function toggleMenu() {
+            const myLinks = document.getElementById('myLinks');
+            myLinks.classList.toggle('show');
+        }
+    </script>
+</header>

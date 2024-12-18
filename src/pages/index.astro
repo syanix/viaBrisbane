@@ -1,0 +1,54 @@
+---
+import Events from '../components/events.astro';
+import News from '../components/news.astro';
+import Layout from '../layouts/Layout.astro';
+import LinksSection from '../components/links.astro'
+const title = "Explore Brisbane: Your Guide to Events, Attractions & Experiences - Via Brisbane";
+const description = "Discover the best of Brisbane with Via Brisbane, your ultimate guide to local events, attractions, and hidden gems. Stay updated and explore the city like never before!";
+const keywords = "Brisbane, Brisbane guide, local events, Brisbane attractions, things to do in Brisbane, Brisbane experiences, explore Brisbane";
+---
+<Layout title={title} description={description} keywords={keywords}>
+	<main>
+        <section class="hero homepage">
+            <div class="hero-text">
+                <h2>Discover Brisbane</h2>
+                <p>Welcome to Via Brisbane! Your comprehensive guide to exploring the vibrant city of Brisbane.</p>
+            </div>
+        </section>
+
+        <Events limit={6} />
+
+        <section class="highlight-section">
+            <section class="highlight-section-container">
+                <!-- Left Panel -->
+                <div class="highlight-section panel">
+                    <div class="content-box">
+                        <h2 class="section-heading">What’s New in Brisbane</h2>
+                        <p class="section-text">Check out the latest happenings and discover what's new in Brisbane. From upcoming festivals and events to newly opened restaurants and attractions, we keep you updated with the city's pulse.</p>
+                        <ul class="section-text">
+                            <li><a href="https://www.brisbane.qld.gov.au/whats-on-and-events" target="_blank">Brisbane City Council Events</a></li>
+                            <li><a href="https://www.visitbrisbane.com.au/whats-on" target="_blank">Visit Brisbane - What's On</a></li>
+                            <li><a href="https://www.timeout.com/brisbane/events" target="_blank">Time Out Brisbane - Events</a></li>
+                        </ul>
+                    </div>
+                </div>
+        
+                <!-- Right Panel -->
+                <div class="highlight-section panel">
+                    <div class="content-box">
+                        <h2 class="section-heading">Top Attractions in Brisbane</h2>
+                        <p class="section-text">Discover the must-see attractions in Brisbane, from stunning parks to world-class museums and vibrant neighborhoods.</p>
+                        <ul class="section-text">
+                            <li><a href="https://www.visitbrisbane.com.au/south-bank" target="_blank">South Bank Parklands</a></li>
+                            <li><a href="https://www.qagoma.qld.gov.au/" target="_blank">Queensland Art Gallery & Gallery of Modern Art (QAGOMA)</a></li>
+                            <li><a href="https://www.brisbanepowerhouse.org/" target="_blank">Brisbane Powerhouse</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <LinksSection />
+        <News />
+    </main>
+</Layout>
