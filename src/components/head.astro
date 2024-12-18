@@ -45,6 +45,17 @@ const canonicalUrl = `${baseUrl}${url}`; // Combine base URL and current path
     <meta name="twitter:description" content={description}>
     <meta name="twitter:image" content={image}>
 
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P7XFPDF40E"></script>
+    <script is:inline>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-P7XFPDF40E');
+    </script>
+
     <!-- Google AdSense -->
     <script async is:inline src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>
