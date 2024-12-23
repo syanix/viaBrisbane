@@ -8,9 +8,14 @@
     "jsx": "preserve",
     "jsxImportSource": "react",
     "resolveJsonModule": true,
+    "baseUrl": "./",
+    "paths": {
+      "*": ["src/types/*"]
+    },
+    "typeRoots": ["./src/types", "./node_modules/@types"],
     "types": [
       "astro/client", // Core Astro types
-      "@cloudflare/workers-types/2023-07-01" // Include Cloudflare worker types if needed
+      "@cloudflare/workers-types" // Correct Cloudflare worker types
     ]
   },
   "include": [

@@ -6,7 +6,7 @@ const eventsData = await getEventsWithCache();
 const limitedEvents = eventsData.slice(0, limit);
 
 function createSlug(subject?: string): string {
-    if (!subject) return `event-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    if (!subject) return `event-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
     return subject
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')

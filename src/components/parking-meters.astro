@@ -1,0 +1,123 @@
+---
+import { getParkingMetersWithCache } from '../utils/parkingCache';
+import type { ParkingMeter } from '../types/types';
+
+const { page = 1, searchQuery = '' } = Astro.props;
+const ITEMS_PER_PAGE = 30;
+
+const allMeters = await getParkingMetersWithCache();
+const filteredMeters = searchQuery 
+    ? allMeters.filter((meter: ParkingMeter) => 
+        meter.METER_NO.toString().includes(searchQuery) ||
+        meter.STREET.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        meter.SUBURB.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    : allMeters;
+
+const totalPages = Math.ceil(filteredMeters.length / ITEMS_PER_PAGE);
+const currentMeters = filteredMeters.slice(
+    (page - 1) * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE
+);
+
+function createSlug(meter: ParkingMeter): string {
+    return `${meter.METER_NO}-${meter.STREET.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+}
+---
+
+<section class="highlight-section parking-meters-section">
+    <div class="content-box">
+        <h2 class="section-heading">Brisbane Parking Meters</h2>
+        
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="meterSearch"
+                placeholder="Search by meter number, street, or suburb..."
+                value={searchQuery}
+            />
+        </div>
+
+        <div class="meters-grid">
+            {currentMeters.map((meter) => (
+                <a href={`/parking/${createSlug(meter)}`} class="meter-tile">
+                    <div class="meter-number">{meter.METER_NO}</div>
+                    <div class="meter-location">{meter.STREET}, {meter.SUBURB}</div>
+                    <div class="meter-details">
+                        <p>Max Stay: {meter.MAX_STAY_HRS} hours</p>
+                        <p>Hours: {meter.OPERATIONAL_TIME}</p>
+                        {meter.TAR_RATE_WEEKDAY && (
+                            <p>Weekday Rate: ${meter.TAR_RATE_WEEKDAY.toFixed(2)}</p>
+                        )}
+                        {meter.TAR_RATE_AH_WE && (
+                            <p>Weekend Rate: ${meter.TAR_RATE_AH_WE.toFixed(2)}</p>
+                        )}
+                    </div>
+                </a>
+            ))}
+        </div>
+
+        {totalPages > 1 && (
+            <div class="pagination">
+                <a 
+                    href={`/parking?page=1${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={page === 1 ? 'disabled' : ''}
+                >
+                    First
+                </a>
+                <a 
+                    href={`/parking?page=${page - 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={page === 1 ? 'disabled' : ''}
+                >
+                    Previous
+                </a>
+
+                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                    const pageNum = Math.max(1, page - 2) + i; // Center the current page
+                    if (pageNum > totalPages) return null; // Skip if pageNum exceeds totalPages
+                    return (
+                        <a 
+                            href={`/parking?page=${pageNum}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                            class={pageNum === page ? 'active' : ''}
+                        >
+                            {pageNum}
+                        </a>
+                    );
+                })}
+
+                <a 
+                    href={`/parking?page=${page + 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={page === totalPages ? 'disabled' : ''}
+                >
+                    Next
+                </a>
+                <a 
+                    href={`/parking?page=${totalPages}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={page === totalPages ? 'disabled' : ''}
+                >
+                    Last
+                </a>
+            </div>
+        )}
+    </div>
+</section>
+
+<script>
+    const searchInput = document.getElementById('meterSearch') as HTMLInputElement;
+    let debounceTimer: ReturnType<typeof setTimeout>;
+
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const searchValue = (e.target as HTMLInputElement).value;
+            const url = new URL(window.location.href);
+            if (searchValue) {
+                url.searchParams.set('search', searchValue);
+            } else {
+                url.searchParams.delete('search');
+            }
+            url.searchParams.set('page', '1');
+            window.location.href = url.toString();
+        }, 1000);
+    });
+</script> 

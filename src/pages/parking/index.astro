@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ParkingMeters from '../../components/parking-meters.astro';
+import LinksSection from '../../components/links.astro';
+
+const title = "Brisbane Parking Meters - Find Parking Rates & Locations - Via Brisbane";
+const description = "Find Brisbane parking meter locations, rates, and restrictions. Search by meter number, street, or suburb to find convenient parking in Brisbane CBD and surrounding areas.";
+const keywords = "Brisbane parking meters, parking rates Brisbane, street parking Brisbane, Brisbane CBD parking, parking locations Brisbane";
+
+// Get search parameters
+const page = parseInt(Astro.url.searchParams.get('page') || '1');
+const searchQuery = Astro.url.searchParams.get('search') || '';
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <main>
+        <ParkingMeters page={page} searchQuery={searchQuery} />
+        <LinksSection />
+    </main>
+</Layout> 

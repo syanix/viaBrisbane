@@ -1,0 +1,108 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getParkingMetersWithCache } from '../../utils/parkingCache';
+
+export async function getStaticPaths() {
+    const meters = await getParkingMetersWithCache();
+
+    return meters.map(meter => ({
+        params: { 
+            slug: `${meter.METER_NO}-${meter.STREET.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` 
+        }
+    }));
+}
+
+const { slug } = Astro.params;
+const meters = await getParkingMetersWithCache();
+const meter = meters.find(m => `${m.METER_NO}-${m.STREET.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` === slug);
+
+if (!meter) {
+    throw new Error(`Parking meter with slug "${slug}" not found`);
+}
+
+// Detect crawler from headers
+const isCrawler = (Astro.request.headers.get('user-agent') || '').match(
+    /(googlebot|bingbot|duckduckbot|yandex|facebookexternalhit|twitterbot|slackbot)/i
+);
+
+const title = `Parking Meter ${meter.METER_NO} - ${meter.STREET}, ${meter.SUBURB} - Via Brisbane`;
+const description = `Find parking information for meter ${meter.METER_NO} located at ${meter.STREET}, ${meter.SUBURB}. Operating hours, rates, and restrictions.`;
+const keywords = `Brisbane parking, parking meter ${meter.METER_NO}, ${meter.STREET} parking, ${meter.SUBURB} parking, Brisbane parking rates`;
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <main>
+        <!-- Map Section -->
+        <div class="map-banner">
+            {!isCrawler && (
+                <iframe
+                    class="map-embed"
+                    src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyCCQ8ZqAJjDm1O-ToZopbRlv4-zg9jpph4&center=${meter.LATITUDE},${meter.LONGITUDE}&zoom=17)}`}
+                    allowfullscreen
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+            )}
+        </div>
+
+        <section class="highlight-section">
+            <div class="content-box">
+                <h1 class="section-heading">Parking Meter {meter.METER_NO}</h1>
+                <div class="meter-detail">
+                    <div class="meter-info">
+                        <div class="info-group">
+                            <h2>Location</h2>
+                            <p>
+                                <a 
+                                    href={`https://www.google.com/maps?q=${meter.LATITUDE},${meter.LONGITUDE}`} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                >
+                                    View on Google Maps
+                                </a>
+                            </p>
+                            <p><strong>Street:</strong> {meter.STREET}</p>
+                            <p><strong>Suburb:</strong> {meter.SUBURB}</p>
+                            <p><strong>Description:</strong> {meter.LOC_DESC}</p>
+                        </div>
+
+                        <div class="info-group">
+                            <h2>Operating Hours</h2>
+                            <p><strong>Days:</strong> {meter.OPERATIONAL_DAY}</p>
+                            <p><strong>Hours:</strong> {meter.OPERATIONAL_TIME}</p>
+                            <p><strong>Max Stay:</strong> {meter.MAX_STAY_HRS} hours</p>
+                        </div>
+
+                        <div class="info-group">
+                            <h2>Rates</h2>
+                            {meter.TAR_RATE_WEEKDAY && (
+                                <p><strong>Weekday Rate:</strong> ${meter.TAR_RATE_WEEKDAY.toFixed(2)}</p>
+                            )}
+                            {meter.TAR_RATE_AH_WE && (
+                                <p><strong>Weekend/After Hours Rate:</strong> ${meter.TAR_RATE_AH_WE.toFixed(2)}</p>
+                            )}
+                            <p><strong>Zone:</strong> {meter.TAR_ZONE}</p>
+                        </div>
+
+                        <div class="info-group">
+                            <h2>Additional Information</h2>
+                            <p><strong>Category:</strong> {meter.CATEGORY}</p>
+                            {meter.RESTRICTIONS && (
+                                <p><strong>Restrictions:</strong> {meter.RESTRICTIONS}</p>
+                            )}
+                            <p><strong>Vehicle Bays:</strong> {meter.VEH_BAYS}</p>
+                            <p><strong>Motorcycle Bays:</strong> {meter.MC_BAYS}</p>
+                            {meter.MC_RATE && (
+                                <p><strong>Motorcycle Rate:</strong> ${Number(meter.MC_RATE).toFixed(2)}</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meter-actions">
+                    <a href="/parking" class="button secondary full-width">Back to Parking Meters</a>
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>

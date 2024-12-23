@@ -1,5 +1,4 @@
 // @ts-check
-// @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import cloudflare from '@astrojs/cloudflare';
@@ -20,11 +19,23 @@ export default defineConfig({
   adapter: cloudflare({
     platformProxy: {
       enabled: true,
+      persist: true
     }
   }),
   vite: {
+    ssr: {
+      external: ["better-sqlite3", "fs"], // Exclude better-sqlite3 and Node.js built-ins
+    },
     build: {
       target: 'esnext',
+    },
+    optimizeDeps: {
+      include: ["@cloudflare/workers-types"]
+    },
+    resolve: {
+      alias: {
+        "@cloudflare/workers-types": "node_modules/@cloudflare/workers-types/2023-07-01/index.d.ts",
+      },
     },
   },
 });
