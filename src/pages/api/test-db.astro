@@ -9,34 +9,60 @@ export async function get({ env }: { env: Env }) {
   try {
     console.log("Starting database connection test...");
 
-    // Test the connection and fetch table names
-    const result = await env.DB.prepare(
-      "SELECT name FROM sqlite_master WHERE type='table';"
+    // Step 1: Verify Database Connection
+    console.log("Testing database connection...");
+    const connectionTest = await env.DB.prepare("SELECT 1;").all();
+    console.log("Database connection test passed:", connectionTest);
+
+    // Step 2: Fetch Table Names
+    console.log("Fetching table names...");
+    const tableResult = await env.DB.prepare(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"
     ).all();
 
-    console.log("Database query result:", result);
-
-    // Check if the result is valid
-    if (result?.results) {
-      return new Response(
-        JSON.stringify({ success: true, tables: result.results }, null, 2),
-        {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-    } else {
-      throw new Error("No tables found in the database.");
+    if (!tableResult?.results || tableResult.results.length === 0) {
+      throw new Error("No user-defined tables found in the database.");
     }
+
+    // Step 3: Fetch Row Counts for Each Table
+    const tables = (tableResult.results as { name: string }[]).map((row) => row.name);
+    console.log("Found tables:", tables);
+
+    const tableDetails = [];
+    for (const table of tables) {
+      const rowCountResult = await env.DB.prepare(
+        `SELECT COUNT(*) as row_count FROM ${table};`
+      ).all();
+      const rowCount = rowCountResult.results?.[0]?.row_count || 0;
+
+      tableDetails.push({ table, row_count: rowCount });
+    }
+
+    // Step 4: Respond with Table Details
+    return new Response(
+      JSON.stringify({ success: true, tables: tableDetails }, null, 2),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   } catch (error) {
-    // Log the error for debugging
+    // Enhanced error handling
     const err = error as Error;
-    console.error("Database test failed:", err.message);
+    console.error("Database test failed:", err.message, err.stack);
 
     return new Response(
-      JSON.stringify({ success: false, error: err.message }),
+      JSON.stringify(
+        {
+          success: false,
+          error: err.message,
+          hint: "Ensure your database is properly connected and populated.",
+        },
+        null,
+        2
+      ),
       {
         status: 500,
         headers: {
