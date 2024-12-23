@@ -12,6 +12,10 @@ export async function get({ env }: { env: Env }) {
     logs.push("Starting database connection test...");
 
     // Step 1: Verify Database Connection
+    if (!env.DB) {
+      logs.push("Error: DB binding is undefined.");
+      throw new Error("D1Database binding 'DB' is not available. Check your environment configuration.");
+    }
     logs.push("Testing database connection...");
     const connectionTest = await env.DB.prepare("SELECT 1;").all();
     logs.push(`Database connection test passed: ${JSON.stringify(connectionTest)}`);
@@ -21,6 +25,7 @@ export async function get({ env }: { env: Env }) {
     const tableResult = await env.DB.prepare(
       "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"
     ).all();
+    logs.push(`Raw table query result: ${JSON.stringify(tableResult)}`);
 
     if (!tableResult?.results || tableResult.results.length === 0) {
       logs.push("No user-defined tables found in the database.");
@@ -37,6 +42,8 @@ export async function get({ env }: { env: Env }) {
       const rowCountResult = await env.DB.prepare(
         `SELECT COUNT(*) as row_count FROM ${table};`
       ).all();
+      logs.push(`Row count query result for ${table}: ${JSON.stringify(rowCountResult)}`);
+      
       const rowCount = rowCountResult.results?.[0]?.row_count || 0;
       logs.push(`Table: ${table}, Row Count: ${rowCount}`);
 
@@ -45,6 +52,7 @@ export async function get({ env }: { env: Env }) {
 
     // Step 4: Respond with Table Details and Logs
     logs.push("Database test completed successfully.");
+    logs.push(`Final table details: ${JSON.stringify(tableDetails)}`);
     return new Response(
       JSON.stringify({ success: true, tables: tableDetails, logs }, null, 2),
       {
