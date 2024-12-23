@@ -1,24 +1,56 @@
 /// <reference types="astro/client" />
-declare var adsbygoogle: Array<Record<string, unknown>>;
+
 declare global {
   interface Window {
-      adsbygoogle?: Array<{ google_ad_client: string; enable_page_level_ads: boolean }>;
+    adsbygoogle?: Array<{ google_ad_client: string; enable_page_level_ads: boolean }>;
+    google?: typeof import('@googlemaps/google-maps-services-js').google;
+    initMap: () => void;
   }
 
   interface EventCacheData {
-      results: Event[];
+    results: Event[];
   }
 
   interface NewsCacheData {
-      items: NewsItem[];
+    items: NewsItem[];
   }
 
   interface GlobalCache {
-      _eventsCache?: Record<string, { data: EventCacheData; expiry: number }>;
-      _newsCache?: Record<string, { data: NewsCacheData; expiry: number }>;
+    _eventsCache?: Record<string, { data: EventCacheData; expiry: number }>;
+    _newsCache?: Record<string, { data: NewsCacheData; expiry: number }>;
   }
 
+  interface Global {
+    _isCloudflare?: boolean;
+}
+
+  var _isCloudflare: boolean | undefined; 
+
+  var _parkingCache: {
+    data: ParkingMeter[];
+    expiry: number;
+  } | undefined;
+
   var globalThis: GlobalCache;
+
+  var DB: D1Database | undefined;
+}
+
+export interface D1PreparedStatement {
+  bind(...args: any[]): D1PreparedStatement;
+  first<T>(): Promise<T | null>;
+  all<T>(): Promise<{ results: T[] | null }>;
+  raw<T>(): Promise<T[]>;
+  run<T>(): Promise<T>;
+}
+
+/**
+ * Represents the D1 database interface.
+ */
+export interface D1Database {
+  prepare(query: string): D1PreparedStatement;
+  dump(): Promise<ArrayBuffer>;
+  batch<T>(statements: D1PreparedStatement[]): Promise<T[]>;
 }
 
 export interface Event {
@@ -41,5 +73,35 @@ export interface NewsItem {
 }
 
 export type FetchWithCache<T> = (url: string) => Promise<T>;
+
+export interface ImageMetadata {
+  src: string;
+  width: number;
+  height: number;
+  format: string;
+}
+
+export interface ParkingMeter {
+  ObjectId: number;
+  METER_NO: number;
+  CATEGORY: string;
+  STREET: string;
+  SUBURB: string;
+  MAX_STAY_HRS: string;
+  RESTRICTIONS?: string; // Optional instead of `| null`
+  OPERATIONAL_DAY: string;
+  OPERATIONAL_TIME: string;
+  TAR_ZONE: string;
+  TAR_RATE_WEEKDAY?: number; // Optional instead of `| null`
+  TAR_RATE_AH_WE?: number; // Optional instead of `| null`
+  LOC_DESC: string;
+  VEH_BAYS: number;
+  MC_BAYS: number;
+  MC_RATE?: number; // Optional instead of `| null`
+  LONGITUDE: number;
+  LATITUDE: number;
+  MOBILE_ZONE: number;
+  MAX_CAP_CHG?: string; // Optional instead of `| null`
+}
 
 export {};

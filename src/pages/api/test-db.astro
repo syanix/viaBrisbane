@@ -1,0 +1,49 @@
+---
+import { D1Database } from '@cloudflare/workers-types';
+
+export interface Env {
+  DB: D1Database;
+}
+
+export async function get({ env }: { env: Env }) {
+  try {
+    console.log("Starting database connection test...");
+
+    // Test the connection and fetch table names
+    const result = await env.DB.prepare(
+      "SELECT name FROM sqlite_master WHERE type='table';"
+    ).all();
+
+    console.log("Database query result:", result);
+
+    // Check if the result is valid
+    if (result?.results) {
+      return new Response(
+        JSON.stringify({ success: true, tables: result.results }, null, 2),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    } else {
+      throw new Error("No tables found in the database.");
+    }
+  } catch (error) {
+    // Log the error for debugging
+    const err = error as Error;
+    console.error("Database test failed:", err.message);
+
+    return new Response(
+      JSON.stringify({ success: false, error: err.message }),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+  }
+}
+---
