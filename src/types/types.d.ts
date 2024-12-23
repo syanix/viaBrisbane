@@ -32,6 +32,25 @@ declare global {
   } | undefined;
 
   var globalThis: GlobalCache;
+
+  var DB: D1Database | undefined;
+}
+
+export interface D1PreparedStatement {
+  bind(...args: any[]): D1PreparedStatement;
+  first<T>(): Promise<T | null>;
+  all<T>(): Promise<{ results: T[] | null }>;
+  raw<T>(): Promise<T[]>;
+  run<T>(): Promise<T>;
+}
+
+/**
+ * Represents the D1 database interface.
+ */
+export interface D1Database {
+  prepare(query: string): D1PreparedStatement;
+  dump(): Promise<ArrayBuffer>;
+  batch<T>(statements: D1PreparedStatement[]): Promise<T[]>;
 }
 
 export interface Event {
