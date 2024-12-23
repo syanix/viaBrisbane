@@ -6,41 +6,47 @@ export interface Env {
 }
 
 export async function get({ env }: { env: Env }) {
+  let logs: string[] = []; // Collect logs to include in the response
+
   try {
-    console.log("Starting database connection test...");
+    logs.push("Starting database connection test...");
 
     // Step 1: Verify Database Connection
-    console.log("Testing database connection...");
+    logs.push("Testing database connection...");
     const connectionTest = await env.DB.prepare("SELECT 1;").all();
-    console.log("Database connection test passed:", connectionTest);
+    logs.push(`Database connection test passed: ${JSON.stringify(connectionTest)}`);
 
     // Step 2: Fetch Table Names
-    console.log("Fetching table names...");
+    logs.push("Fetching table names...");
     const tableResult = await env.DB.prepare(
       "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"
     ).all();
 
     if (!tableResult?.results || tableResult.results.length === 0) {
+      logs.push("No user-defined tables found in the database.");
       throw new Error("No user-defined tables found in the database.");
     }
 
-    // Step 3: Fetch Row Counts for Each Table
     const tables = (tableResult.results as { name: string }[]).map((row) => row.name);
-    console.log("Found tables:", tables);
+    logs.push(`Found tables: ${JSON.stringify(tables)}`);
 
+    // Step 3: Fetch Row Counts for Each Table
     const tableDetails = [];
     for (const table of tables) {
+      logs.push(`Fetching row count for table: ${table}`);
       const rowCountResult = await env.DB.prepare(
         `SELECT COUNT(*) as row_count FROM ${table};`
       ).all();
       const rowCount = rowCountResult.results?.[0]?.row_count || 0;
+      logs.push(`Table: ${table}, Row Count: ${rowCount}`);
 
       tableDetails.push({ table, row_count: rowCount });
     }
 
-    // Step 4: Respond with Table Details
+    // Step 4: Respond with Table Details and Logs
+    logs.push("Database test completed successfully.");
     return new Response(
-      JSON.stringify({ success: true, tables: tableDetails }, null, 2),
+      JSON.stringify({ success: true, tables: tableDetails, logs }, null, 2),
       {
         status: 200,
         headers: {
@@ -51,6 +57,7 @@ export async function get({ env }: { env: Env }) {
   } catch (error) {
     // Enhanced error handling
     const err = error as Error;
+    logs.push(`Database test failed: ${err.message}`);
     console.error("Database test failed:", err.message, err.stack);
 
     return new Response(
@@ -59,6 +66,7 @@ export async function get({ env }: { env: Env }) {
           success: false,
           error: err.message,
           hint: "Ensure your database is properly connected and populated.",
+          logs,
         },
         null,
         2

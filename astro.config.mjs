@@ -20,7 +20,7 @@ export default defineConfig({
     platformProxy: {
       enabled: true,
       persist: true
-    }
+    },
   }),
   vite: {
     ssr: {
