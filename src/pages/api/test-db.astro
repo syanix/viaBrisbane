@@ -5,23 +5,26 @@ let htmlContent: string = `<h1>Database Connection Test</h1>`;
 
 try {
   // Step 1: Identify database type
-  const isLocal: boolean = typeof globalThis._isCloudflare === 'undefined';
-  const dbType: string = isLocal ? 'Local SQLite Database' : 'Cloudflare D1 Database';
+  const isLocal = !globalThis._isCloudflare;
+  const dbType = isLocal ? 'Local SQLite Database' : 'Cloudflare D1 Database';
+  const environment = process.env.NODE_ENV || 'Not defined';
+
   htmlContent += `<p><strong>Connected to:</strong> ${dbType}</p>`;
+  htmlContent += `<p><strong>Environment:</strong> ${environment}</p>`;
 
   // Step 2: Test database connection
   htmlContent += `<h2>Step 1: Testing Database Connection</h2>`;
-  const connectionTest: string = await testDatabaseConnection();
+  const connectionTest = await testDatabaseConnection();
   htmlContent += `<p>${connectionTest}</p>`;
 
   // Step 3: Fetch table names
   htmlContent += `<h2>Step 2: Fetching Table Names</h2>`;
-  const tableNamesQuery: string = `
+  const tableNamesQuery = `
     SELECT name FROM sqlite_master 
     WHERE type='table' AND name NOT LIKE 'sqlite_%';
   `;
   const tablesResult = await queryDatabase<{ name: string }>(tableNamesQuery);
-  const tables: string[] = tablesResult.map((row) => row.name);
+  const tables = tablesResult.map((row) => row.name);
 
   if (tables.length === 0) {
     htmlContent += `<p style="color:red;">No user-defined tables found in the database.</p>`;
@@ -36,7 +39,7 @@ try {
   // Step 4: Fetch row counts for each table
   htmlContent += `<h2>Step 3: Fetching Row Counts</h2>`;
   for (const table of tables) {
-    const rowCountQuery: string = `SELECT COUNT(*) as row_count FROM ${table};`;
+    const rowCountQuery = `SELECT COUNT(*) as row_count FROM ${table};`;
     const rowCountResult = await queryDatabase<{ row_count: number }>(rowCountQuery);
     const rowCount: number = rowCountResult[0]?.row_count || 0;
     htmlContent += `<p>Table: <strong>${table}</strong>, Rows: <strong>${rowCount}</strong></p>`;
@@ -44,14 +47,9 @@ try {
 
   htmlContent += `<h2 style="color:green;">Database Test Completed Successfully!</h2>`;
 } catch (error) {
-  const errorMessage: string =
-    error instanceof Error ? error.message : 'Unknown error';
-  const errorStack: string = error instanceof Error ? error.stack || '' : '';
-  htmlContent += `
-    <h2 style="color:red;">Error Occurred During Test</h2>
-    <p>${errorMessage}</p>
-    <pre>${errorStack}</pre>
-  `;
+  const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+  htmlContent += `<h2 style="color:red;">Error Occurred During Test</h2>`;
+  htmlContent += `<p>${errorMessage}</p>`;
 }
 ---
 <!DOCTYPE html>
@@ -63,8 +61,7 @@ try {
 </head>
 <body>
   <div>
-    <!-- Render dynamic HTML content -->
-    <div set:html={htmlContent}></div>
+    <div innerHTML={htmlContent}></div>
   </div>
 </body>
 </html>

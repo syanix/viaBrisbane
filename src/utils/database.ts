@@ -2,6 +2,13 @@ import type { D1Database } from '@cloudflare/workers-types';
 
 declare var DB: D1Database | undefined; // D1Database available in production (Cloudflare)
 
+// Detect if running on Cloudflare
+if (typeof DB !== 'undefined') {
+  globalThis._isCloudflare = true;
+} else {
+  globalThis._isCloudflare = false;
+}
+
 // Environment variable for local database path
 const LOCAL_DB_PATH = import.meta.env.LOCAL_DB_PATH || './local-database.sqlite';
 console.log(`Resolved database path: ${LOCAL_DB_PATH}`);
