@@ -1,91 +1,70 @@
 ---
-import { D1Database } from '@cloudflare/workers-types';
+import { queryDatabase, testDatabaseConnection } from '../../utils/database';
 
-export interface Env {
-  DB: D1Database;
-}
+let htmlContent: string = `<h1>Database Connection Test</h1>`;
 
-export async function get({ env }: { env: Env }) {
-  let logs: string[] = []; // Collect logs to include in the response
+try {
+  // Step 1: Identify database type
+  const isLocal: boolean = typeof globalThis._isCloudflare === 'undefined';
+  const dbType: string = isLocal ? 'Local SQLite Database' : 'Cloudflare D1 Database';
+  htmlContent += `<p><strong>Connected to:</strong> ${dbType}</p>`;
 
-  try {
-    logs.push("Starting database connection test...");
+  // Step 2: Test database connection
+  htmlContent += `<h2>Step 1: Testing Database Connection</h2>`;
+  const connectionTest: string = await testDatabaseConnection();
+  htmlContent += `<p>${connectionTest}</p>`;
 
-    // Step 1: Verify Database Connection
-    if (!env.DB) {
-      logs.push("Error: DB binding is undefined.");
-      throw new Error("D1Database binding 'DB' is not available. Check your environment configuration.");
-    }
-    logs.push("Testing database connection...");
-    const connectionTest = await env.DB.prepare("SELECT 1;").all();
-    logs.push(`Database connection test passed: ${JSON.stringify(connectionTest)}`);
+  // Step 3: Fetch table names
+  htmlContent += `<h2>Step 2: Fetching Table Names</h2>`;
+  const tableNamesQuery: string = `
+    SELECT name FROM sqlite_master 
+    WHERE type='table' AND name NOT LIKE 'sqlite_%';
+  `;
+  const tablesResult = await queryDatabase<{ name: string }>(tableNamesQuery);
+  const tables: string[] = tablesResult.map((row) => row.name);
 
-    // Step 2: Fetch Table Names
-    logs.push("Fetching table names...");
-    const tableResult = await env.DB.prepare(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"
-    ).all();
-    logs.push(`Raw table query result: ${JSON.stringify(tableResult)}`);
-
-    if (!tableResult?.results || tableResult.results.length === 0) {
-      logs.push("No user-defined tables found in the database.");
-      throw new Error("No user-defined tables found in the database.");
-    }
-
-    const tables = (tableResult.results as { name: string }[]).map((row) => row.name);
-    logs.push(`Found tables: ${JSON.stringify(tables)}`);
-
-    // Step 3: Fetch Row Counts for Each Table
-    const tableDetails = [];
-    for (const table of tables) {
-      logs.push(`Fetching row count for table: ${table}`);
-      const rowCountResult = await env.DB.prepare(
-        `SELECT COUNT(*) as row_count FROM ${table};`
-      ).all();
-      logs.push(`Row count query result for ${table}: ${JSON.stringify(rowCountResult)}`);
-      
-      const rowCount = rowCountResult.results?.[0]?.row_count || 0;
-      logs.push(`Table: ${table}, Row Count: ${rowCount}`);
-
-      tableDetails.push({ table, row_count: rowCount });
-    }
-
-    // Step 4: Respond with Table Details and Logs
-    logs.push("Database test completed successfully.");
-    logs.push(`Final table details: ${JSON.stringify(tableDetails)}`);
-    return new Response(
-      JSON.stringify({ success: true, tables: tableDetails, logs }, null, 2),
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-  } catch (error) {
-    // Enhanced error handling
-    const err = error as Error;
-    logs.push(`Database test failed: ${err.message}`);
-    console.error("Database test failed:", err.message, err.stack);
-
-    return new Response(
-      JSON.stringify(
-        {
-          success: false,
-          error: err.message,
-          hint: "Ensure your database is properly connected and populated.",
-          logs,
-        },
-        null,
-        2
-      ),
-      {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+  if (tables.length === 0) {
+    htmlContent += `<p style="color:red;">No user-defined tables found in the database.</p>`;
+  } else {
+    htmlContent += `<p>Found Tables:</p><ul>`;
+    tables.forEach((table) => {
+      htmlContent += `<li>${table}</li>`;
+    });
+    htmlContent += `</ul>`;
   }
+
+  // Step 4: Fetch row counts for each table
+  htmlContent += `<h2>Step 3: Fetching Row Counts</h2>`;
+  for (const table of tables) {
+    const rowCountQuery: string = `SELECT COUNT(*) as row_count FROM ${table};`;
+    const rowCountResult = await queryDatabase<{ row_count: number }>(rowCountQuery);
+    const rowCount: number = rowCountResult[0]?.row_count || 0;
+    htmlContent += `<p>Table: <strong>${table}</strong>, Rows: <strong>${rowCount}</strong></p>`;
+  }
+
+  htmlContent += `<h2 style="color:green;">Database Test Completed Successfully!</h2>`;
+} catch (error) {
+  const errorMessage: string =
+    error instanceof Error ? error.message : 'Unknown error';
+  const errorStack: string = error instanceof Error ? error.stack || '' : '';
+  htmlContent += `
+    <h2 style="color:red;">Error Occurred During Test</h2>
+    <p>${errorMessage}</p>
+    <pre>${errorStack}</pre>
+  `;
 }
 ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Database Test</title>
+</head>
+<body>
+  <div>
+    <!-- Render dynamic HTML content -->
+    <div set:html={htmlContent}></div>
+  </div>
+</body>
+</html>
