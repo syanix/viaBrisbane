@@ -101,7 +101,7 @@
             }
         }
 
-        a:not(.title) {
+        a:not(.title, .button) {
             color: #888;
             text-decoration: underline;
             font-weight: normal;

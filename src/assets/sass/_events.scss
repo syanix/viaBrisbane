@@ -1,3 +1,16 @@
+.banner-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .event-detail {
     background: white;
     border-radius: $border-radius;
@@ -21,6 +34,17 @@
 
         strong {
             color: $text-color;
+        }
+        a {
+            color: #888; /* Default link color */
+            text-decoration: none; /* Remove underline by default */
+            font-weight: bold; /* Bold text for emphasis */
+            transition: color 0.3s ease, text-decoration 0.3s ease; /* Smooth transition for hover effects */
+    
+            &:hover {
+                color: #0056b3; /* Darker blue on hover */
+                text-decoration: underline; /* Add underline on hover */
+            }
         }
 
         @media (max-width: $mobile-breakpoint) {
@@ -161,3 +185,44 @@
         }
     }
 } 
+
+/* Container for each event */
+.event-container {
+    padding: 15px; /* Add padding inside the container */
+    border: 1px solid #e0e0e0; /* Light border for separation */
+    border-radius: 8px; /* Rounded corners */
+    margin-bottom: 20px; /* Space between events */
+    background-color: #f9f9f9; /* Light background color */
+}
+
+/* Title styles */
+.title {
+    font-size: 1.5em; /* Larger font size for titles */
+    margin: 10px 0; /* Space above and below the title */
+    color: #007bff; /* Title color */
+}
+
+/* Date and Location styles */
+p {
+    margin: 5px 0; /* Space between paragraphs */
+    line-height: 1.5; /* Increased line height for readability */
+}
+
+/* Button styles */
+.more-info-button {
+    display: block; /* Full width */
+    width: 90%; /* Adjust width */
+    margin: 10px auto; /* Center align */
+    padding: 12px; /* Padding for button */
+    background-color: #007bff; /* Button color */
+    color: white; /* Text color */
+    text-align: center; /* Center text */
+    font-weight: bold; /* Bold text */
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.more-info-button:hover {
+    background-color: #0056b3; /* Darker shade for hover effect */
+}
