@@ -2,7 +2,7 @@ import type { ParkingMeter } from '../types/types';
 import { fetchParkingMeters } from './database'; // Import the encapsulated function
 import type { D1Database } from "@cloudflare/workers-types";
 
-const CACHE_EXPIRY_MS = 60 * 60 * 1000; // 1 hour
+const CACHE_EXPIRY_MS = 60 * 60 * 1000 * 24; // 1 day
 
 export async function getParkingMetersWithCache(dbInstance: D1Database): Promise<ParkingMeter[]> {
     const now = Date.now();
