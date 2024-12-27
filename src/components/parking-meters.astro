@@ -21,7 +21,7 @@ const currentMeters = filteredMeters.slice(
 );
 
 function createSlug(meter: ParkingMeter): string {
-    return `${meter.METER_NO}-${meter.STREET.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+    return `${meter.METER_NO}-${meter.STREET.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${meter.SUBURB.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 }
 ---
 
@@ -40,7 +40,7 @@ function createSlug(meter: ParkingMeter): string {
 
         <div class="meters-grid">
             {currentMeters.map((meter) => (
-                <a href={`/parking/${createSlug(meter)}`} class="meter-tile">
+                <a href={`/parking-meters/${createSlug(meter)}`} class="meter-tile">
                     <div class="meter-number">{meter.METER_NO}</div>
                     <div class="meter-location">{meter.STREET}, {meter.SUBURB}</div>
                     <div class="meter-details">
@@ -60,13 +60,13 @@ function createSlug(meter: ParkingMeter): string {
         {totalPages > 1 && (
             <div class="pagination">
                 <a 
-                    href={`/parking?page=1${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    href={`/parking-meters?page=1${searchQuery ? `&search=${searchQuery}` : ''}`}
                     class={page === 1 ? 'disabled' : ''}
                 >
                     First
                 </a>
                 <a 
-                    href={`/parking?page=${page - 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    href={`/parking-meters?page=${page - 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
                     class={page === 1 ? 'disabled' : ''}
                 >
                     Previous
@@ -77,7 +77,7 @@ function createSlug(meter: ParkingMeter): string {
                     if (pageNum > totalPages) return null; // Skip if pageNum exceeds totalPages
                     return (
                         <a 
-                            href={`/parking?page=${pageNum}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                            href={`/parking-meters?page=${pageNum}${searchQuery ? `&search=${searchQuery}` : ''}`}
                             class={pageNum === page ? 'active' : ''}
                         >
                             {pageNum}
@@ -86,13 +86,13 @@ function createSlug(meter: ParkingMeter): string {
                 })}
 
                 <a 
-                    href={`/parking?page=${page + 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    href={`/parking-meters?page=${page + 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
                     class={page === totalPages ? 'disabled' : ''}
                 >
                     Next
                 </a>
                 <a 
-                    href={`/parking?page=${totalPages}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    href={`/parking-meters?page=${totalPages}${searchQuery ? `&search=${searchQuery}` : ''}`}
                     class={page === totalPages ? 'disabled' : ''}
                 >
                     Last

@@ -7,14 +7,14 @@ export async function getStaticPaths() {
 
     return meters.map(meter => ({
         params: { 
-            slug: `${meter.METER_NO}-${meter.STREET.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` 
+            slug: `${meter.METER_NO}-${meter.STREET.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${meter.SUBURB.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` 
         }
     }));
 }
 
 const { slug } = Astro.params;
 const meters = await getParkingMetersWithCache(Astro.locals.runtime.env.DB);
-const meter = meters.find(m => `${m.METER_NO}-${m.STREET.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` === slug);
+const meter = meters.find(m => `${m.METER_NO}-${m.STREET.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${m.SUBURB.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` === slug);
 
 if (!meter) {
     throw new Error(`Parking meter with slug "${slug}" not found`);
@@ -100,7 +100,7 @@ const keywords = `Brisbane parking, parking meter ${meter.METER_NO}, ${meter.STR
                 </div>
 
                 <div class="meter-actions">
-                    <a href="/parking" class="button secondary full-width">Back to Parking Meters</a>
+                    <a href="/parking-meters" class="button secondary full-width">Back to Parking Meters</a>
                 </div>
             </div>
         </section>
