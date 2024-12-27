@@ -1,36 +1,27 @@
-import { D1Database } from '@cloudflare/workers-types';
+import { drizzle } from "drizzle-orm/d1";
+import { parkingMeters } from "../schema"; // Ensure schema.ts defines the parkingMeters table
+import type { D1Database } from "@cloudflare/workers-types";
 
-declare var DB: D1Database | undefined; // D1Database available in production (Cloudflare)
+/**
+ * Initialize the Drizzle ORM instance using the provided D1Database.
+ *
+ * @param dbInstance - The D1Database instance to use.
+ * @returns A promise that resolves with the data from the parking_meters table.
+ */
+export async function fetchParkingMeters(dbInstance: D1Database): Promise<any[]> {
+  try {
+    const db = drizzle(dbInstance); // Initialize drizzle with the D1Database instance
 
-// Use the environment variable for the database path
-const LOCAL_DB_PATH = import.meta.env.LOCAL_DB_PATH || './local-database.sqlite';
-console.log(`Resolved database path: ${LOCAL_DB_PATH}`);
+    // Fetch data from the parkingMeters table
+    const results = await db
+      .select()
+      .from(parkingMeters)
+      .orderBy(parkingMeters.METER_NO) // Assuming METER_NO is part of the schema and can be ordered
+      .all();
 
-type BetterSqlite3Database = InstanceType<typeof import('better-sqlite3').default>;
-let localDb: BetterSqlite3Database | null = null;
-
-(async () => {
-    // Conditionally import better-sqlite3 for local development
-    if (!globalThis._isCloudflare && process.env.NODE_ENV === 'development') {
-        const { default: Database } = await import('better-sqlite3');
-        localDb = new Database(LOCAL_DB_PATH, { verbose: console.log });
-    }
-})();
-
-// Unified query function
-export async function queryDatabase<T = any>(
-    sql: string,
-    params: any[] = []
-): Promise<T[]> {
-    if (localDb) {
-        // Use better-sqlite3 for local development
-        const stmt = localDb.prepare(sql);
-        return stmt.all(...params);
-    } else if (DB) {
-        // Use Cloudflare D1Database in production
-        const result = await DB.prepare(sql).bind(...params).all<T>();
-        return result.results || [];
-    } else {
-        throw new Error('No database connection available.');
-    }
+    return results;
+  } catch (error) {
+    console.error("Failed to fetch parking meters:", error);
+    throw new Error(`Error fetching parking meters: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }

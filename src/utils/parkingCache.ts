@@ -1,9 +1,10 @@
 import type { ParkingMeter } from '../types/types';
-import { queryDatabase } from './database';
+import { fetchParkingMeters } from './database'; // Import the encapsulated function
+import type { D1Database } from "@cloudflare/workers-types";
 
 const CACHE_EXPIRY_MS = 60 * 60 * 1000; // 1 hour
 
-export async function getParkingMetersWithCache(): Promise<ParkingMeter[]> {
+export async function getParkingMetersWithCache(dbInstance: D1Database): Promise<ParkingMeter[]> {
     const now = Date.now();
     const cache = globalThis._parkingCache;
 
@@ -14,10 +15,10 @@ export async function getParkingMetersWithCache(): Promise<ParkingMeter[]> {
 
     console.log('Fetching fresh parking data');
     try {
-        const data = await queryDatabase<ParkingMeter>(
-            'SELECT * FROM parking_meters ORDER BY METER_NO'
-        );
+        // Use the encapsulated fetch function from database.ts
+        const data = await fetchParkingMeters(dbInstance);
 
+        // Update the cache with fresh data
         globalThis._parkingCache = {
             data,
             expiry: now + CACHE_EXPIRY_MS,
@@ -28,4 +29,4 @@ export async function getParkingMetersWithCache(): Promise<ParkingMeter[]> {
         console.error('Failed to fetch parking meters:', error);
         return [];
     }
-} 
+}

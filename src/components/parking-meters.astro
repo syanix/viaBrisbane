@@ -5,7 +5,7 @@ import type { ParkingMeter } from '../types/types';
 const { page = 1, searchQuery = '' } = Astro.props;
 const ITEMS_PER_PAGE = 30;
 
-const allMeters = await getParkingMetersWithCache();
+const allMeters = await getParkingMetersWithCache(Astro.locals.runtime.env.DB);
 const filteredMeters = searchQuery 
     ? allMeters.filter((meter: ParkingMeter) => 
         meter.METER_NO.toString().includes(searchQuery) ||

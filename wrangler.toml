@@ -1,10 +1,19 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "viabrisbane-astro"
+name = "viabrisbane"
 compatibility_date = "2024-12-05"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "./dist"
 
+
 [[d1_databases]]
 binding = "DB"
 database_name = "viabrisbane"
-database_id = "11e8ae8b-1592-46e8-b0fd-09d1b0c1e52c"
+database_id = "eaa7da18-d48c-4968-8672-20d290320793"
+preview_database_id = "2066c52d-b255-40b2-bfa0-56dc285617d4"
+
+[env.preview]
+name = "preview"
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "viabrisbane-preview"
+database_id = "2066c52d-b255-40b2-bfa0-56dc285617d4"
