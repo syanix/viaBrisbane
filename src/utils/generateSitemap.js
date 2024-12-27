@@ -10,13 +10,16 @@ const staticUrls = [
   { url: '/about-us', changefreq: 'monthly', priority: 0.8 },
   { url: '/contact-us', changefreq: 'monthly', priority: 0.8 },
   { url: '/parking-meters', changefreq: 'daily', priority: 0.9 },
-  { url: '/resources', changefreq: 'weekly', priority: 0.7 }, // Added resources page
-  { url: '/events', changefreq: 'daily', priority: 0.9 }, // Added events page
+  { url: '/resources', changefreq: 'weekly', priority: 0.7 },
+  { url: '/events', changefreq: 'daily', priority: 0.9 },
 ];
 
-// Function to remove trailing slashes
-function removeTrailingSlash(url) {
-  return url.endsWith('/') ? url.slice(0, -1) : url;
+// Function to sanitize URLs
+function sanitizeUrl(url) {
+  return url
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // Replace invalid characters with '-'
+    .replace(/&/g, ''); // Remove '&' characters
 }
 
 // Fetch dynamic URLs from a JSON file
@@ -26,7 +29,7 @@ async function fetchDynamicUrls() {
   const parkingMeterData = JSON.parse(jsonData);
 
   return parkingMeterData.map((entry) => ({
-    url: removeTrailingSlash(entry.URL),
+    url: `/parking-meters/${sanitizeUrl(entry.URL)}`,
     changefreq: 'daily',
     priority: 0.8,
   }));
