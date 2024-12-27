@@ -19,7 +19,8 @@ function sanitizeUrl(url) {
   return url
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-') // Replace invalid characters with '-'
-    .replace(/&/g, ''); // Remove '&' characters
+    .replace(/&/g, '') // Remove '&' characters
+    .replace(/^-+|-+$/g, ''); // Remove leading or trailing hyphens
 }
 
 // Fetch dynamic URLs from a JSON file
@@ -28,11 +29,15 @@ async function fetchDynamicUrls() {
   const jsonData = await fs.readFile(filePath, 'utf8');
   const parkingMeterData = JSON.parse(jsonData);
 
-  return parkingMeterData.map((entry) => ({
-    url: `/parking-meters/${sanitizeUrl(entry.URL)}`,
-    changefreq: 'daily',
-    priority: 0.8,
-  }));
+  return parkingMeterData.map((entry) => {
+    // Ensure sanitizeUrl is applied to the correct part of the URL
+    const sanitizedPath = sanitizeUrl(entry.URL);
+    return {
+      url: `/parking-meters/${sanitizedPath}`, // Correctly append the sanitized path
+      changefreq: 'daily',
+      priority: 0.8,
+    };
+  });
 }
 
 // Generate the XML content for the sitemap
