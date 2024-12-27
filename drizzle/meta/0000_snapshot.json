@@ -1,0 +1,189 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "c50f347a-3929-4243-8484-c3196f4ef259",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "parking_meters": {
+      "name": "parking_meters",
+      "columns": {
+        "ObjectId": {
+          "name": "ObjectId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "METER_NO": {
+          "name": "METER_NO",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "CATEGORY": {
+          "name": "CATEGORY",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "STREET": {
+          "name": "STREET",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "SUBURB": {
+          "name": "SUBURB",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "MAX_STAY_HRS": {
+          "name": "MAX_STAY_HRS",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "RESTRICTIONS": {
+          "name": "RESTRICTIONS",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "OPERATIONAL_DAY": {
+          "name": "OPERATIONAL_DAY",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "OPERATIONAL_TIME": {
+          "name": "OPERATIONAL_TIME",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "TAR_ZONE": {
+          "name": "TAR_ZONE",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "TAR_RATE_WEEKDAY": {
+          "name": "TAR_RATE_WEEKDAY",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "TAR_RATE_AH_WE": {
+          "name": "TAR_RATE_AH_WE",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "LOC_DESC": {
+          "name": "LOC_DESC",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "VEH_BAYS": {
+          "name": "VEH_BAYS",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "MC_BAYS": {
+          "name": "MC_BAYS",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "MC_RATE": {
+          "name": "MC_RATE",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "LONGITUDE": {
+          "name": "LONGITUDE",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "LATITUDE": {
+          "name": "LATITUDE",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "MOBILE_ZONE": {
+          "name": "MOBILE_ZONE",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "MAX_CAP_CHG": {
+          "name": "MAX_CAP_CHG",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "geo_shape": {
+          "name": "geo_shape",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "geo_point_2d": {
+          "name": "geo_point_2d",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "VEH_BAYS_INT": {
+          "name": "VEH_BAYS_INT",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

@@ -1,0 +1,27 @@
+import { sqliteTable, integer, text, real } from "drizzle-orm/sqlite-core";
+
+export const parkingMeters = sqliteTable("parking_meters", {
+  ObjectId: integer("ObjectId").primaryKey(),
+  METER_NO: integer("METER_NO"),
+  CATEGORY: text("CATEGORY", { length: 255 }),
+  STREET: text("STREET", { length: 255 }),
+  SUBURB: text("SUBURB", { length: 255 }),
+  MAX_STAY_HRS: text("MAX_STAY_HRS", { length: 255 }),
+  RESTRICTIONS: text("RESTRICTIONS", { length: 255 }),
+  OPERATIONAL_DAY: text("OPERATIONAL_DAY", { length: 255 }),
+  OPERATIONAL_TIME: text("OPERATIONAL_TIME", { length: 255 }),
+  TAR_ZONE: text("TAR_ZONE", { length: 255 }),
+  TAR_RATE_WEEKDAY: real("TAR_RATE_WEEKDAY"),
+  TAR_RATE_AH_WE: real("TAR_RATE_AH_WE"),
+  LOC_DESC: text("LOC_DESC", { length: 255 }),
+  VEH_BAYS: integer("VEH_BAYS"),
+  MC_BAYS: integer("MC_BAYS"),
+  MC_RATE: real("MC_RATE"),
+  LONGITUDE: real("LONGITUDE"),
+  LATITUDE: real("LATITUDE"),
+  MOBILE_ZONE: integer("MOBILE_ZONE"),
+  MAX_CAP_CHG: text("MAX_CAP_CHG", { length: 255 }),
+  geo_shape: text("geo_shape", { length: 255 }),
+  geo_point_2d: text("geo_point_2d", { length: 255 }),
+  VEH_BAYS_INT: integer("VEH_BAYS_INT"),
+});

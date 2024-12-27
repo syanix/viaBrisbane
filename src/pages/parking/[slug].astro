@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { getParkingMetersWithCache } from '../../utils/parkingCache';
 
 export async function getStaticPaths() {
-    const meters = await getParkingMetersWithCache();
+    const meters = await getParkingMetersWithCache(Astro.locals.runtime.env.DB);
 
     return meters.map(meter => ({
         params: { 
@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const meters = await getParkingMetersWithCache();
+const meters = await getParkingMetersWithCache(Astro.locals.runtime.env.DB);
 const meter = meters.find(m => `${m.METER_NO}-${m.STREET.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` === slug);
 
 if (!meter) {
