@@ -32,15 +32,14 @@ function createSlug(subject?: string): string {
                                         {event.subject || 'No Title'}
                                     </h3>
                                 </a>
-                                <p>Date: {event.formatteddatetime || 'No Date'}</p>
-                                <p>Location: {event.location || 'No Location'}</p>
-                                <p>Cost: {event.cost || 'Free'}</p>
-                                <p>{event.bookings || 'No booking information available'}</p>
+                                <p><strong>Date:</strong> {event.formatteddatetime || 'No Date'}</p>
+                                <p><strong>Location:</strong> {event.location || 'No Location'}</p>
                                 <p>
-                                    {event.description?.length && event.description.length > 100
-                                        ? `${event.description.slice(0, 100)}...`
+                                    {event.description?.length && event.description.length > 300
+                                        ? `${event.description.slice(0, 300)}...`
                                         : event.description || 'No Description'}
                                 </p>
+                                <a href={`/events/${createSlug(event.subject)}`} class="button primary more-info-button">More Event Info</a>
                             </div>
                         </li>
                     ))}

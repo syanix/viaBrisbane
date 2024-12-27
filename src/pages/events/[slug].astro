@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getEventsWithCache } from '../../utils/cache';
 import type { Event } from '../../types/types';
+import { htmlDecode } from '../../utils/htmlDecode';
 
 export async function getStaticPaths() {
     const events = await getEventsWithCache();
@@ -40,22 +41,27 @@ if (!event?.subject) {
 
 <Layout title={title} description={description} keywords={keywords}>
     <main>
+        <!-- Banner Image -->
+        <div class="banner-container">
+            <img 
+                src={event.eventimage || '/images/default-banner.jpg'} 
+                alt={event.subject || 'Event Banner'} 
+                class="banner-image"
+            />
+        </div>
         <section class="highlight-section">
             <div class="content-box">
                 <h1 class="section-heading">{event.subject}</h1>
                 <div class="event-detail">
-                    <div class="image-container">
-                        <img 
-                            src={event.eventimage || '/images/default-image.jpg'} 
-                            alt={event.subject} 
-                            class="event-image"
-                        />
-                    </div>
                     <div class="event-info">
                         <p><strong>Date:</strong> {event.formatteddatetime || 'No Date'}</p>
                         <p><strong>Location:</strong> {event.location || 'No Location'}</p>
                         <p><strong>Cost:</strong> {event.cost || 'Free'}</p>
-                        <p><strong>Booking Information:</strong> {event.bookings || 'No booking information available'}</p>
+                        <p><strong>Booking Information:</strong> {event.bookings ? (
+                            <span set:html={htmlDecode(event.bookings)}></span>
+                          ) : (
+                            'No Booking Information'
+                          )}</p>
                         <div class="event-description">
                             <h2>Description</h2>
                             <p>{event.description || 'No description available'}</p>
