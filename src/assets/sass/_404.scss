@@ -1,0 +1,20 @@
+// src/assets/sass/_404.scss
+
+.highlight-section {
+    text-align: center;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.not-found {
+    p {
+        font-size: 1.2rem;
+        margin: 1rem 0;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: underline;
+    }
+}
