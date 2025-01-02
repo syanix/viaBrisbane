@@ -46,10 +46,18 @@ const keywords = `Brisbane events, ${event.subject}, ${event.location || ''}, ${
                     <div class="event-meta">
                         <p><strong>Date:</strong> {event.formatteddatetime}</p>
                         {event.start_datetime && (
-                            <p><strong>Start:</strong> {new Date(event.start_datetime).toLocaleString("en-au")}</p>
+                            <p><strong>Start:</strong> {new Intl.DateTimeFormat("en-au", {
+            timeZone: "Australia/Brisbane",
+            dateStyle: "medium",
+            timeStyle: "short"
+        }).format(new Date(event.start_datetime))}</p>
                         )}
                         {event.end_datetime && (
-                            <p><strong>End:</strong> {new Date(event.end_datetime).toLocaleString("en-au")}</p>
+                            <p><strong>End:</strong> {new Intl.DateTimeFormat("en-au", {
+            timeZone: "Australia/Brisbane",
+            dateStyle: "medium",
+            timeStyle: "short"
+        }).format(new Date(event.end_datetime))}</p>
                         )}
                         <p><strong>Location:</strong> {event.location}</p>
                         {event.venue && (
