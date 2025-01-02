@@ -1,0 +1,124 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getEventBySlug } from '../../utils/eventsCache';
+
+// The slug will contain the full path after /events/
+const { slug = '' } = Astro.params;
+
+// Split the path into segments
+const segments = slug.split('/');
+
+// First segment should be the event ID
+const eventId = segments[0];
+
+if (!eventId || isNaN(Number(eventId))) {
+    console.log('Invalid event ID:', eventId);
+    return Astro.redirect('/404');
+}
+
+const event = await getEventBySlug(Astro.locals.runtime.env.DB, eventId);
+
+if (!event) {
+    console.log('Event not found for ID:', eventId);
+    return Astro.redirect('/404');
+}
+
+const title = `${event.subject} - Via Brisbane`;
+const description = event.description?.slice(0, 160) || 'Event details';
+const keywords = `Brisbane events, ${event.subject}, ${event.location || ''}, ${event.primaryeventtype || ''}`.toLowerCase();
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <main>
+        <div class="banner-container">
+            <img 
+                src={event.eventimage || '/images/default-image.jpg'} 
+                alt={event.subject} 
+                class="banner-image"
+            />
+        </div>
+
+        <section class="highlight-section event-detail">
+            <div class="content-box">
+                <div class="event-info">
+                    <h1 class="section-heading">{event.subject}</h1>
+                    
+                    <div class="event-meta">
+                        <p><strong>Date:</strong> {event.formatteddatetime}</p>
+                        {event.start_datetime && (
+                            <p><strong>Start:</strong> {new Date(event.start_datetime).toLocaleString("en-au")}</p>
+                        )}
+                        {event.end_datetime && (
+                            <p><strong>End:</strong> {new Date(event.end_datetime).toLocaleString("en-au")}</p>
+                        )}
+                        <p><strong>Location:</strong> {event.location}</p>
+                        {event.venue && (
+                            <p><strong>Venue:</strong> {event.venue}</p>
+                        )}
+                        {event.venueaddress && (
+                            <p><strong>Address:</strong> {event.venueaddress}</p>
+                        )}
+                        {event.cost && (
+                            <p><strong>Cost:</strong> {event.cost}</p>
+                        )}
+                        {event.age && (
+                            <p><strong>Age:</strong> {event.age}</p>
+                        )}
+                        {event.agerange && (
+                            <p><strong>Age Range:</strong> {event.agerange}</p>
+                        )}
+                        {event.maximumparticipantcapacity && (
+                            <p><strong>Capacity:</strong> {event.maximumparticipantcapacity}</p>
+                        )}
+                        {event.eventtype && (
+                            <p><strong>Event Type:</strong> {event.eventtype}</p>
+                        )}
+                        {event.primaryeventtype && (
+                            <p><strong>Category:</strong> {event.primaryeventtype}</p>
+                        )}
+                        {event.status && (
+                            <p><strong>Status:</strong> {event.status}</p>
+                        )}
+                    </div>
+
+                    <div class="event-description">
+                        <h2>Description</h2>
+                        <p set:html={event.description} />
+                    </div>
+
+                    {event.requirements && (
+                        <div class="requirements">
+                            <h2>Requirements</h2>
+                            <p set:html={event.requirements} />
+                        </div>
+                    )}
+
+                    {event.bookings && (
+                        <div class="booking-info">
+                            <h2>Booking Information</h2>
+                            <p set:html={event.bookings} />
+                        </div>
+                    )}
+
+                    {event.meetingpoint && (
+                        <div class="meeting-point">
+                            <h2>Meeting Point</h2>
+                            <p>{event.meetingpoint}</p>
+                        </div>
+                    )}
+
+                    <div class="event-actions">
+                        {event.web_link && (
+                            <a href={event.web_link} class="button primary" target="_blank" rel="noopener noreferrer">
+                                Visit Event Website
+                            </a>
+                        )}
+                        <a href="/events" class="button secondary">
+                            Back to Events
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout> 

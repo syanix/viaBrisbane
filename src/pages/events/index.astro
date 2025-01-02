@@ -1,14 +1,17 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import LinksSection from '../../components/links.astro'
 import Events from '../../components/events.astro';
-const title = "Upcoming Events in Brisbane - Discover Festivals, Gatherings & More - Via Brisbane";
-const description = "Stay updated with the latest events in Brisbane. From festivals to community gatherings, explore everything happening in Brisbane with Via Brisbane's event guide.";
-const keywords = "Brisbane events, upcoming events Brisbane, Brisbane festivals, community gatherings Brisbane, things to do Brisbane, event guide Brisbane";
+
+const page = parseInt(Astro.url.searchParams.get('page') || '1');
+const searchQuery = Astro.url.searchParams.get('search') || '';
+
+const title = "Brisbane Events - What's On in Brisbane - Via Brisbane";
+const description = "Discover upcoming events in Brisbane. Find local events, festivals, markets, and more happening in Brisbane City and surrounding areas.";
+const keywords = "Brisbane events, what's on Brisbane, Brisbane festivals, Brisbane markets, Brisbane activities";
 ---
+
 <Layout title={title} description={description} keywords={keywords}>
-<main>
-    <Events limit=24 />
-    <LinksSection />
-</main>
+    <main>
+        <Events page={page} searchQuery={searchQuery} />
+    </main>
 </Layout>

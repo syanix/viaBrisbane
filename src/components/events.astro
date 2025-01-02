@@ -1,32 +1,46 @@
 ---
-import { getEventsWithCache } from '../utils/cache';
+import { getEventsByPage } from '../utils/eventsCache';
+import { createSlug } from '../utils/slug';
 
-const { limit = 6 } = Astro.props;
-const eventsData = await getEventsWithCache();
-const limitedEvents = eventsData.slice(0, limit);
+const { page = 1, searchQuery = '', limit } = Astro.props;
+const { events, totalPages } = await getEventsByPage(Astro.locals.runtime.env.DB, page, searchQuery);
 
-function createSlug(subject?: string): string {
-    if (!subject) return `event-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-    return subject
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '');
-}
+// If limit is provided, slice the events array
+const displayEvents = limit ? events.slice(0, limit) : events;
 ---
 
 <!-- Events Section -->
-<section id="events-section" class="highlight-section events-section" data-events-count={limit}>
+<section id="events-section" class="highlight-section events-section">
     <div class="content-box">
         <h2 class="section-heading">Upcoming Events in Brisbane</h2>
+
+        {!limit && (
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="eventSearch"
+                    placeholder="Search events by name..."
+                    value={searchQuery}
+                />
+            </div>
+        )}
+
         <div id="events-container">
-            {limitedEvents.length > 0 ? (
+            {displayEvents.length > 0 ? (
                 <ul>
-                    {limitedEvents.map((event) => (
+                    {displayEvents.map((event) => (
                         <li>
                             <div>
-                                <a href={`/events/${createSlug(event.subject)}`}>
+                                <a href={`/events/${createSlug(
+                                    event.subject || undefined,
+                                    event.location || undefined,
+                                    event.event_id
+                                )}`}>
                                     <div class="image-container">
-                                        <img src={event.eventimage || '/images/default-image.jpg'} alt={event.subject || 'No Title'} />
+                                        <img 
+                                            src={event.eventimage || '/images/default-image.jpg'} 
+                                            alt={event.subject || 'No Title'} 
+                                        />
                                     </div>
                                     <h3 class="title">
                                         {event.subject || 'No Title'}
@@ -39,7 +53,13 @@ function createSlug(subject?: string): string {
                                         ? `${event.description.slice(0, 300)}...`
                                         : event.description || 'No Description'}
                                 </p>
-                                <a href={`/events/${createSlug(event.subject)}`} class="button primary more-info-button">More Event Info</a>
+                                <a href={`/events/${createSlug(
+                                    event.subject || undefined,
+                                    event.location || undefined,
+                                    event.event_id
+                                )}`} class="button primary more-info-button">
+                                    More Event Info
+                                </a>
                             </div>
                         </li>
                     ))}
@@ -48,5 +68,79 @@ function createSlug(subject?: string): string {
                 <p>No events available at the moment. Please try again later.</p>
             )}
         </div>
+
+        {!limit && totalPages > 1 && (
+            <div class="pagination">
+                <a 
+                    href={`/events?page=1${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={page === 1 ? 'disabled' : ''}
+                >
+                    First
+                </a>
+                <a 
+                    href={`/events?page=${page - 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={page === 1 ? 'disabled' : ''}
+                >
+                    Previous
+                </a>
+
+                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                    const pageNum = Math.max(1, page - 2) + i;
+                    if (pageNum > totalPages) return null;
+                    return (
+                        <a 
+                            href={`/events?page=${pageNum}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                            class={pageNum === page ? 'active' : ''}
+                        >
+                            {pageNum}
+                        </a>
+                    );
+                })}
+
+                <a 
+                    href={`/events?page=${page + 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={page === totalPages ? 'disabled' : ''}
+                >
+                    Next
+                </a>
+                <a 
+                    href={`/events?page=${totalPages}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={page === totalPages ? 'disabled' : ''}
+                >
+                    Last
+                </a>
+            </div>
+        )}
     </div>
 </section>
+
+<script>
+    const searchInput = document.getElementById('eventSearch') as HTMLInputElement;
+    if (searchInput) {
+        let debounceTimer: ReturnType<typeof setTimeout>;
+        const currentValue = searchInput.value;
+
+        searchInput.addEventListener('input', (e) => {
+            const input = e.target as HTMLInputElement;
+            const currentPosition = input.selectionStart;
+            
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const searchValue = input.value;
+                if (searchValue !== currentValue) {
+                    const url = new URL(window.location.href);
+                    if (searchValue) {
+                        url.searchParams.set('search', searchValue);
+                    } else {
+                        url.searchParams.delete('search');
+                    }
+                    url.searchParams.set('page', '1');
+                    window.location.href = url.toString();
+                }
+            }, 1000);
+
+            input.focus();
+            input.setSelectionRange(currentPosition, currentPosition);
+        });
+    }
+</script>
