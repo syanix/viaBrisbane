@@ -6,7 +6,7 @@ export async function generateUrlList(dbInstance: D1Database): Promise<string> {
     try {
         // Get all events
         const { results } = await dbInstance
-            .prepare('SELECT event_id, subject, venue FROM events')
+            .prepare('SELECT event_id, subject, location FROM events')
             .all();
 
         // Generate URLs
