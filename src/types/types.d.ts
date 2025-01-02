@@ -34,17 +34,6 @@ declare global {
   var globalThis: GlobalCache;
 }
 
-export interface Event {
-  eventimage?: string;
-  subject?: string;
-  web_link?: string;
-  formatteddatetime?: string;
-  location?: string;
-  cost?: string;
-  bookings?: string;
-  description?: string;
-}
-
 export interface NewsItem {
   title: string;
   link: string;
@@ -84,5 +73,40 @@ export interface ParkingMeter {
   MOBILE_ZONE: number;
   MAX_CAP_CHG?: string; // Optional instead of `| null`
 }
+
+export interface Event {
+  event_id: number;
+  subject: string;
+  web_link: string;
+  location: string;
+  start_datetime: string;
+  end_datetime: string;
+  formatteddatetime: string;
+  description: string;
+  event_template: string | null;
+  event_type: string | null;
+  venue: string | null;
+  venueaddress: string | null;
+  venuetype: string | null;
+  parentevent: string | null;
+  primaryeventtype: string | null;
+  cost: string | null;
+  eventimage: string | null;
+  age: string | null;
+  bookings: string | null;
+  bookingsrequired: boolean;
+  agerange: string | null;
+  libraryeventtypes: string | null;
+  eventtype: string | null;
+  status: string | null;
+  maximumparticipantcapacity: string | null;
+  activitytype: string | null;
+  requirements: string | null;
+  meetingpoint: string | null;
+  waterwayaccessfacilities: string | null;
+  waterwayaccessinformation: string | null;
+  communityhall: string | null;
+  image: string | null;
+} 
 
 export {};

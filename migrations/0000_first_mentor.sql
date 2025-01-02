@@ -1,4 +1,4 @@
-CREATE TABLE `parking_meters` (
+CREATE TABLE IF NOT EXISTS `parking_meters` (
 	`ObjectId` integer PRIMARY KEY NOT NULL,
 	`METER_NO` integer,
 	`CATEGORY` text(255),

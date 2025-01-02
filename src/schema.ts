@@ -25,3 +25,38 @@ export const parkingMeters = sqliteTable("parking_meters", {
   geo_point_2d: text("geo_point_2d", { length: 255 }),
   VEH_BAYS_INT: integer("VEH_BAYS_INT"),
 });
+
+export const events = sqliteTable("events", {
+  eventId: integer("event_id").primaryKey(), // SQLite auto-increment is implicit for primary key integers
+  subject: text("subject", { length: 255 }), // Medium-length string
+  webLink: text("web_link", { length: 255 }), // Medium-length string
+  location: text("location", { length: 255 }), // Medium-length string
+  startDatetime: text("start_datetime", { length: 25 }), // ISO 8601 with timezone
+  endDatetime: text("end_datetime", { length: 25 }), // ISO 8601 with timezone
+  formattedDatetime: text("formatteddatetime", { length: 50 }), // Short formatted date description
+  description: text("description", { length: 4096 }), // Large field for extended descriptions
+  eventTemplate: text("event_template", { length: 50 }), // Short identifier
+  eventType: text("event_type", { length: 255 }), // Medium-length string
+  venue: text("venue", { length: 255 }), // Medium-length string
+  venueAddress: text("venueaddress", { length: 255 }), // Medium-length string
+  venueType: text("venuetype", { length: 50 }), // Short identifier
+  parentEvent: text("parentevent", { length: 255 }), // Medium-length string
+  primaryEventType: text("primaryeventtype", { length: 50 }), // Short identifier
+  cost: text("cost", { length: 50 }), // Short string
+  eventImage: text("eventimage", { length: 255 }), // Medium-length string
+  age: text("age", { length: 50 }), // Short string
+  bookings: text("bookings", { length: 4096 }), // Large field for booking information
+  bookingsRequired: integer("bookingsrequired"), // Represent boolean as integer (0 or 1)
+  ageRange: text("agerange", { length: 50 }), // Short string
+  libraryEventTypes: text("libraryeventtypes", { length: 255 }), // Medium-length string
+  eventTypeField: text("eventtype", { length: 50 }), // Short string
+  status: text("status", { length: 50 }), // Short status code
+  maximumParticipantCapacity: text("maximumparticipantcapacity", { length: 50 }), // Short string
+  activityType: text("activitytype", { length: 255 }), // Medium-length string
+  requirements: text("requirements", { length: 255 }), // Medium-length string
+  meetingPoint: text("meetingpoint", { length: 255 }), // Medium-length string
+  waterwayAccessFacilities: text("waterwayaccessfacilities", { length: 255 }), // Medium-length string
+  waterwayAccessInformation: text("waterwayaccessinformation", { length: 255 }), // Medium-length string
+  communityHall: text("communityhall", { length: 50 }), // Short identifier
+  image: text("image", { length: 255 }), // Medium-length string
+});
