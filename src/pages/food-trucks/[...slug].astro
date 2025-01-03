@@ -1,0 +1,82 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getFoodTruckById } from '../../utils/foodTrucksCache';
+
+
+
+// The slug will contain the full path after /events/
+const { slug = '' } = Astro.params;
+
+// Split the path into segments
+const segments = slug.split('/');
+
+// First segment should be the event ID
+const truck_id = segments[0];
+const truck = await getFoodTruckById(Astro.locals.runtime.env.DB, parseInt(truck_id || '0'));
+
+if (!truck) {
+    return Astro.redirect('/404');
+}
+
+const title = `${truck.name} - Food Trucks - Via Brisbane`;
+const description = truck.bio?.slice(0, 160) || `${truck.name} food truck in Brisbane`;
+const keywords = `Brisbane food trucks, ${truck.name}, ${truck.category}, food truck Brisbane`;
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <main>
+        <div class="banner-container">
+            <img 
+                src={truck.cover_photo || '/images/default-food-truck.jpg'} 
+                alt={truck.name} 
+                class="banner-image"
+            />
+        </div>
+        <section class="highlight-section food-truck-detail">
+                <div class="truck-info">
+                    <div class="header">
+                        <div class="title-section">
+                            <h1 class="section-heading">{truck.name}</h1>
+                        </div>
+                        <div class="meta-info">
+                            <img 
+                                src={truck.avatar || '/images/default-avatar.jpg'} 
+                                alt={`${truck.name} logo`} 
+                                class="avatar"
+                            />
+                            <p class="category">{truck.category}</p>
+                        </div>
+                    </div>
+
+                    <div class="social-links">
+                        {truck.website && (
+                            <a href={truck.website} target="_blank" rel="noopener noreferrer" class="website">
+                                Website
+                            </a>
+                        )}
+                        {truck.facebook_url && (
+                            <a href={truck.facebook_url} target="_blank" rel="noopener noreferrer" class="facebook">
+                                Facebook
+                            </a>
+                        )}
+                        {truck.instagram_handle && (
+                            <a href={`https://instagram.com/${truck.instagram_handle}`} target="_blank" rel="noopener noreferrer" class="instagram">
+                                Instagram
+                            </a>
+                        )}
+                    </div>
+
+                    <div class="bio">
+                        <h2>About</h2>
+                        <p>{truck.bio}</p>
+                    </div>
+
+                    <div class="truck-actions">
+                        <a href="/food-trucks" class="button secondary">
+                            Back to Food Trucks
+                        </a>
+                    </div>
+                </div>
+        </section>
+    </main>
+</Layout> 

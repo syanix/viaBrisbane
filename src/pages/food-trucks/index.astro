@@ -1,0 +1,17 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import FoodTrucks from '../../components/food-trucks.astro';
+
+const page = parseInt(Astro.url.searchParams.get('page') || '1');
+const searchQuery = Astro.url.searchParams.get('search') || '';
+
+const title = "Food Trucks in Brisbane - Via Brisbane";
+const description = "Discover food trucks in Brisbane. Find local food trucks, cuisines, and street food vendors in Brisbane City and surrounding areas.";
+const keywords = "Brisbane food trucks, street food Brisbane, food vendors Brisbane, mobile food Brisbane";
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <main>
+        <FoodTrucks page={page} searchQuery={searchQuery} />
+    </main>
+</Layout> 

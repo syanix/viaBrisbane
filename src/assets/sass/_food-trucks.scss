@@ -1,0 +1,209 @@
+@import 'variables';
+
+.food-trucks-section {
+    .search-container {
+        margin-bottom: 2rem;
+        text-align: center;
+
+        input {
+            width: 90%;
+            max-width: 600px;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: 2px solid $tile-border;
+            border-radius: $border-radius;
+            transition: border-color 0.3s ease;
+
+            &:focus {
+                outline: none;
+                border-color: $primary-color;
+            }
+        }
+    }
+
+    .trucks-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .truck-tile {
+        background: white;
+        border: 1px solid $tile-border;
+        border-radius: $border-radius;
+        overflow: hidden;
+        text-decoration: none;
+        color: $text-color;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-container {
+            aspect-ratio: 16 / 9;
+            width: 100%;
+            position: relative;
+            background: #f0f0f0;
+            overflow: hidden;
+
+            img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .truck-name {
+            font-size: 1.25rem;
+            margin: 1rem;
+            color: $primary-color;
+        }
+
+        .truck-category {
+            margin: 0 1rem 1rem;
+            color: $light-text-color;
+            font-size: 0.9rem;
+        }
+    }
+}
+
+.food-truck-detail {
+    .banner-container {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+    }
+
+    .banner-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .content-box {
+        position: relative;
+        z-index: 2;
+        background: white;
+        border-radius: $border-radius;
+        box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .truck-info {
+        padding: 2rem;
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+
+            .title-section {
+                .section-heading {
+                    margin: 0;
+                    font-size: 2rem;
+                    line-height: 1.2;
+                }
+            }
+
+            .meta-info {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                .avatar {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                .category {
+                    color: $light-text-color;
+                    font-size: 1.1rem;
+                    margin: 0;
+                }
+            }
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+
+            a {
+                padding: 0.5rem 1rem;
+                border-radius: $border-radius;
+                text-decoration: none;
+                color: white;
+                font-size: 0.9rem;
+                transition: opacity 0.2s ease;
+                min-width: 100px;
+                text-align: center;
+
+                &:hover {
+                    opacity: 0.9;
+                }
+
+                &.website { background: #666; }
+                &.facebook { background: #1877f2; }
+                &.instagram { background: #e4405f; }
+            }
+        }
+
+        .bio {
+            h2 {
+                color: $primary-color;
+                margin-bottom: 1rem;
+            }
+
+            p {
+                line-height: 1.6;
+                color: $text-color;
+            }
+        }
+    }
+
+    @media (max-width: $mobile-breakpoint) {
+        .truck-info {
+            padding: 1.5rem;
+
+            .header {
+                gap: 1rem;
+
+                .title-section .section-heading {
+                    font-size: 1.75rem;
+                }
+            }
+
+            .social-links {
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                
+                a {
+                    min-width: auto;
+                    flex: 0 0 auto;
+                }
+            }
+        }
+    }
+}
+
+.truck-actions {
+    margin: 2rem 0;
+        a {
+            font-size: 1.25rem;
+            @media (max-width: $mobile-breakpoint) {
+                width: 80%;
+                border-radius: 0.375rem;
+                text-align: center;
+            }
+       }  
+}

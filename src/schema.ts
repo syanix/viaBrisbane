@@ -60,3 +60,16 @@ export const events = sqliteTable("events", {
   communityHall: text("communityhall", { length: 50 }), // Short identifier
   image: text("image", { length: 255 }), // Medium-length string
 });
+
+export const foodTrucks = sqliteTable("food_trucks", {
+  truckId: integer("truck_id").primaryKey(), // Unique identifier
+  name: text("name", { length: 255 }), // Food truck name
+  category: text("category", { length: 255 }), // Food category
+  bio: text("bio", { length: 4096 }), // Detailed description
+  avatar: text("avatar", { length: 1024 }), // Avatar image URL
+  coverPhoto: text("cover_photo", { length: 1024 }), // Cover photo URL
+  website: text("website", { length: 1024 }), // Website URL
+  facebookUrl: text("facebook_url", { length: 1024 }), // Facebook URL
+  instagramHandle: text("instagram_handle", { length: 255 }), // Instagram handle
+  twitterHandle: text("twitter_handle", { length: 255 }), // Twitter handle
+});

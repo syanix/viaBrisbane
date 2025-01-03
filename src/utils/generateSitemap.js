@@ -63,7 +63,18 @@ async function generateSitemap() {
         const eventsSitemapXml = generateSitemapXml(eventUrls);
         await fs.writeFile(path.join(outputDir, 'sitemap-events.xml'), eventsSitemapXml, 'utf8');
 
-        // Generate sitemap index
+        // Generate food trucks sitemap
+        const foodTrucksJson = await fs.readFile('./data/url_food_trucks.json', 'utf8');
+        const foodTrucks = JSON.parse(foodTrucksJson);
+        const foodTruckUrls = foodTrucks.map(entry => ({
+            url: `/${entry.URL}`,  // URL already includes food-trucks/ prefix
+            changefreq: 'weekly',
+            priority: 0.7
+        }));
+        const foodTrucksSitemapXml = generateSitemapXml(foodTruckUrls);
+        await fs.writeFile(path.join(outputDir, 'sitemap-food-trucks.xml'), foodTrucksSitemapXml, 'utf8');
+
+        // Generate sitemap index with new food trucks sitemap
         const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <sitemap>
@@ -78,6 +89,10 @@ async function generateSitemap() {
         <loc>${BASE_URL}/sitemap-events.xml</loc>
         <lastmod>${new Date().toISOString()}</lastmod>
     </sitemap>
+    <sitemap>
+        <loc>${BASE_URL}/sitemap-food-trucks.xml</loc>
+        <lastmod>${new Date().toISOString()}</lastmod>
+    </sitemap>
 </sitemapindex>`;
 
         await fs.writeFile(path.join(outputDir, 'sitemap-index.xml'), sitemapIndex, 'utf8');
@@ -87,10 +102,10 @@ async function generateSitemap() {
         console.log(`${BASE_URL}/sitemap-static.xml`);
         console.log(`${BASE_URL}/sitemap-parking.xml`);
         console.log(`${BASE_URL}/sitemap-events.xml`);
+        console.log(`${BASE_URL}/sitemap-food-trucks.xml`);
     } catch (error) {
         console.error('Error generating sitemap:', error);
     }
 }
 
-// Execute the function
 generateSitemap();

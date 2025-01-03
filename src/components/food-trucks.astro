@@ -1,0 +1,119 @@
+---
+import { getFoodTrucksByPage } from '../utils/foodTrucksCache';
+import { createSlug } from '../utils/slug';
+
+const { page = 1, searchQuery = '' } = Astro.props;
+const { trucks, totalPages } = await getFoodTrucksByPage(Astro.locals.runtime.env.DB, page, searchQuery);
+
+function createTruckUrl(truck: any) {
+    return `/food-trucks/${truck.truck_id}/${truck.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+}
+---
+
+<section class="highlight-section food-trucks-section">
+    <div class="content-box">
+        <h2 class="section-heading">Food Trucks in Brisbane</h2>
+
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="truckSearch"
+                placeholder="Search by name or category..."
+                value={searchQuery}
+            />
+        </div>
+
+        <div class="trucks-grid">
+            {trucks.length > 0 ? (
+                trucks.map((truck) => (
+                    <a href={createTruckUrl(truck)} class="truck-tile">
+                        <div class="image-container">
+                            <img 
+                                src={truck.cover_photo || '/images/default-food-truck.jpg'} 
+                                alt={truck.name} 
+                            />
+                        </div>
+                        <h3 class="truck-name">{truck.name}</h3>
+                        <p class="truck-category">{truck.category}</p>
+                    </a>
+                ))
+            ) : (
+                <p>No food trucks available at the moment.</p>
+            )}
+        </div>
+
+        {totalPages > 1 && (
+            <div class="pagination">
+                <a 
+                    href={`/food-trucks?page=1${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={page === 1 ? 'disabled' : ''}
+                >
+                    First
+                </a>
+                <a 
+                    href={`/food-trucks?page=${page - 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={page === 1 ? 'disabled' : ''}
+                >
+                    Previous
+                </a>
+
+                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                    const pageNum = Math.max(1, page - 2) + i;
+                    if (pageNum > totalPages) return null;
+                    return (
+                        <a 
+                            href={`/food-trucks?page=${pageNum}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                            class={pageNum === page ? 'active' : ''}
+                        >
+                            {pageNum}
+                        </a>
+                    );
+                })}
+
+                <a 
+                    href={`/food-trucks?page=${page + 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={page === totalPages ? 'disabled' : ''}
+                >
+                    Next
+                </a>
+                <a 
+                    href={`/food-trucks?page=${totalPages}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={page === totalPages ? 'disabled' : ''}
+                >
+                    Last
+                </a>
+            </div>
+        )}
+    </div>
+</section>
+
+<script>
+    const searchInput = document.getElementById('truckSearch') as HTMLInputElement;
+    if (searchInput) {
+        let debounceTimer: ReturnType<typeof setTimeout>;
+        const currentValue = searchInput.value;
+
+        searchInput.addEventListener('input', (e) => {
+            const input = e.target as HTMLInputElement;
+            const currentPosition = input.selectionStart;
+            
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const searchValue = input.value;
+                if (searchValue !== currentValue) {
+                    const url = new URL(window.location.href);
+                    if (searchValue) {
+                        url.searchParams.set('search', searchValue);
+                    } else {
+                        url.searchParams.delete('search');
+                    }
+                    url.searchParams.set('page', '1');
+                    window.location.href = url.toString();
+                }
+            }, 1000);
+
+            input.focus();
+            input.setSelectionRange(currentPosition, currentPosition);
+        });
+    }
+</script> 
