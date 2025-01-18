@@ -109,4 +109,17 @@ export interface Event {
   image: string | null;
 } 
 
+export interface FoodTruck {
+  truck_id: number;
+  name: string;
+  category: string;
+  bio: string;
+  avatar: string;
+  cover_photo: string;
+  website: string;
+  facebook_url: string;
+  instagram_handle: string;
+  twitter_handle: string;
+}
+
 export {};

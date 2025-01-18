@@ -1,17 +1,6 @@
 import type { D1Database } from "@cloudflare/workers-types";
+import type { FoodTruck } from '../types/types';
 
-interface FoodTruck {
-    truck_id: number;
-    name: string;
-    category: string;
-    bio: string;
-    avatar: string;
-    cover_photo: string;
-    website: string;
-    facebook_url: string;
-    instagram_handle: string;
-    twitter_handle: string;
-}
 
 const CACHE_EXPIRY_MS = 60 * 60 * 1000 * 24; // 1 day
 

@@ -1,6 +1,7 @@
 ---
 import { getParkingMetersWithCache } from '../utils/parkingCache';
 import type { ParkingMeter } from '../types/types';
+import { createParkingMeterSlugByMeter } from '../utils/slug';
 
 const { page = 1, searchQuery = '' } = Astro.props;
 const ITEMS_PER_PAGE = 30;
@@ -20,9 +21,7 @@ const currentMeters = filteredMeters.slice(
     page * ITEMS_PER_PAGE
 );
 
-function createSlug(meter: ParkingMeter): string {
-    return `${meter.METER_NO}-${meter.STREET.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${meter.SUBURB.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-}
+
 ---
 
 <section class="highlight-section parking-meters-section">
@@ -40,7 +39,7 @@ function createSlug(meter: ParkingMeter): string {
 
         <div class="meters-grid">
             {currentMeters.map((meter) => (
-                <a href={`/parking-meters/${createSlug(meter)}`} class="meter-tile">
+                <a href={`/parking-meters/${createParkingMeterSlugByMeter(meter)}`} class="meter-tile">
                     <div class="meter-number">{meter.METER_NO}</div>
                     <div class="meter-location">{meter.STREET}, {meter.SUBURB}</div>
                     <div class="meter-details">

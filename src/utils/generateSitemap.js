@@ -42,19 +42,19 @@ async function generateSitemap() {
         await fs.writeFile(path.join(outputDir, 'sitemap-static.xml'), staticSitemapXml, 'utf8');
 
         // Generate parking meters sitemap
-        const parkingMetersJson = await fs.readFile('./data/url_parking_meters.json', 'utf8');
-        const parkingMeters = JSON.parse(parkingMetersJson);
-        const parkingUrls = parkingMeters.map(entry => ({
+        const parkingResponse = await fetch('https://www.viabrisbane.com/api/generate-urls?type=parking-meters');
+        const parkingUrls = await parkingResponse.json();
+        const parkingMetersUrls = parkingUrls.map(entry => ({
             url: `/parking-meters/${entry.URL}`,
             changefreq: 'weekly',
             priority: 0.7
         }));
-        const parkingSitemapXml = generateSitemapXml(parkingUrls);
+        const parkingSitemapXml = generateSitemapXml(parkingMetersUrls);
         await fs.writeFile(path.join(outputDir, 'sitemap-parking.xml'), parkingSitemapXml, 'utf8');
 
-        // Fetch events from API instead of static file
-        const response = await fetch('https://www.viabrisbane.com/api/generate-urls');
-        const eventUrls = await response.json();
+        // Generate events sitemap
+        const eventsResponse = await fetch('https://www.viabrisbane.com/api/generate-urls?type=events');
+        const eventUrls = await eventsResponse.json();
         const events = eventUrls.map(entry => ({
             url: `/events/${entry.URL}`,
             changefreq: 'daily',
@@ -64,14 +64,14 @@ async function generateSitemap() {
         await fs.writeFile(path.join(outputDir, 'sitemap-events.xml'), eventsSitemapXml, 'utf8');
 
         // Generate food trucks sitemap
-        const foodTrucksJson = await fs.readFile('./data/url_food_trucks.json', 'utf8');
-        const foodTrucks = JSON.parse(foodTrucksJson);
-        const foodTruckUrls = foodTrucks.map(entry => ({
-            url: `/${entry.URL}`,  // URL already includes food-trucks/ prefix
+        const foodTrucksResponse = await fetch('https://www.viabrisbane.com/api/generate-urls?type=food-trucks');
+        const foodTruckUrls = await foodTrucksResponse.json();
+        const foodTrucks = foodTruckUrls.map(entry => ({
+            url: `/food-trucks/${entry.URL}`,
             changefreq: 'weekly',
             priority: 0.7
         }));
-        const foodTrucksSitemapXml = generateSitemapXml(foodTruckUrls);
+        const foodTrucksSitemapXml = generateSitemapXml(foodTrucks);
         await fs.writeFile(path.join(outputDir, 'sitemap-food-trucks.xml'), foodTrucksSitemapXml, 'utf8');
 
         // Generate sitemap index with new food trucks sitemap
