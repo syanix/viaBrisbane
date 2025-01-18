@@ -75,7 +75,7 @@
         border: 1px solid $tile-border;
         border-radius: $border-radius;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 20px;
+        padding: 10px;
         width: calc(33.333% - 20px);
         box-sizing: border-box;
         height: auto;
@@ -88,17 +88,8 @@
             border-radius: $border-radius $border-radius 0 0;
         }
 
-        a.title {
-            color: $primary-color;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.2em;
-            margin-top: 15px;
-            display: block;
-
-            &:hover {
-                text-decoration: underline;
-            }
+        a {
+            text-decoration: none!important;
         }
 
         a:not(.title, .button) {
