@@ -30,7 +30,6 @@ const displayEvents = limit ? events.slice(0, limit) : events;
                 <ul>
                     {displayEvents.map((event) => (
                         <li>
-                            <div>
                                 <a href={`/events/${createSlug(
                                     event.subject || undefined,
                                     event.location || undefined,
@@ -60,7 +59,7 @@ const displayEvents = limit ? events.slice(0, limit) : events;
                                 )}`} class="button primary more-info-button">
                                     More Event Info
                                 </a>
-                            </div>
+
                         </li>
                     ))}
                 </ul>
