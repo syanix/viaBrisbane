@@ -1,13 +1,11 @@
 ---
 import { getFoodTrucksByPage } from '../utils/foodTrucksCache';
-import { createSlug } from '../utils/slug';
+import { createTruckSlugByTruck } from '../utils/slug';
 
 const { page = 1, searchQuery = '' } = Astro.props;
 const { trucks, totalPages } = await getFoodTrucksByPage(Astro.locals.runtime.env.DB, page, searchQuery);
 
-function createTruckUrl(truck: any) {
-    return `/food-trucks/${truck.truck_id}/${truck.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-}
+
 ---
 
 <section class="highlight-section food-trucks-section">
@@ -26,7 +24,7 @@ function createTruckUrl(truck: any) {
         <div class="trucks-grid">
             {trucks.length > 0 ? (
                 trucks.map((truck) => (
-                    <a href={createTruckUrl(truck)} class="truck-tile">
+                    <a href={`/food-trucks/${createTruckSlugByTruck(truck)}`} class="truck-tile">
                         <div class="image-container">
                             <img 
                                 src={truck.cover_photo || '/images/default-food-truck.jpg'} 
