@@ -59,6 +59,9 @@ export const events = sqliteTable("events", {
   waterwayAccessInformation: text("waterwayaccessinformation", { length: 255 }), // Medium-length string
   communityHall: text("communityhall", { length: 50 }), // Short identifier
   image: text("image", { length: 255 }), // Medium-length string
+  suburb: text("suburb", { length: 50 }), // Medium-length string
+  ward: text("ward", { length: 50 }), // Medium-length string
+  locationifvenueunavailable: text("locationifvenueunavailable", { length: 255 }), // Medium-length string
 });
 
 export const foodTrucks = sqliteTable("food_trucks", {

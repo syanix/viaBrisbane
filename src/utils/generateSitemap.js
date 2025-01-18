@@ -52,15 +52,15 @@ async function generateSitemap() {
         const parkingSitemapXml = generateSitemapXml(parkingUrls);
         await fs.writeFile(path.join(outputDir, 'sitemap-parking.xml'), parkingSitemapXml, 'utf8');
 
-        // Generate events sitemap
-        const eventsJson = await fs.readFile('./data/url_events.json', 'utf8');
-        const events = JSON.parse(eventsJson);
-        const eventUrls = events.map(entry => ({
+        // Fetch events from API instead of static file
+        const response = await fetch('https://www.viabrisbane.com/api/generate-urls');
+        const eventUrls = await response.json();
+        const events = eventUrls.map(entry => ({
             url: `/events/${entry.URL}`,
             changefreq: 'daily',
             priority: 0.8
         }));
-        const eventsSitemapXml = generateSitemapXml(eventUrls);
+        const eventsSitemapXml = generateSitemapXml(events);
         await fs.writeFile(path.join(outputDir, 'sitemap-events.xml'), eventsSitemapXml, 'utf8');
 
         // Generate food trucks sitemap
