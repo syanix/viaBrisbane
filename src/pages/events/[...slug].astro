@@ -1,9 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getEventBySlug } from '../../utils/eventsCache';
+import { createSlug } from '../../utils/slug';
 
 // The slug will contain the full path after /events/
 const { slug = '' } = Astro.params;
+
+const BASE_URL = import.meta.env.PUBLIC_BASE_URL || 'https://www.viabrisbane.com';
 
 // Split the path into segments
 const segments = slug.split('/');
@@ -26,9 +29,18 @@ if (!event) {
 const title = `${event.subject} - Via Brisbane`;
 const description = event.description?.slice(0, 160) || 'Event details';
 const keywords = `Brisbane events, ${event.subject}, ${event.location || ''}, ${event.primaryeventtype || ''}`.toLowerCase();
+const image = event.eventimage ? `${BASE_URL}${event.eventimage}` : `${BASE_URL}/images/viaBrisbane.png`;
+
+const eventSlug = createSlug(event.subject, event.location, event.event_id);
 ---
 
-<Layout title={title} description={description} keywords={keywords}>
+<Layout 
+    title={title} 
+    description={description} 
+    keywords={keywords}
+    image={image}
+    url={`/events/${eventSlug}`}
+>
     <main>
         <div class="banner-container">
             <img 
@@ -40,71 +52,104 @@ const keywords = `Brisbane events, ${event.subject}, ${event.location || ''}, ${
 
         <section class="highlight-section event-detail">
             <div class="content-box">
-                <div class="event-info">
-                    <h1 class="section-heading">{event.subject}</h1>
-                    
-                    <div class="event-meta">
-                        <p><strong>Date:</strong> {event.formatteddatetime}</p>
-                        {event.start_datetime && (
-                            <p><strong>Start:</strong> {new Intl.DateTimeFormat("en-au", {
-            timeZone: "Australia/Brisbane",
-            dateStyle: "medium",
-            timeStyle: "short"
-        }).format(new Date(event.start_datetime))}</p>
+                <!-- Full-width title -->
+                <h1 class="section-heading full-width">{event.subject}</h1>
+
+                <div class="event-content-grid">
+                    <!-- Left side: Event meta and booking info -->
+                    <div class="event-info">
+                        <div class="event-meta">
+                            <p><strong>Date:</strong> {event.formatteddatetime}</p>
+                            {event.venue && (
+                                <p><strong>Venue:</strong> {event.venue}</p>
+                            )}
+                            {event.venueaddress && (
+                                <p><strong>Address:</strong> {event.venueaddress}</p>
+                            )}
+                            {event.cost && (
+                                <p><strong>Cost:</strong> {event.cost}</p>
+                            )}
+                            {event.age && (
+                                <p><strong>Age:</strong> {event.age}</p>
+                            )}
+                            {event.agerange && (
+                                <p><strong>Age Range:</strong> {event.agerange}</p>
+                            )}
+                            {event.maximumparticipantcapacity && (
+                                <p><strong>Capacity:</strong> {event.maximumparticipantcapacity}</p>
+                            )}
+                            {event.eventtype && (
+                                <p><strong>Event Type:</strong> {event.eventtype}</p>
+                            )}
+                            {event.primaryeventtype && (
+                                <p><strong>Category:</strong> {event.primaryeventtype}</p>
+                            )}
+                            {event.status && (
+                                <p><strong>Status:</strong> {event.status}</p>
+                            )}
+                        </div>
+
+                        {event.bookings && (
+                            <div class="booking-info">
+                                <h2>Booking Information</h2>
+                                <p set:html={event.bookings} />
+                            </div>
                         )}
-                        {event.end_datetime && (
-                            <p><strong>End:</strong> {new Intl.DateTimeFormat("en-au", {
-            timeZone: "Australia/Brisbane",
-            dateStyle: "medium",
-            timeStyle: "short"
-        }).format(new Date(event.end_datetime))}</p>
-                        )}
-                        <p><strong>Location:</strong> {event.location}</p>
-                        {event.venue && (
-                            <p><strong>Venue:</strong> {event.venue}</p>
-                        )}
-                        {event.venueaddress && (
-                            <p><strong>Address:</strong> {event.venueaddress}</p>
-                        )}
-                        {event.cost && (
-                            <p><strong>Cost:</strong> {event.cost}</p>
-                        )}
-                        {event.age && (
-                            <p><strong>Age:</strong> {event.age}</p>
-                        )}
-                        {event.agerange && (
-                            <p><strong>Age Range:</strong> {event.agerange}</p>
-                        )}
-                        {event.maximumparticipantcapacity && (
-                            <p><strong>Capacity:</strong> {event.maximumparticipantcapacity}</p>
-                        )}
-                        {event.eventtype && (
-                            <p><strong>Event Type:</strong> {event.eventtype}</p>
-                        )}
-                        {event.primaryeventtype && (
-                            <p><strong>Category:</strong> {event.primaryeventtype}</p>
-                        )}
-                        {event.status && (
-                            <p><strong>Status:</strong> {event.status}</p>
-                        )}
+
+                        <div class="social-share">
+                            <h3>Share This Event</h3>
+                            <div class="share-buttons">
+                                <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${BASE_URL}/events/${eventSlug}`)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="share-button">
+                                    F
+                                </a>
+                                <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out ${event.subject} at ${event.venue || 'Brisbane'}`)}
+                                    &url=${encodeURIComponent(`${BASE_URL}/events/${eventSlug}`)}&image=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="share-button">
+                                    X
+                                </a>
+                                <a href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(`${BASE_URL}/events/${eventSlug}`)}&media=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}&description=${encodeURIComponent(event.subject)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="share-button">
+                                    P
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="event-description">
-                        <h2>Description</h2>
-                        <p set:html={event.description} />
+                    <!-- Right side: Map and Share buttons -->
+                    <div class="event-right-column">
+                        <div class="event-map-container">
+                            {event.venueaddress && (
+                                <iframe
+                                    width="100%"
+                                    height="100%"
+                                    style="border:0"
+                                    loading="lazy"
+                                    allowfullscreen
+                                    referrerpolicy="no-referrer-when-downgrade"
+                                    src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(event.venueaddress)}`}
+                                ></iframe>
+                            )}
+                        </div>
+                       
                     </div>
+                </div>
+
+                <!-- Full-width description at bottom -->
+                <div class="event-description full-width">
+                    <h2>Description</h2>
+                    <p set:html={event.description} />
 
                     {event.requirements && (
                         <div class="requirements">
                             <h2>Requirements</h2>
                             <p set:html={event.requirements} />
-                        </div>
-                    )}
-
-                    {event.bookings && (
-                        <div class="booking-info">
-                            <h2>Booking Information</h2>
-                            <p set:html={event.bookings} />
                         </div>
                     )}
 
@@ -114,19 +159,14 @@ const keywords = `Brisbane events, ${event.subject}, ${event.location || ''}, ${
                             <p>{event.meetingpoint}</p>
                         </div>
                     )}
+                </div>
 
-                    <div class="event-actions">
-                        {event.web_link && (
-                            <a href={event.web_link} class="button primary" target="_blank" rel="noopener noreferrer">
-                                Visit Event Website
-                            </a>
-                        )}
-                        <a href="/events" class="button secondary">
-                            Back to Events
-                        </a>
-                    </div>
+                <div class="event-actions full-width">
+                    <a href="/events" class="button primary">
+                        Back to Events
+                    </a>
                 </div>
             </div>
         </section>
     </main>
-</Layout> 
+</Layout>

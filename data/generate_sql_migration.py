@@ -3,9 +3,37 @@ import sys
 from datetime import datetime
 import os
 
+def infer_sql_type(column, series):
+    if column == "bookingsrequired":
+        return "BOOLEAN"
+    elif column == "web_link" or column == "externalEventId":
+        return "VARCHAR(255)"  # Ensure sufficient length for URLs and IDs
+    elif pd.api.types.is_integer_dtype(series):
+        return "INTEGER"
+    elif pd.api.types.is_float_dtype(series):
+        return "FLOAT"
+    elif pd.api.types.is_datetime64_any_dtype(series):
+        return "DATETIME"
+    else:
+        max_length = series.astype(str).map(len).max()
+        return f"VARCHAR({max_length if max_length > 0 else 255})"
+
+def extract_event_id(url):
+    if pd.isna(url):
+        return None
+    try:
+        # Extract everything after 'eventid%3d'
+        event_id = url.split('eventid%3d')[-1]
+        return event_id
+    except:
+        return None
+
 def generate_sql_migration(file_path):
     # Load the Excel file
     data = pd.read_excel(file_path, sheet_name=0)
+    
+    # Extract event IDs from web_link and create externalEventId column
+    data['externalEventId'] = data['web_link'].apply(extract_event_id)
 
     # Function to infer SQL data types
     def infer_sql_type(column, series):
