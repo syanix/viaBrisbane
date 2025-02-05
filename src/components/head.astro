@@ -3,12 +3,14 @@ const {
     title = "Via Brisbane - Your Guide to Local Events, Attractions, and Dining", 
     description = "Explore Brisbane with Via Brisbane - your ultimate guide to local events, attractions, and dining.", 
     keywords = "Brisbane, local events, attractions, dining, Brisbane guide",
-    url = Astro.url.pathname || "/", // Default URL for the page
-    image = "/images/viaBrisbane.png" // Default social share image
+    url = Astro.url.pathname || "/",
+    image = "/images/viaBrisbane.png"  // This is where we need to pass the event image
 } = Astro.props;
-const baseUrl = "https://www.viabrisbane.com"; // Base URL for your website
-const canonicalUrl = `${baseUrl}${url}`; // Combine base URL and current path
+const baseUrl = import.meta.env.PUBLIC_BASE_URL || "https://www.viabrisbane.com";
+const canonicalUrl = `${baseUrl}${url}`;
+const fullImageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
 ---
+
 <head>
     <!-- Metadata -->
     <meta charset="UTF-8">
@@ -36,15 +38,16 @@ const canonicalUrl = `${baseUrl}${url}`; // Combine base URL and current path
     <meta property="og:title" content={title}>
     <meta property="og:description" content={description}>
     <meta property="og:type" content="website">
-    <meta property="og:url" content={url}>
-    <meta property="og:image" content={image}>
+    <meta property="og:url" content={canonicalUrl}>
+    <meta property="og:image" content={fullImageUrl}>
     <meta property="og:site_name" content="Via Brisbane">
 
     <!-- Twitter Card Metadata -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content={title}>
     <meta name="twitter:description" content={description}>
-    <meta name="twitter:image" content={image}>
+    <meta name="twitter:image" content={fullImageUrl}>
+    <meta name="twitter:url" content={canonicalUrl}>
 
     <!-- Google Analytics -->
     <script async is:inline src="https://www.googletagmanager.com/gtag/js?id=G-P7XFPDF40E"></script>

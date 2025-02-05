@@ -1,0 +1,1 @@
+ALTER TABLE `events` ADD `externaleventid` text(50);
