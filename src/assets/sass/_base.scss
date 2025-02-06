@@ -28,6 +28,22 @@ footer {
     p {
         margin: 0;
     }
+
+    .footer-link {
+        margin: 0;
+        padding: 5px 0;
+    }
+    
+    .privacy-policy-link {
+        color: #fff; /* A calm blue color */
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    .privacy-policy-link:hover {
+        color: #fff; /* Darker blue on hover */
+        text-decoration: underline;
+    }
 }
 
 .logo {
