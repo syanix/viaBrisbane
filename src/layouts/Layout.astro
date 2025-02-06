@@ -3,11 +3,11 @@ import '../assets/sass/main.scss';
 import Head from '../components/head.astro'
 import Header from '../components/header.astro'
 import Footer from '../components/footer.astro'
-const { title, description, keywords } = Astro.props;
+const { title, description, keywords, image, url } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="en">
-<Head title={title} description={description} keywords={keywords} />
+<Head title={title} description={description} keywords={keywords} image={image} url={url} />
 <body>
 	<Header />
     <slot />

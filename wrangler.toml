@@ -22,3 +22,8 @@ name = "preview"
 binding = "DB"
 database_name = "viabrisbane-preview"
 database_id = "2066c52d-b255-40b2-bfa0-56dc285617d4"
+
+[[env.preview.vars]]
+UPDATED_DATE = "2025-02-05T00:00:00Z"
+PUBLIC_GOOGLE_MAPS_API_KEY= "AIzaSyCCQ8ZqAJjDm1O-ToZopbRlv4-zg9jpph4"
+PUBLIC_BASE_URL= "https://develop-astro.viabrisbane.pages.dev"
