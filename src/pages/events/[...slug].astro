@@ -98,7 +98,7 @@ const eventSlug = createSlug(event.subject, event.location, event.event_id);
                         <div class="social-share">
                             <h3>Share This Event</h3>
                             <div class="share-buttons">
-                                <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${BASE_URL}/events/${eventSlug}`)}`}
+                                <a href={`https://www.facebook.com/dialog/share?app_id=530286526102392&display=popup&href=${encodeURIComponent(`${BASE_URL}/events/${eventSlug}`)}&redirect_uri=https%3A%2F%2Fwww.viabrisbane.com`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="share-button">
