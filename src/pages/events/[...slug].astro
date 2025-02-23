@@ -14,19 +14,14 @@ const segments = slug.split('/');
 // First segment should be the event ID
 const eventId = segments[0];
 
-if (!eventId || isNaN(Number(eventId))) {
-    console.log('Invalid event ID:', eventId);
-    return Astro.redirect('/404');
-}
-
-const event = await getEventBySlug(Astro.locals.runtime.env.DB, eventId);
+const { event, dates } = await getEventBySlug(Astro.locals.runtime.env.DB, eventId);
 
 if (!event) {
     console.log('Event not found for ID:', eventId);
     return Astro.redirect('/404');
 }
 
-const title = `${event.subject} - Via Brisbane`;
+const title = `${event.subject} ${event.location} - Via Brisbane`;
 const description = event.description?.slice(0, 160) || 'Event details';
 const keywords = `Brisbane events, ${event.subject}, ${event.location || ''}, ${event.primaryeventtype || ''}`.toLowerCase();
 const image = event.eventimage ? `${event.eventimage}` : `${BASE_URL}/images/viaBrisbane.png`;
@@ -58,7 +53,16 @@ const eventSlug = createSlug(event.subject, event.location, event.event_id);
                     <!-- Left side: Event meta and booking info -->
                     <div class="event-info">
                         <div class="event-meta">
-                            <p><strong>Date:</strong> {event.formatteddatetime}</p>
+                            {dates.length > 0 && (
+                                <div class="event-dates">
+                                    <p><strong>Event Dates:</strong></p>
+                                    <ul>
+                                        {dates.map(date => (
+                                            <li>{date.formatteddatetime}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                             {event.venue && (
                                 <p><strong>Venue:</strong> {event.venue}</p>
                             )}
