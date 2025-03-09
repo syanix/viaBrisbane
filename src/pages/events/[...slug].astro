@@ -26,7 +26,7 @@ const description = event.description?.slice(0, 160) || 'Event details';
 const keywords = `Brisbane events, ${event.subject}, ${event.location || ''}, ${event.primaryeventtype || ''}`.toLowerCase();
 const image = event.eventimage ? `${event.eventimage}` : `${BASE_URL}/images/viaBrisbane.png`;
 
-const eventSlug = createSlug(event.subject, event.location, event.event_id);
+const eventSlug = createSlug(event.subject, event.location, Number(eventId));
 ---
 <Layout 
     title={title} 
