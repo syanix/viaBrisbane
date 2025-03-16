@@ -22,8 +22,54 @@ if (!event) {
     return Astro.redirect('/404');
 }
 
-// Check if the event has already ended
-const isEventPast = new Date(event.end_datetime) < new Date();
+// Current date for comparison
+const currentDate = new Date();
+
+// Filter dates into future and past
+const futureDates = dates.filter(date => {
+    // Extract date from formatted string (assuming format like "Sunday, 5 January 2025, 6 - 11am")
+    const dateStr = date.formatteddatetime;
+    // Skip if it's an "ongoing" event without a specific date
+    if (dateStr.toLowerCase().includes('ongoing')) return true;
+    
+    // Try to extract the date part
+    const match = dateStr.match(/(\d+)\s+(\w+)\s+(\d{4})/);
+    if (!match) return false;
+    
+    const day = parseInt(match[1]);
+    const month = match[2];
+    const year = parseInt(match[3]);
+    
+    // Map month names to numbers
+    const monthMap: {[key: string]: number} = {
+        'january': 0, 'february': 1, 'march': 2, 'april': 3, 'may': 4, 'june': 5,
+        'july': 6, 'august': 7, 'september': 8, 'october': 9, 'november': 10, 'december': 11
+    };
+    
+    const monthNum = monthMap[month.toLowerCase()];
+    if (monthNum === undefined) return false;
+    
+    const eventDate = new Date(year, monthNum, day);
+    return eventDate >= currentDate;
+});
+
+const pastDates = dates.filter(date => {
+    // If it's an "ongoing" event, it's not in the past
+    if (date.formatteddatetime.toLowerCase().includes('ongoing')) return false;
+    
+    // If it's in futureDates, it's not in the past
+    return !futureDates.some(fd => fd.formatteddatetime === date.formatteddatetime);
+});
+
+// Determine if we should show the past event notice
+const hasFutureDates = futureDates.length > 0;
+const showPastEventNotice = !hasFutureDates;
+
+// Determine which dates to display
+const datesToDisplay = hasFutureDates ? futureDates : dates;
+
+// Check if the event has already ended (for schema)
+const isEventPast = new Date(event.end_datetime) < currentDate;
 
 const title = `${event.subject} ${event.location} - Via Brisbane`;
 const description = event.description?.slice(0, 160) || 'Event details';
@@ -87,7 +133,7 @@ const eventSchema = {
                 <!-- Full-width title -->
                 <h1 class="section-heading full-width">{event.subject}</h1>
 
-                {isEventPast && (
+                {showPastEventNotice && (
                     <div class="past-event-notice">
                         <p><strong>Note:</strong> This event has already ended. It is shown for archival purposes only.</p>
                         <a href="/events" class="button secondary">View Upcoming Events</a>
@@ -98,11 +144,11 @@ const eventSchema = {
                     <!-- Left side: Event meta and booking info -->
                     <div class="event-info">
                         <div class="event-meta">
-                            {dates.length > 0 && (
+                            {datesToDisplay.length > 0 && (
                                 <div class="event-dates">
-                                    <p><strong>Event Dates:</strong></p>
+                                    <p><strong>{hasFutureDates ? 'Upcoming Dates:' : 'Event Dates:'}</strong></p>
                                     <ul>
-                                        {dates.map(date => (
+                                        {datesToDisplay.map(date => (
                                             <li>{date.formatteddatetime}</li>
                                         ))}
                                     </ul>

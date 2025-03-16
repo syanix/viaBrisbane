@@ -20,12 +20,19 @@ We've implemented a comprehensive solution for handling past events while mainta
    - Added a prominent "Past Event Notice" on expired event detail pages
    - Implemented toggle between upcoming and past events on the main events page
    - Created dedicated styling for past event notices with warning colors
+   - Improved date display logic to prioritize future dates and only show past event notice when no future dates exist
 
-4. **Pagination Improvements**
+4. **Intelligent Date Display**
+   - Added date parsing and filtering to identify future vs. past dates
+   - When future dates exist for an event series, only display upcoming dates and hide the past event notice
+   - When no future dates exist, display all dates and show the past event notice
+   - Special handling for ongoing events to ensure they're properly categorized
+
+5. **Pagination Improvements**
    - Updated pagination to maintain the archive parameter across page navigation
    - Ensured search functionality preserves the archive context
 
-5. **SEO Optimizations**
+6. **SEO Optimizations**
    - Dynamic page titles and descriptions based on archive context
    - Added appropriate meta tags for both upcoming and past event pages
 
