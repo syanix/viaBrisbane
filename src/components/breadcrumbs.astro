@@ -1,0 +1,60 @@
+---
+interface PathItem {
+  name: string;
+  url?: string;
+}
+
+const { paths = [] } = Astro.props;
+const typedPaths: PathItem[] = paths;
+
+// Create BreadcrumbList schema
+const BASE_URL = import.meta.env.PUBLIC_BASE_URL || 'https://www.viabrisbane.com';
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": BASE_URL
+    },
+    ...typedPaths.map((path, index) => ({
+      "@type": "ListItem",
+      "position": (index + 2).toString(),
+      "name": path.name,
+      "item": path.url ? `${BASE_URL}${path.url}` : undefined
+    }))
+  ]
+};
+---
+
+<nav aria-label="Breadcrumb" class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-icon">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span itemprop="name">Home</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    
+    {typedPaths.map((path, index) => (
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        {index === typedPaths.length - 1 ? (
+          <span itemprop="name" class="current-page">{path.name}</span>
+        ) : (
+          <a itemprop="item" href={path.url}>
+            <span itemprop="name">{path.name}</span>
+          </a>
+        )}
+        <meta itemprop="position" content={(index + 2).toString()} />
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} /> 

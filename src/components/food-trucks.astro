@@ -10,7 +10,7 @@ const { trucks, totalPages } = await getFoodTrucksByPage(Astro.locals.runtime.en
 
 <section class="highlight-section food-trucks-section">
     <div class="content-box">
-        <h2 class="section-heading">Food Trucks in Brisbane</h2>
+        <h1 class="section-heading">Food Trucks in Brisbane</h1>
 
         <div class="search-container">
             <input 
@@ -28,7 +28,10 @@ const { trucks, totalPages } = await getFoodTrucksByPage(Astro.locals.runtime.en
                         <div class="image-container">
                             <img 
                                 src={truck.cover_photo || '/images/default-food-truck.jpg'} 
-                                alt={truck.name} 
+                                alt={`${truck.name} - ${truck.category} food truck in Brisbane`}
+                                loading="lazy"
+                                width="300"
+                                height="200"
                             />
                         </div>
                         <h3 class="truck-name">{truck.name}</h3>

@@ -2,8 +2,8 @@
 import { getEventsByPage } from '../utils/eventsCache';
 import { createSlug } from '../utils/slug';
 
-const { page = 1, searchQuery = '', limit } = Astro.props;
-const { events, totalPages } = await getEventsByPage(Astro.locals.runtime.env.DB, page, searchQuery);
+const { page = 1, searchQuery = '', limit, includeExpired = false } = Astro.props;
+const { events, totalPages } = await getEventsByPage(Astro.locals.runtime.env.DB, page, searchQuery, includeExpired);
 
 // If limit is provided, slice the events array
 const displayEvents = limit ? events.slice(0, limit) : events;
@@ -12,7 +12,7 @@ const displayEvents = limit ? events.slice(0, limit) : events;
 <!-- Events Section -->
 <section id="events-section" class="highlight-section events-section">
     <div class="content-box">
-        <h2 class="section-heading">Upcoming Events in Brisbane</h2>
+        <h1 class="section-heading">{includeExpired ? "Past Events Archive" : "Upcoming Events in Brisbane"}</h1>
 
         {!limit && (
             <div class="search-container">
@@ -22,6 +22,11 @@ const displayEvents = limit ? events.slice(0, limit) : events;
                     placeholder="Search events by name..."
                     value={searchQuery}
                 />
+                <div class="filter-options">
+                    <a href={`/events?${includeExpired ? '' : 'archive=true&'}${searchQuery ? `search=${searchQuery}` : ''}`} class="button secondary">
+                        {includeExpired ? "View Upcoming Events" : "View Past Events Archive"}
+                    </a>
+                </div>
             </div>
         )}
 
@@ -71,13 +76,13 @@ const displayEvents = limit ? events.slice(0, limit) : events;
         {!limit && totalPages > 1 && (
             <div class="pagination">
                 <a 
-                    href={`/events?page=1${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    href={`/events?page=1${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
                     class={page === 1 ? 'disabled' : ''}
                 >
                     First
                 </a>
                 <a 
-                    href={`/events?page=${page - 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    href={`/events?page=${page - 1}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
                     class={page === 1 ? 'disabled' : ''}
                 >
                     Previous
@@ -88,7 +93,7 @@ const displayEvents = limit ? events.slice(0, limit) : events;
                     if (pageNum > totalPages) return null;
                     return (
                         <a 
-                            href={`/events?page=${pageNum}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                            href={`/events?page=${pageNum}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
                             class={pageNum === page ? 'active' : ''}
                         >
                             {pageNum}
@@ -97,13 +102,13 @@ const displayEvents = limit ? events.slice(0, limit) : events;
                 })}
 
                 <a 
-                    href={`/events?page=${page + 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    href={`/events?page=${page + 1}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
                     class={page === totalPages ? 'disabled' : ''}
                 >
                     Next
                 </a>
                 <a 
-                    href={`/events?page=${totalPages}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    href={`/events?page=${totalPages}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
                     class={page === totalPages ? 'disabled' : ''}
                 >
                     Last
@@ -134,6 +139,10 @@ const displayEvents = limit ? events.slice(0, limit) : events;
                         url.searchParams.delete('search');
                     }
                     url.searchParams.set('page', '1');
+                    // Preserve the archive parameter if it exists
+                    if (url.searchParams.has('archive')) {
+                        url.searchParams.set('archive', 'true');
+                    }
                     window.location.href = url.toString();
                 }
             }, 1000);
