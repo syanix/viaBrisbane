@@ -6,12 +6,46 @@ import LinksSection from '../components/links.astro'
 const title = "Explore Brisbane: Your Guide to Events, Attractions & Experiences - Via Brisbane";
 const description = "Discover the best of Brisbane with Via Brisbane, your ultimate guide to local events, attractions, and hidden gems. Stay updated and explore the city like never before!";
 const keywords = "Brisbane, Brisbane guide, local events, Brisbane attractions, things to do in Brisbane, Brisbane experiences, explore Brisbane";
+
+// Create website schema
+const BASE_URL = import.meta.env.PUBLIC_BASE_URL || 'https://www.viabrisbane.com';
+const websiteSchema: Record<string, any> = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Via Brisbane",
+  "url": BASE_URL,
+  "description": description,
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": `${BASE_URL}/events?search={search_term_string}`
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
+
+// Create organization schema
+const organizationSchema: Record<string, any> = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Via Brisbane",
+  "url": BASE_URL,
+  "logo": `${BASE_URL}/images/viaBrisbane.png`,
+  "sameAs": [
+    "https://www.facebook.com/viabrisbane",
+    "https://www.instagram.com/viabrisbane"
+  ]
+};
+
+// Combine schemas
+const schema = [websiteSchema, organizationSchema];
 ---
-<Layout title={title} description={description} keywords={keywords}>
+<Layout title={title} description={description} keywords={keywords} schema={schema}>
 	<main>
         <section class="hero homepage">
             <div class="hero-text">
-                <h2>Discover Brisbane</h2>
+                <h1>Discover Brisbane</h1>
                 <p>Welcome to Via Brisbane! Your comprehensive guide to exploring the vibrant city of Brisbane.</p>
             </div>
         </section>
@@ -23,7 +57,7 @@ const keywords = "Brisbane, Brisbane guide, local events, Brisbane attractions, 
                 <!-- Left Panel -->
                 <div class="highlight-section panel">
                     <div class="content-box">
-                        <h2 class="section-heading">What’s New in Brisbane</h2>
+                        <h2 class="section-heading">What's New in Brisbane</h2>
                         <p class="section-text">Check out the latest happenings and discover what's new in Brisbane. From upcoming festivals and events to newly opened restaurants and attractions, we keep you updated with the city's pulse.</p>
                         <ul class="section-text">
                             <li><a href="https://www.brisbane.qld.gov.au/whats-on-and-events" target="_blank">Brisbane City Council Events</a></li>

@@ -1,16 +1,33 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import FoodTrucks from '../../components/food-trucks.astro';
+import { getFoodTrucksByPage } from '../../utils/foodTrucksCache';
 
 const page = parseInt(Astro.url.searchParams.get('page') || '1');
 const searchQuery = Astro.url.searchParams.get('search') || '';
 
+// Construct pagination string - include search query even on page 1
+const pagination = searchQuery 
+    ? `?${page > 1 ? `page=${page}&` : ''}search=${searchQuery}` 
+    : (page > 1 ? `?page=${page}` : '');
+
 const title = "Food Trucks in Brisbane - Via Brisbane";
 const description = "Discover food trucks in Brisbane. Find local food trucks, cuisines, and street food vendors in Brisbane City and surrounding areas.";
 const keywords = "Brisbane food trucks, street food Brisbane, food vendors Brisbane, mobile food Brisbane";
+
+// Get totalPages from the FoodTrucks component
+const { totalPages } = await getFoodTrucksByPage(Astro.locals.runtime.env.DB, page, searchQuery);
 ---
 
-<Layout title={title} description={description} keywords={keywords}>
+<Layout 
+    title={title} 
+    description={description} 
+    keywords={keywords} 
+    pagination={pagination}
+    page={page}
+    searchQuery={searchQuery}
+    totalPages={totalPages}
+>
     <main>
         <FoodTrucks page={page} searchQuery={searchQuery} />
     </main>

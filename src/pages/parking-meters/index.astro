@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import ParkingMeters from '../../components/parking-meters.astro';
 import LinksSection from '../../components/links.astro';
+import { getParkingMetersWithCache } from '../../utils/parkingCache';
+import type { ParkingMeter } from '../../types/types';
 
 const title = "Brisbane Parking Meters - Find Parking Rates & Locations - Via Brisbane";
 const description = "Find Brisbane parking meter locations, rates, and restrictions. Search by meter number, street, or suburb to find convenient parking in Brisbane CBD and surrounding areas.";
@@ -10,9 +12,34 @@ const keywords = "Brisbane parking meters, parking rates Brisbane, street parkin
 // Get search parameters
 const page = parseInt(Astro.url.searchParams.get('page') || '1');
 const searchQuery = Astro.url.searchParams.get('search') || '';
+
+// Construct pagination string - include search query even on page 1
+const pagination = searchQuery 
+    ? `?${page > 1 ? `page=${page}&` : ''}search=${searchQuery}` 
+    : (page > 1 ? `?page=${page}` : '');
+
+// Calculate totalPages
+const ITEMS_PER_PAGE = 30;
+const allMeters = await getParkingMetersWithCache(Astro.locals.runtime.env.DB);
+const filteredMeters = searchQuery 
+    ? allMeters.filter((meter: ParkingMeter) => 
+        meter.METER_NO.toString().includes(searchQuery) ||
+        meter.STREET.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        meter.SUBURB.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    : allMeters;
+const totalPages = Math.ceil(filteredMeters.length / ITEMS_PER_PAGE);
 ---
 
-<Layout title={title} description={description} keywords={keywords}>
+<Layout 
+    title={title} 
+    description={description} 
+    keywords={keywords} 
+    pagination={pagination}
+    page={page}
+    searchQuery={searchQuery}
+    totalPages={totalPages}
+>
     <main>
         <ParkingMeters page={page} searchQuery={searchQuery} />
         <LinksSection />

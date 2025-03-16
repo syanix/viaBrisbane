@@ -1,8 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getFoodTruckById } from '../../utils/foodTrucksCache';
-
-
+import { createTruckSlugByTruck } from '../../utils/slug';
+import Breadcrumbs from '../../components/breadcrumbs.astro';
 
 // The slug will contain the full path after /events/
 const { slug = '' } = Astro.params;
@@ -18,12 +18,58 @@ if (!truck) {
     return Astro.redirect('/404');
 }
 
+const BASE_URL = import.meta.env.PUBLIC_BASE_URL || 'https://www.viabrisbane.com';
 const title = `${truck.name} - Food Trucks - Via Brisbane`;
 const description = truck.bio?.slice(0, 160) || `${truck.name} food truck in Brisbane`;
 const keywords = `Brisbane food trucks, ${truck.name}, ${truck.category}, food truck Brisbane`;
+const truckSlug = createTruckSlugByTruck(truck);
+const truckUrl = `/food-trucks/${truckSlug}`;
+
+// Create schema for food truck
+const foodTruckSchema: Record<string, any> = {
+  "@context": "https://schema.org",
+  "@type": "FoodEstablishment",
+  "name": truck.name,
+  "description": truck.bio,
+  "image": truck.cover_photo || `${BASE_URL}/images/default-food-truck.jpg`,
+  "url": `${BASE_URL}${truckUrl}`,
+  "servesCuisine": truck.category,
+  "priceRange": "$$",
+  "@id": `${BASE_URL}${truckUrl}#foodtruck`,
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Brisbane",
+    "addressRegion": "QLD",
+    "addressCountry": "AU"
+  }
+};
+
+// Add social media profiles if available
+if (truck.website || truck.facebook_url || truck.instagram_handle) {
+  foodTruckSchema.sameAs = [];
+  
+  if (truck.website) {
+    foodTruckSchema.sameAs.push(truck.website);
+  }
+  
+  if (truck.facebook_url) {
+    foodTruckSchema.sameAs.push(truck.facebook_url);
+  }
+  
+  if (truck.instagram_handle) {
+    foodTruckSchema.sameAs.push(`https://instagram.com/${truck.instagram_handle}`);
+  }
+}
 ---
 
-<Layout title={title} description={description} keywords={keywords}>
+<Layout 
+  title={title} 
+  description={description} 
+  keywords={keywords}
+  image={truck.cover_photo || '/images/default-food-truck.jpg'}
+  url={truckUrl}
+  schema={foodTruckSchema}
+>
     <main>
         <div class="banner-container">
             <img 
@@ -32,6 +78,16 @@ const keywords = `Brisbane food trucks, ${truck.name}, ${truck.category}, food t
                 class="banner-image"
             />
         </div>
+        
+        <section class="breadcrumb-section">
+            <div class="content-box">
+                <Breadcrumbs paths={[
+                    { name: 'Food Trucks', url: '/food-trucks' },
+                    { name: truck.name }
+                ]} />
+            </div>
+        </section>
+        
         <section class="highlight-section food-truck-detail">
                 <div class="truck-info">
                     <div class="header">

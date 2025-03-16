@@ -28,18 +28,31 @@ export async function generateUrlList(dbInstance: D1Database, type: string | und
             let slug: string;
 
             if (type === 'parking-meters' && isParkingMeter(item)) {
-                slug = `${createParkingMeterSlug(item.METER_NO, item.STREET, item.SUBURB)}`;
+                slug = createParkingMeterSlug(item.METER_NO, item.STREET, item.SUBURB);
+                return {
+                    URL: `/${type}/${slug}`
+                };
             } else if (type === 'food-trucks' && isFoodTruck(item)) {
-                slug = `${createTruckSlug(item.truck_id, item.name)}`;
+                slug = createTruckSlug(item.truck_id, item.name);
+                // Ensure the slug doesn't start with a slash
+                if (slug.startsWith('/')) {
+                    slug = slug.substring(1);
+                }
+                return {
+                    URL: `/${type}/${slug}`
+                };
             } else if (type === 'events' && isEvent(item)) {
-                slug = `${createSlug(item.subject, item.location, item.event_id)}`
+                slug = createSlug(item.subject, item.location, item.event_id);
+                // Ensure the slug doesn't start with a slash
+                if (slug.startsWith('/')) {
+                    slug = slug.substring(1);
+                }
+                return {
+                    URL: `/${type}/${slug}`
+                };
             } else {
                 throw new Error('Unexpected item structure');
             }
-
-            return {
-                URL: `${slug}`
-            };
         });
 
         return JSON.stringify(urls, null, 2);

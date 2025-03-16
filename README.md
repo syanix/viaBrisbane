@@ -1,4 +1,71 @@
-# Astro Starter Kit: Basics
+# Via Brisbane
+
+A modern web platform for Brisbane events, parking information, and local resources.
+
+## 🚀 Features
+
+- **Events System**: Browse upcoming and past events with search functionality
+- **Parking Information**: Find parking locations and availability
+- **Food Trucks**: Discover food truck locations and schedules
+- **Local Resources**: Access information about Brisbane facilities and services
+
+## 🧞 Commands
+
+All commands are run from the root of the project, from a terminal:
+
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 📦 Project Structure
+
+```text
+/
+├── public/
+│   ├── images/
+│   └── favicon.svg
+├── src/
+│   ├── assets/
+│   │   └── sass/
+│   │       ├── components/
+│   │       │   └── _events.scss
+│   │       └── main.scss
+│   ├── components/
+│   │   ├── events.astro
+│   │   └── ...
+│   ├── layouts/
+│   │   └── Layout.astro
+│   ├── pages/
+│   │   ├── events/
+│   │   │   ├── index.astro
+│   │   │   └── [...slug].astro
+│   │   └── index.astro
+│   ├── types/
+│   │   └── types.ts
+│   └── utils/
+│       ├── eventsCache.ts
+│       └── slug.ts
+└── package.json
+```
+
+## 🔄 Recent Updates
+
+- **Events Archive System**: Implemented a SEO-friendly approach to viewing past events
+- **Responsive Design**: Enhanced mobile experience across all pages
+- **Performance Optimizations**: Improved loading times and caching strategies
+
+## 📝 Development Notes
+
+See [context.md](./context.md) for detailed information about project decisions, implementation details, and future plans.
+
+## 👀 Want to learn more?
+
+This project is built with [Astro](https://astro.build). Feel free to check [their documentation](https://docs.astro.build) for more information about the framework.
 
 ```sh
 npm create astro@latest -- --template basics
@@ -29,19 +96,6 @@ Inside of your Astro project, you'll see the following folders and files:
 ```
 
 To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
 
 ## 👀 Want to learn more?
 

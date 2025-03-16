@@ -4,18 +4,27 @@ const {
     description = "Explore Brisbane with Via Brisbane - your ultimate guide to local events, attractions, and dining.", 
     keywords = "Brisbane, local events, attractions, dining, Brisbane guide",
     url = Astro.url.pathname || "/",
-    image = "/images/viaBrisbane.png"  // This is where we need to pass the event image
+    pagination = "",
+    image = "/images/viaBrisbane.png",  // This is where we need to pass the event image
+    schema = {},
+    page,
+    searchQuery,
+    totalPages
 } = Astro.props;
 const baseUrl = import.meta.env.PUBLIC_BASE_URL || "https://www.viabrisbane.com";
-const canonicalUrl = `${baseUrl}${url}`;
+const canonicalUrl = `${baseUrl}${url}${pagination}`;
 const fullImageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
+
+// For debugging
+console.log("Pagination:", pagination);
+console.log("Canonical URL:", canonicalUrl);
 ---
 
 <head>
     <!-- Metadata -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content={description}>
+    <meta name="description" content={description ? `${description.slice(0, 155)}...` : "Explore Brisbane with Via Brisbane - your ultimate guide to local events, attractions, and dining."}>
     <meta name="keywords" content={keywords}>
     <meta name="author" content="Via Brisbane">
     <meta name="robots" content="index, follow">
@@ -36,7 +45,7 @@ const fullImageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
 
     <!-- Open Graph Metadata for Social Sharing -->
     <meta property="og:title" content={title}>
-    <meta property="og:description" content={description}>
+    <meta property="og:description" content={description ? description.slice(0, 155) : "Explore Brisbane with Via Brisbane - your ultimate guide to local events, attractions, and dining."}>
     <meta property="og:type" content="website">
     <meta property="og:url" content={canonicalUrl}>
     <meta property="og:image" content={fullImageUrl}>
@@ -45,7 +54,7 @@ const fullImageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
     <!-- Twitter Card Metadata -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content={title}>
-    <meta name="twitter:description" content={description}>
+    <meta name="twitter:description" content={description ? description.slice(0, 155) : "Explore Brisbane with Via Brisbane - your ultimate guide to local events, attractions, and dining."}>
     <meta name="twitter:image" content={fullImageUrl}>
     <meta name="twitter:url" content={canonicalUrl}>
 
@@ -70,4 +79,22 @@ const fullImageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
             });
         }
     </script>
+
+    <!-- Add these preconnect links -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+
+    <!-- Add these inside the <head> tag for paginated pages -->
+    {page && page > 1 && (
+      <link rel="prev" href={`${baseUrl}${url}${page > 2 ? `?page=${page-1}${searchQuery ? `&search=${searchQuery}` : ''}` : searchQuery ? `?search=${searchQuery}` : ''}`}>
+    )}
+    {page && totalPages && page < totalPages && (
+      <link rel="next" href={`${baseUrl}${url}?page=${page+1}${searchQuery ? `&search=${searchQuery}` : ''}`}>
+    )}
+    
+    {/* Schema.org structured data */}
+    {schema && Object.keys(schema).length > 0 && (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    )}
 </head>

@@ -18,8 +18,13 @@ if (!globalThis._eventsCache) {
     globalThis._eventsCache = {};
 }
 
-export async function getEventsByPage(dbInstance: D1Database, page: number = 1, searchQuery: string = ''): Promise<{ events: Partial<Event>[]; totalPages: number; }> {
-    const cacheKey = `events_${page}_${searchQuery}`;
+export async function getEventsByPage(
+    dbInstance: D1Database, 
+    page: number = 1, 
+    searchQuery: string = '', 
+    includeExpired: boolean = false
+): Promise<{ events: Partial<Event>[]; totalPages: number; }> {
+    const cacheKey = `events_${page}_${searchQuery}_${includeExpired}`;
     const now = Date.now();
     
     // Check cache
@@ -31,18 +36,27 @@ export async function getEventsByPage(dbInstance: D1Database, page: number = 1, 
     const offset = (page - 1) * ITEMS_PER_PAGE;
     const params: any[] = [];
     
-    // Select only needed fields and filter by end date
+    // Select only needed fields and filter by end date if not including expired events
     let query = `SELECT 
         event_id,
         subject,
         eventimage,
         formatteddatetime,
         location,
-        description
-    FROM events
-    WHERE end_datetime > datetime('now')`;
+        description,
+        end_datetime
+    FROM events`;
     
-    let countQuery = "SELECT COUNT(*) as count FROM events WHERE end_datetime > datetime('now')";
+    let countQuery = "SELECT COUNT(*) as count FROM events";
+    
+    // Only filter by end date if we're not including expired events
+    if (!includeExpired) {
+        query += " WHERE end_datetime > datetime('now')";
+        countQuery += " WHERE end_datetime > datetime('now')";
+    } else {
+        query += " WHERE 1=1"; // Always true condition to simplify adding more conditions
+        countQuery += " WHERE 1=1";
+    }
     
     if (searchQuery) {
         query += " AND subject LIKE ?";
@@ -86,21 +100,22 @@ event: Event | null;
 dates: { event_id: number; formatteddatetime: string }[] 
 }> {
     try {
-        const { results: mainresults } = await dbInstance
+        // Get the event by ID without any date filtering
+        const { results: eventResults } = await dbInstance
             .prepare('SELECT * FROM events WHERE event_id = ?')
             .bind(Number(eventId))
             .all();
             
-        if (!mainresults[0]) return { event: null, dates: [] };
+        if (!eventResults[0]) return { event: null, dates: [] };
 
-        const mainEvent = mainresults[0];
+        const mainEvent = eventResults[0];
 
+        // For related events (same subject and location), get all instances
         const { results: relatedResults } = await dbInstance
             .prepare(`
                 SELECT * FROM events 
                 WHERE LOWER(subject) = LOWER(?)
                 AND LOWER(location) = LOWER(?)
-                AND end_datetime > datetime('now')
                 ORDER BY start_datetime ASC
             `)
             .bind(
@@ -109,51 +124,54 @@ dates: { event_id: number; formatteddatetime: string }[]
             )
             .all();
 
-            const dates = relatedResults.map((result: Record<string, unknown>) => ({
-                event_id: result.event_id as number,
-                formatteddatetime: result.formatteddatetime as string
-            }));
-
-        if (relatedResults.length == 0) return { event: null, dates: [] };
+        // Extract dates from related events
+        const dates = relatedResults.map((result: Record<string, unknown>) => ({
+            event_id: result.event_id as number,
+            formatteddatetime: result.formatteddatetime as string
+        }));
         
-        const relatedEvent = {
-            event_id: relatedResults[0].event_id as number,
-            subject: relatedResults[0].subject as string,
-            web_link: relatedResults[0].web_link as string,
-            location: relatedResults[0].location as string,
-            start_datetime: relatedResults[0].start_datetime as string,
-            end_datetime: relatedResults[0].end_datetime as string,
-            formatteddatetime: relatedResults[0].formatteddatetime as string,
-            description: relatedResults[0].description as string,
-            event_template: relatedResults[0].event_template as string,
-            event_type: relatedResults[0].event_type as string,
-            venue: relatedResults[0].venue as string,
-            venueaddress: relatedResults[0].venueaddress as string,
-            venuetype: relatedResults[0].venuetype as string,
-            parentevent: relatedResults[0].parentevent as string,
-            primaryeventtype: relatedResults[0].primaryeventtype as string,
-            cost: relatedResults[0].cost as string,
-            eventimage: relatedResults[0].eventimage as string,
-            age: relatedResults[0].age as string,
-            bookings: relatedResults[0].bookings as string,
-            bookingsrequired: Boolean(relatedResults[0].bookingsrequired),
-            agerange: relatedResults[0].agerange as string,
-            libraryeventtypes: relatedResults[0].libraryeventtypes as string,
-            eventtype: relatedResults[0].eventtype as string,
-            status: relatedResults[0].status as string,
-            maximumparticipantcapacity: relatedResults[0].maximumparticipantcapacity as string,
-            activitytype: relatedResults[0].activitytype as string,
-            requirements: relatedResults[0].requirements as string,
-            meetingpoint: relatedResults[0].meetingpoint as string,
-            waterwayaccessfacilities: relatedResults[0].waterwayaccessfacilities as string,
-            waterwayaccessinformation: relatedResults[0].waterwayaccessinformation as string,
-            communityhall: relatedResults[0].communityhall as string,
-            image: relatedResults[0].image as string
+        // Convert the main event to the expected type
+        const event = {
+            event_id: mainEvent.event_id as number,
+            subject: mainEvent.subject as string,
+            web_link: mainEvent.web_link as string,
+            location: mainEvent.location as string,
+            start_datetime: mainEvent.start_datetime as string,
+            end_datetime: mainEvent.end_datetime as string,
+            formatteddatetime: mainEvent.formatteddatetime as string,
+            description: mainEvent.description as string,
+            event_template: mainEvent.event_template as string,
+            event_type: mainEvent.event_type as string,
+            venue: mainEvent.venue as string,
+            venueaddress: mainEvent.venueaddress as string,
+            venuetype: mainEvent.venuetype as string,
+            parentevent: mainEvent.parentevent as string,
+            primaryeventtype: mainEvent.primaryeventtype as string,
+            cost: mainEvent.cost as string,
+            eventimage: mainEvent.eventimage as string,
+            age: mainEvent.age as string,
+            bookings: mainEvent.bookings as string,
+            bookingsrequired: Boolean(mainEvent.bookingsrequired),
+            agerange: mainEvent.agerange as string,
+            libraryeventtypes: mainEvent.libraryeventtypes as string,
+            eventtype: mainEvent.eventtype as string,
+            status: mainEvent.status as string,
+            maximumparticipantcapacity: mainEvent.maximumparticipantcapacity as string,
+            activitytype: mainEvent.activitytype as string,
+            requirements: mainEvent.requirements as string,
+            meetingpoint: mainEvent.meetingpoint as string,
+            waterwayaccessfacilities: mainEvent.waterwayaccessfacilities as string,
+            waterwayaccessinformation: mainEvent.waterwayaccessinformation as string,
+            communityhall: mainEvent.communityhall as string,
+            image: mainEvent.image as string
         } as Event;
 
         return { 
-            event: relatedEvent,
-            dates 
+            event,
+            dates: dates.length > 0 ? dates : [{
+                event_id: event.event_id,
+                formatteddatetime: event.formatteddatetime
+            }]
         };
     } catch (error) {
         console.error('Failed to fetch event:', error);

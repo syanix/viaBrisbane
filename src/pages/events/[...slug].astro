@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getEventBySlug } from '../../utils/eventsCache';
 import { createSlug } from '../../utils/slug';
+import Breadcrumbs from '../../components/breadcrumbs.astro';
 
 // The slug will contain the full path after /events/
 const { slug = '' } = Astro.params;
@@ -21,19 +22,46 @@ if (!event) {
     return Astro.redirect('/404');
 }
 
+// Check if the event has already ended
+const isEventPast = new Date(event.end_datetime) < new Date();
+
 const title = `${event.subject} ${event.location} - Via Brisbane`;
 const description = event.description?.slice(0, 160) || 'Event details';
 const keywords = `Brisbane events, ${event.subject}, ${event.location || ''}, ${event.primaryeventtype || ''}`.toLowerCase();
 const image = event.eventimage ? `${event.eventimage}` : `${BASE_URL}/images/viaBrisbane.png`;
 
 const eventSlug = createSlug(event.subject, event.location, Number(eventId));
+const eventUrl = `/events/${eventSlug}`;
+
+// Add schema for events
+const eventSchema = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": event.subject,
+  "description": event.description,
+  "startDate": dates[0]?.formatteddatetime || "",
+  "endDate": dates[dates.length - 1]?.formatteddatetime || dates[0]?.formatteddatetime || "",
+  "location": {
+    "@type": "Place",
+    "name": event.location,
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Brisbane",
+      "addressRegion": "QLD",
+      "addressCountry": "AU"
+    }
+  },
+  "image": event.eventimage || `${BASE_URL}/images/viaBrisbane.png`,
+  "url": `${BASE_URL}${eventUrl}`
+};
 ---
 <Layout 
     title={title} 
     description={description} 
     keywords={keywords}
     image={image}
-    url={`/events/${eventSlug}`}
+    url={eventUrl}
+    schema={eventSchema}
 >
     <main>
         <div class="banner-container">
@@ -44,10 +72,27 @@ const eventSlug = createSlug(event.subject, event.location, Number(eventId));
             />
         </div>
 
+        <section class="breadcrumb-section">
+            <div class="content-box">
+                <!-- Breadcrumbs -->
+                <Breadcrumbs paths={[
+                    { name: 'Events', url: '/events' },
+                    { name: event.subject }
+                ]} />
+            </div>
+        </section>
+
         <section class="highlight-section event-detail">
             <div class="content-box">
                 <!-- Full-width title -->
                 <h1 class="section-heading full-width">{event.subject}</h1>
+
+                {isEventPast && (
+                    <div class="past-event-notice">
+                        <p><strong>Note:</strong> This event has already ended. It is shown for archival purposes only.</p>
+                        <a href="/events" class="button secondary">View Upcoming Events</a>
+                    </div>
+                )}
 
                 <div class="event-content-grid">
                     <!-- Left side: Event meta and booking info -->
@@ -102,20 +147,20 @@ const eventSlug = createSlug(event.subject, event.location, Number(eventId));
                         <div class="social-share">
                             <h3>Share This Event</h3>
                             <div class="share-buttons">
-                                <a href={`https://www.facebook.com/dialog/share?app_id=530286526102392&display=popup&href=${encodeURIComponent(`${BASE_URL}/events/${eventSlug}`)}&redirect_uri=https%3A%2F%2Fwww.viabrisbane.com`}
+                                <a href={`https://www.facebook.com/dialog/share?app_id=530286526102392&display=popup&href=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&redirect_uri=https%3A%2F%2Fwww.viabrisbane.com`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="share-button">
                                     F
                                 </a>
                                 <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out ${event.subject} at ${event.venue || 'Brisbane'}`)}
-                                    &url=${encodeURIComponent(`${BASE_URL}/events/${eventSlug}`)}&image=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}`}
+                                    &url=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&image=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="share-button">
                                     X
                                 </a>
-                                <a href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(`${BASE_URL}/events/${eventSlug}`)}&media=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}&description=${encodeURIComponent(event.subject)}`}
+                                <a href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&media=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}&description=${encodeURIComponent(event.subject)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="share-button">

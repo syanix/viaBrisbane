@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getParkingMetersWithCache } from '../../utils/parkingCache';
+import Breadcrumbs from '../../components/breadcrumbs.astro';
 
 export async function getStaticPaths() {
     const meters = await getParkingMetersWithCache(Astro.locals.runtime.env.DB);
@@ -25,12 +26,60 @@ const isCrawler = (Astro.request.headers.get('user-agent') || '').match(
     /(googlebot|bingbot|duckduckbot|yandex|facebookexternalhit|twitterbot|slackbot)/i
 );
 
+const BASE_URL = import.meta.env.PUBLIC_BASE_URL || 'https://www.viabrisbane.com';
 const title = `Parking Meter ${meter.METER_NO} - ${meter.STREET}, ${meter.SUBURB} - Via Brisbane`;
 const description = `Find parking information for meter ${meter.METER_NO} located at ${meter.STREET}, ${meter.SUBURB}. Operating hours, rates, and restrictions.`;
 const keywords = `Brisbane parking, parking meter ${meter.METER_NO}, ${meter.STREET} parking, ${meter.SUBURB} parking, Brisbane parking rates`;
+const meterUrl = `/parking-meters/${slug}`;
+
+// Create schema for parking meter
+const parkingMeterSchema: Record<string, any> = {
+  "@context": "https://schema.org",
+  "@type": "ParkingFacility",
+  "name": `Parking Meter ${meter.METER_NO}`,
+  "description": `Parking meter located at ${meter.STREET}, ${meter.SUBURB}. ${meter.LOC_DESC}`,
+  "url": `${BASE_URL}${meterUrl}`,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": meter.STREET,
+    "addressLocality": meter.SUBURB,
+    "addressRegion": "QLD",
+    "addressCountry": "AU"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": meter.LATITUDE,
+    "longitude": meter.LONGITUDE
+  },
+  "openingHours": `${meter.OPERATIONAL_DAY} ${meter.OPERATIONAL_TIME}`,
+  "maximumParkingDuration": `PT${meter.MAX_STAY_HRS}H`,
+  "priceSpecification": {
+    "@type": "PriceSpecification",
+    "price": meter.TAR_RATE_WEEKDAY,
+    "priceCurrency": "AUD",
+    "description": "Weekday parking rate"
+  }
+};
+
+// Add weekend rate if available
+if (meter.TAR_RATE_AH_WE) {
+  parkingMeterSchema.additionalProperty = [
+    {
+      "@type": "PropertyValue",
+      "name": "Weekend/After Hours Rate",
+      "value": meter.TAR_RATE_AH_WE
+    }
+  ];
+}
 ---
 
-<Layout title={title} description={description} keywords={keywords}>
+<Layout 
+  title={title} 
+  description={description} 
+  keywords={keywords}
+  url={meterUrl}
+  schema={parkingMeterSchema}
+>
     <main>
         <!-- Map Section -->
         <div class="map-banner">
@@ -44,6 +93,15 @@ const keywords = `Brisbane parking, parking meter ${meter.METER_NO}, ${meter.STR
                 ></iframe>
             )}
         </div>
+
+        <section class="breadcrumb-section">
+            <div class="content-box">
+                <Breadcrumbs paths={[
+                    { name: 'Parking Meters', url: '/parking-meters' },
+                    { name: `Meter ${meter.METER_NO}` }
+                ]} />
+            </div>
+        </section>
 
         <section class="highlight-section">
             <div class="content-box">

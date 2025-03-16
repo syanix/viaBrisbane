@@ -1,4 +1,5 @@
 import type { ParkingMeter, FoodTruck } from '../types/types';
+
 export function createSlug(subject?: string, venue?: string, eventId?: number): string {
     if (!subject || !eventId) return `${eventId || 'event'}`;
     
