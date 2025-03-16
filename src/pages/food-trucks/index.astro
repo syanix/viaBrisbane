@@ -6,17 +6,33 @@ import { getFoodTrucksByPage } from '../../utils/foodTrucksCache';
 const page = parseInt(Astro.url.searchParams.get('page') || '1');
 const searchQuery = Astro.url.searchParams.get('search') || '';
 
+// Get trucks and totalPages
+const { trucks, totalPages } = await getFoodTrucksByPage(Astro.locals.runtime.env.DB, page, searchQuery);
+
+// Redirect to first page if page is out of range or invalid
+if ((page < 1 || page > totalPages) && page !== 1) {
+    // Construct the redirect URL
+    const redirectParams = new URLSearchParams();
+    if (searchQuery) redirectParams.set('search', searchQuery);
+    const redirectUrl = `/food-trucks${redirectParams.toString() ? `?${redirectParams.toString()}` : ''}`;
+    
+    return Astro.redirect(redirectUrl, 302); // 302 temporary redirect to avoid caching issues
+}
+
 // Construct pagination string - include search query even on page 1
 const pagination = searchQuery 
     ? `?${page > 1 ? `page=${page}&` : ''}search=${searchQuery}` 
     : (page > 1 ? `?page=${page}` : '');
 
-const title = "Food Trucks in Brisbane - Via Brisbane";
-const description = "Discover food trucks in Brisbane. Find local food trucks, cuisines, and street food vendors in Brisbane City and surrounding areas.";
+let title = "Food Trucks in Brisbane - Via Brisbane";
+let description = "Discover food trucks in Brisbane. Find local food trucks, cuisines, and street food vendors in Brisbane City and surrounding areas.";
 const keywords = "Brisbane food trucks, street food Brisbane, food vendors Brisbane, mobile food Brisbane";
 
-// Get totalPages from the FoodTrucks component
-const { totalPages } = await getFoodTrucksByPage(Astro.locals.runtime.env.DB, page, searchQuery);
+// Add page number to title and description for paginated pages (except page 1)
+if (page > 1) {
+    title = `${title} - Page ${page}`;
+    description = `${description} Page ${page} of ${totalPages}.`;
+}
 ---
 
 <Layout 
@@ -29,6 +45,6 @@ const { totalPages } = await getFoodTrucksByPage(Astro.locals.runtime.env.DB, pa
     totalPages={totalPages}
 >
     <main>
-        <FoodTrucks page={page} searchQuery={searchQuery} />
+        <FoodTrucks page={page} searchQuery={searchQuery} trucks={trucks} totalPages={totalPages} />
     </main>
 </Layout> 

@@ -1,12 +1,20 @@
 ---
 import { getEventsByPage } from '../utils/eventsCache';
 import { createSlug } from '../utils/slug';
+import type { Event } from '../types/types';
 
-const { page = 1, searchQuery = '', limit, includeExpired = false } = Astro.props;
-const { events, totalPages } = await getEventsByPage(Astro.locals.runtime.env.DB, page, searchQuery, includeExpired);
+const { page = 1, searchQuery = '', limit, includeExpired = false, events: propEvents, totalPages: propTotalPages } = Astro.props;
+
+// Use provided events and totalPages if available, otherwise fetch them
+const { events, totalPages } = propEvents && propTotalPages !== undefined
+    ? { events: propEvents, totalPages: propTotalPages }
+    : await getEventsByPage(Astro.locals.runtime.env.DB, page, searchQuery, includeExpired);
 
 // If limit is provided, slice the events array
 const displayEvents = limit ? events.slice(0, limit) : events;
+
+// Determine if pagination should be shown
+const showPagination = !limit && totalPages > 1 && events.length > 0;
 ---
 
 <!-- Events Section -->
@@ -23,7 +31,10 @@ const displayEvents = limit ? events.slice(0, limit) : events;
                     value={searchQuery}
                 />
                 <div class="filter-options">
-                    <a href={`/events?${includeExpired ? '' : 'archive=true&'}${searchQuery ? `search=${searchQuery}` : ''}`} class="button secondary">
+                    <a href={includeExpired 
+                        ? `/events${searchQuery ? `?search=${searchQuery}` : ''}` 
+                        : `/events?archive=true${searchQuery ? `&search=${searchQuery}` : ''}`
+                    } class="button secondary">
                         {includeExpired ? "View Upcoming Events" : "View Past Events Archive"}
                     </a>
                 </div>
@@ -33,12 +44,12 @@ const displayEvents = limit ? events.slice(0, limit) : events;
         <div id="events-container">
             {displayEvents.length > 0 ? (
                 <ul>
-                    {displayEvents.map((event) => (
+                    {displayEvents.map((event: any) => (
                         <li>
                                 <a href={`/events/${createSlug(
-                                    event.subject || undefined,
-                                    event.location || undefined,
-                                    event.event_id
+                                    event.subject || '',
+                                    event.location || '',
+                                    event.event_id || 0
                                 )}`}>
                                     <div class="image-container">
                                         <img 
@@ -53,14 +64,14 @@ const displayEvents = limit ? events.slice(0, limit) : events;
                                 <p><strong>Date:</strong> {event.formatteddatetime || 'No Date'}</p>
                                 <p><strong>Location:</strong> {event.location || 'No Location'}</p>
                                 <p>
-                                    {event.description?.length && event.description.length > 300
+                                    {event.description && event.description.length > 300
                                         ? `${event.description.slice(0, 300)}...`
                                         : event.description || 'No Description'}
                                 </p>
                                 <a href={`/events/${createSlug(
-                                    event.subject || undefined,
-                                    event.location || undefined,
-                                    event.event_id
+                                    event.subject || '',
+                                    event.location || '',
+                                    event.event_id || 0
                                 )}`} class="button primary more-info-button">
                                     More Event Info
                                 </a>
@@ -73,24 +84,26 @@ const displayEvents = limit ? events.slice(0, limit) : events;
             )}
         </div>
 
-        {!limit && totalPages > 1 && (
+        {showPagination && (
             <div class="pagination">
-                <a 
-                    href={`/events?page=1${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                    class={page === 1 ? 'disabled' : ''}
-                >
-                    First
-                </a>
-                <a 
-                    href={`/events?page=${page - 1}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                    class={page === 1 ? 'disabled' : ''}
-                >
-                    Previous
-                </a>
+                {page > 1 && (
+                    <>
+                        <a 
+                            href={`/events?page=1${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                        >
+                            First
+                        </a>
+                        <a 
+                            href={`/events?page=${page - 1}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                        >
+                            Previous
+                        </a>
+                    </>
+                )}
 
                 {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-                    const pageNum = Math.max(1, page - 2) + i;
-                    if (pageNum > totalPages) return null;
+                    const pageNum = Math.max(1, Math.min(page - 2, totalPages - 4)) + i;
+                    if (pageNum > totalPages || pageNum < 1) return null;
                     return (
                         <a 
                             href={`/events?page=${pageNum}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
@@ -101,18 +114,20 @@ const displayEvents = limit ? events.slice(0, limit) : events;
                     );
                 })}
 
-                <a 
-                    href={`/events?page=${page + 1}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                    class={page === totalPages ? 'disabled' : ''}
-                >
-                    Next
-                </a>
-                <a 
-                    href={`/events?page=${totalPages}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                    class={page === totalPages ? 'disabled' : ''}
-                >
-                    Last
-                </a>
+                {page < totalPages && (
+                    <>
+                        <a 
+                            href={`/events?page=${page + 1}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                        >
+                            Next
+                        </a>
+                        <a 
+                            href={`/events?page=${totalPages}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                        >
+                            Last
+                        </a>
+                    </>
+                )}
             </div>
         )}
     </div>

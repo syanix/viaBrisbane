@@ -5,18 +5,13 @@ import LinksSection from '../../components/links.astro';
 import { getParkingMetersWithCache } from '../../utils/parkingCache';
 import type { ParkingMeter } from '../../types/types';
 
-const title = "Brisbane Parking Meters - Find Parking Rates & Locations - Via Brisbane";
-const description = "Find Brisbane parking meter locations, rates, and restrictions. Search by meter number, street, or suburb to find convenient parking in Brisbane CBD and surrounding areas.";
+let title = "Brisbane Parking Meters - Find Parking Rates & Locations - Via Brisbane";
+let description = "Find Brisbane parking meter locations, rates, and restrictions. Search by meter number, street, or suburb to find convenient parking in Brisbane CBD and surrounding areas.";
 const keywords = "Brisbane parking meters, parking rates Brisbane, street parking Brisbane, Brisbane CBD parking, parking locations Brisbane";
 
 // Get search parameters
 const page = parseInt(Astro.url.searchParams.get('page') || '1');
 const searchQuery = Astro.url.searchParams.get('search') || '';
-
-// Construct pagination string - include search query even on page 1
-const pagination = searchQuery 
-    ? `?${page > 1 ? `page=${page}&` : ''}search=${searchQuery}` 
-    : (page > 1 ? `?page=${page}` : '');
 
 // Calculate totalPages
 const ITEMS_PER_PAGE = 30;
@@ -29,6 +24,32 @@ const filteredMeters = searchQuery
     )
     : allMeters;
 const totalPages = Math.ceil(filteredMeters.length / ITEMS_PER_PAGE);
+
+// Redirect to first page if page is out of range or invalid
+if ((page < 1 || page > totalPages) && page !== 1) {
+    // Construct the redirect URL
+    const redirectParams = new URLSearchParams();
+    if (searchQuery) redirectParams.set('search', searchQuery);
+    const redirectUrl = `/parking-meters${redirectParams.toString() ? `?${redirectParams.toString()}` : ''}`;
+    
+    return Astro.redirect(redirectUrl, 302); // 302 temporary redirect to avoid caching issues
+}
+
+// Construct pagination string - include search query even on page 1
+const pagination = searchQuery 
+    ? `?${page > 1 ? `page=${page}&` : ''}search=${searchQuery}` 
+    : (page > 1 ? `?page=${page}` : '');
+
+// Calculate the meters for the current page
+const startIndex = (page - 1) * ITEMS_PER_PAGE;
+const endIndex = startIndex + ITEMS_PER_PAGE;
+const metersForPage = filteredMeters.slice(startIndex, endIndex);
+
+// Add page number to title and description for paginated pages (except page 1)
+if (page > 1) {
+    title = `${title} - Page ${page}`;
+    description = `${description} Page ${page} of ${totalPages}.`;
+}
 ---
 
 <Layout 
@@ -41,7 +62,7 @@ const totalPages = Math.ceil(filteredMeters.length / ITEMS_PER_PAGE);
     totalPages={totalPages}
 >
     <main>
-        <ParkingMeters page={page} searchQuery={searchQuery} />
+        <ParkingMeters page={page} searchQuery={searchQuery} meters={metersForPage} totalPages={totalPages} />
         <LinksSection />
     </main>
 </Layout> 

@@ -7,6 +7,20 @@ const page = parseInt(Astro.url.searchParams.get('page') || '1');
 const searchQuery = Astro.url.searchParams.get('search') || '';
 const showArchive = Astro.url.searchParams.has('archive');
 
+// Get totalPages from the Events component
+const { events, totalPages } = await getEventsByPage(Astro.locals.runtime.env.DB, page, searchQuery, showArchive);
+
+// Redirect to first page if page is out of range or invalid
+if ((page < 1 || page > totalPages) && page !== 1) {
+    // Construct the redirect URL
+    const redirectParams = new URLSearchParams();
+    if (searchQuery) redirectParams.set('search', searchQuery);
+    if (showArchive) redirectParams.set('archive', 'true');
+    const redirectUrl = `/events${redirectParams.toString() ? `?${redirectParams.toString()}` : ''}`;
+    
+    return Astro.redirect(redirectUrl, 302); // 302 temporary redirect to avoid caching issues
+}
+
 // Construct pagination string - include all parameters
 const paginationParams = new URLSearchParams();
 if (page > 1) paginationParams.set('page', page.toString());
@@ -26,8 +40,11 @@ if (showArchive) {
     keywords = "Brisbane events, what's on Brisbane, Brisbane festivals, Brisbane markets, Brisbane activities";
 }
 
-// Get totalPages from the Events component
-const { totalPages } = await getEventsByPage(Astro.locals.runtime.env.DB, page, searchQuery, showArchive);
+// Add page number to title and description for paginated pages (except page 1)
+if (page > 1) {
+    title = `${title} - Page ${page}`;
+    description = `${description} Page ${page} of ${totalPages}.`;
+}
 ---
 
 <Layout 
@@ -40,6 +57,6 @@ const { totalPages } = await getEventsByPage(Astro.locals.runtime.env.DB, page, 
     totalPages={totalPages}
 >
     <main>
-        <Events page={page} searchQuery={searchQuery} includeExpired={showArchive} />
+        <Events page={page} searchQuery={searchQuery} includeExpired={showArchive} events={events} totalPages={totalPages} />
     </main>
 </Layout>

@@ -1,11 +1,17 @@
 ---
 import { getFoodTrucksByPage } from '../utils/foodTrucksCache';
 import { createTruckSlugByTruck } from '../utils/slug';
+import type { FoodTruck } from '../types/types';
 
-const { page = 1, searchQuery = '' } = Astro.props;
-const { trucks, totalPages } = await getFoodTrucksByPage(Astro.locals.runtime.env.DB, page, searchQuery);
+const { page = 1, searchQuery = '', trucks: propTrucks, totalPages: propTotalPages } = Astro.props;
 
+// Use provided trucks and totalPages if available, otherwise fetch them
+const { trucks, totalPages } = propTrucks && propTotalPages !== undefined
+    ? { trucks: propTrucks, totalPages: propTotalPages }
+    : await getFoodTrucksByPage(Astro.locals.runtime.env.DB, page, searchQuery);
 
+// Determine if pagination should be shown
+const showPagination = totalPages > 1 && trucks.length > 0;
 ---
 
 <section class="highlight-section food-trucks-section">
@@ -23,7 +29,7 @@ const { trucks, totalPages } = await getFoodTrucksByPage(Astro.locals.runtime.en
 
         <div class="trucks-grid">
             {trucks.length > 0 ? (
-                trucks.map((truck) => (
+                trucks.map((truck: FoodTruck) => (
                     <a href={`/food-trucks/${createTruckSlugByTruck(truck)}`} class="truck-tile">
                         <div class="image-container">
                             <img 
@@ -43,24 +49,26 @@ const { trucks, totalPages } = await getFoodTrucksByPage(Astro.locals.runtime.en
             )}
         </div>
 
-        {totalPages > 1 && (
+        {showPagination && (
             <div class="pagination">
-                <a 
-                    href={`/food-trucks?page=1${searchQuery ? `&search=${searchQuery}` : ''}`}
-                    class={page === 1 ? 'disabled' : ''}
-                >
-                    First
-                </a>
-                <a 
-                    href={`/food-trucks?page=${page - 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                    class={page === 1 ? 'disabled' : ''}
-                >
-                    Previous
-                </a>
+                {page > 1 && (
+                    <>
+                        <a 
+                            href={`/food-trucks?page=1${searchQuery ? `&search=${searchQuery}` : ''}`}
+                        >
+                            First
+                        </a>
+                        <a 
+                            href={`/food-trucks?page=${page - 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                        >
+                            Previous
+                        </a>
+                    </>
+                )}
 
                 {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-                    const pageNum = Math.max(1, page - 2) + i;
-                    if (pageNum > totalPages) return null;
+                    const pageNum = Math.max(1, Math.min(page - 2, totalPages - 4)) + i;
+                    if (pageNum > totalPages || pageNum < 1) return null;
                     return (
                         <a 
                             href={`/food-trucks?page=${pageNum}${searchQuery ? `&search=${searchQuery}` : ''}`}
@@ -71,18 +79,20 @@ const { trucks, totalPages } = await getFoodTrucksByPage(Astro.locals.runtime.en
                     );
                 })}
 
-                <a 
-                    href={`/food-trucks?page=${page + 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                    class={page === totalPages ? 'disabled' : ''}
-                >
-                    Next
-                </a>
-                <a 
-                    href={`/food-trucks?page=${totalPages}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                    class={page === totalPages ? 'disabled' : ''}
-                >
-                    Last
-                </a>
+                {page < totalPages && (
+                    <>
+                        <a 
+                            href={`/food-trucks?page=${page + 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                        >
+                            Next
+                        </a>
+                        <a 
+                            href={`/food-trucks?page=${totalPages}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                        >
+                            Last
+                        </a>
+                    </>
+                )}
             </div>
         )}
     </div>
