@@ -46,10 +46,9 @@ const showPagination = !limit && totalPages > 1 && events.length > 0;
                 <ul>
                     {displayEvents.map((event: any) => (
                         <li>
-                                <a href={`/events/${createSlug(
+                                <a href={`/events/${event.slug || createSlug(
                                     event.subject || '',
-                                    event.location || '',
-                                    event.event_id || 0
+                                    event.location || ''
                                 )}`}>
                                     <div class="image-container">
                                         <img 
@@ -68,10 +67,9 @@ const showPagination = !limit && totalPages > 1 && events.length > 0;
                                         ? `${event.description.slice(0, 300)}...`
                                         : event.description || 'No Description'}
                                 </p>
-                                <a href={`/events/${createSlug(
+                                <a href={`/events/${event.slug || createSlug(
                                     event.subject || '',
-                                    event.location || '',
-                                    event.event_id || 0
+                                    event.location || ''
                                 )}`} class="button primary more-info-button">
                                     More Event Info
                                 </a>
@@ -140,30 +138,29 @@ const showPagination = !limit && totalPages > 1 && events.length > 0;
         const currentValue = searchInput.value;
 
         searchInput.addEventListener('input', (e) => {
-            const input = e.target as HTMLInputElement;
-            const currentPosition = input.selectionStart;
-            
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
-                const searchValue = input.value;
+                const searchValue = (e.target as HTMLInputElement).value.trim();
                 if (searchValue !== currentValue) {
                     const url = new URL(window.location.href);
+                    
                     if (searchValue) {
                         url.searchParams.set('search', searchValue);
                     } else {
                         url.searchParams.delete('search');
                     }
+                    
+                    // Reset to page 1 when searching
                     url.searchParams.set('page', '1');
+                    
                     // Preserve the archive parameter if it exists
                     if (url.searchParams.has('archive')) {
                         url.searchParams.set('archive', 'true');
                     }
+                    
                     window.location.href = url.toString();
                 }
-            }, 1000);
-
-            input.focus();
-            input.setSelectionRange(currentPosition, currentPosition);
+            }, 500);
         });
     }
 </script>

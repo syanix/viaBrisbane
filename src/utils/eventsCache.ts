@@ -1,5 +1,6 @@
 import type { Event } from '../types/types';
 import type { D1Database } from "@cloudflare/workers-types";
+import { createSlug } from './slug';
 
 const CACHE_EXPIRY_MS = 60 * 60 * 1000; // 1 hour
 
@@ -44,7 +45,8 @@ export async function getEventsByPage(
         formatteddatetime,
         location,
         description,
-        end_datetime
+        end_datetime,
+        slug
     FROM events`;
     
     let countQuery = "SELECT COUNT(*) as count FROM events";
@@ -77,14 +79,20 @@ export async function getEventsByPage(
         LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}`;
     
     const { results } = await dbInstance.prepare(query).bind(...params).all();
-    const events = results.map(result => ({
-        event_id: result.event_id as number,
-        subject: result.subject as string,
-        eventimage: result.eventimage as string,
-        formatteddatetime: result.formatteddatetime as string,
-        location: result.location as string,
-        description: result.description as string
-    })) as Partial<Event>[];
+    const events = results.map(result => {
+        // If slug is missing, generate it from subject and location
+        const slug = result.slug || createSlug(result.subject as string, result.location as string);
+        
+        return {
+            event_id: result.event_id as number,
+            subject: result.subject as string,
+            eventimage: result.eventimage as string,
+            formatteddatetime: result.formatteddatetime as string,
+            location: result.location as string,
+            description: result.description as string,
+            slug: slug
+        };
+    }) as Partial<Event>[];
     
     // Cache the results
     globalThis._eventsCache[cacheKey] = {
@@ -95,7 +103,54 @@ export async function getEventsByPage(
     return { events, totalPages };
 }
 
-export async function getEventBySlug(dbInstance: D1Database, eventId: string):Promise<{ 
+export async function getEventBySlug(dbInstance: D1Database, slug: string):Promise<{ 
+event: Event | null; 
+dates: { event_id: number; formatteddatetime: string }[] 
+}> {
+    try {
+        // Check if the slug is a numeric ID (old format)
+        const isNumeric = /^\d+$/.test(slug.split('/')[0]);
+        
+        if (isNumeric) {
+            // Old format: Extract the event ID from the slug
+            const eventId = slug.split('/')[0];
+            return await getEventById(dbInstance, Number(eventId));
+        } else {
+            // New format: Use the slug field directly - just get events with this exact slug
+            const { results: eventResults } = await dbInstance
+                .prepare('SELECT * FROM events WHERE slug = ? ORDER BY start_datetime DESC')
+                .bind(slug)
+                .all();
+                
+            if (!eventResults.length) {
+                console.log('No event found with slug:', slug);
+                return { event: null, dates: [] };
+            }
+
+            console.log(`Found ${eventResults.length} events with slug: ${slug}`);
+
+            // Use the first (latest) event as the main event
+            const mainEvent = eventResults[0];
+            
+            // Extract dates from all matching events
+            const dates = eventResults.map((result: Record<string, unknown>) => ({
+                event_id: result.event_id as number,
+                formatteddatetime: result.formatteddatetime as string
+            }));
+            
+            // Convert the main event to the expected type
+            const event = convertToEvent(mainEvent);
+
+            return { event, dates };
+        }
+    } catch (error) {
+        console.error('Failed to fetch event:', error);
+        return { event: null, dates: [] };
+    }
+}
+
+// Keep getEventById for backward compatibility with old URLs
+export async function getEventById(dbInstance: D1Database, eventId: number):Promise<{ 
 event: Event | null; 
 dates: { event_id: number; formatteddatetime: string }[] 
 }> {
@@ -103,7 +158,7 @@ dates: { event_id: number; formatteddatetime: string }[]
         // Get the event by ID without any date filtering
         const { results: eventResults } = await dbInstance
             .prepare('SELECT * FROM events WHERE event_id = ?')
-            .bind(Number(eventId))
+            .bind(eventId)
             .all();
             
         if (!eventResults[0]) return { event: null, dates: [] };
@@ -131,50 +186,50 @@ dates: { event_id: number; formatteddatetime: string }[]
         }));
         
         // Convert the main event to the expected type
-        const event = {
-            event_id: mainEvent.event_id as number,
-            subject: mainEvent.subject as string,
-            web_link: mainEvent.web_link as string,
-            location: mainEvent.location as string,
-            start_datetime: mainEvent.start_datetime as string,
-            end_datetime: mainEvent.end_datetime as string,
-            formatteddatetime: mainEvent.formatteddatetime as string,
-            description: mainEvent.description as string,
-            event_template: mainEvent.event_template as string,
-            event_type: mainEvent.event_type as string,
-            venue: mainEvent.venue as string,
-            venueaddress: mainEvent.venueaddress as string,
-            venuetype: mainEvent.venuetype as string,
-            parentevent: mainEvent.parentevent as string,
-            primaryeventtype: mainEvent.primaryeventtype as string,
-            cost: mainEvent.cost as string,
-            eventimage: mainEvent.eventimage as string,
-            age: mainEvent.age as string,
-            bookings: mainEvent.bookings as string,
-            bookingsrequired: Boolean(mainEvent.bookingsrequired),
-            agerange: mainEvent.agerange as string,
-            libraryeventtypes: mainEvent.libraryeventtypes as string,
-            eventtype: mainEvent.eventtype as string,
-            status: mainEvent.status as string,
-            maximumparticipantcapacity: mainEvent.maximumparticipantcapacity as string,
-            activitytype: mainEvent.activitytype as string,
-            requirements: mainEvent.requirements as string,
-            meetingpoint: mainEvent.meetingpoint as string,
-            waterwayaccessfacilities: mainEvent.waterwayaccessfacilities as string,
-            waterwayaccessinformation: mainEvent.waterwayaccessinformation as string,
-            communityhall: mainEvent.communityhall as string,
-            image: mainEvent.image as string
-        } as Event;
+        const event = convertToEvent(mainEvent);
 
-        return { 
-            event,
-            dates: dates.length > 0 ? dates : [{
-                event_id: event.event_id,
-                formatteddatetime: event.formatteddatetime
-            }]
-        };
+        return { event, dates };
     } catch (error) {
-        console.error('Failed to fetch event:', error);
+        console.error('Failed to fetch event by ID:', error);
         return { event: null, dates: [] };
     }
+}
+
+// Helper function to convert a database result to an Event object
+function convertToEvent(result: Record<string, unknown>): Event {
+    return {
+        event_id: result.event_id as number,
+        subject: result.subject as string,
+        web_link: result.web_link as string,
+        location: result.location as string,
+        start_datetime: result.start_datetime as string,
+        end_datetime: result.end_datetime as string,
+        formatteddatetime: result.formatteddatetime as string,
+        description: result.description as string,
+        event_template: result.event_template as string,
+        event_type: result.event_type as string,
+        venue: result.venue as string,
+        venueaddress: result.venueaddress as string,
+        venuetype: result.venuetype as string,
+        parentevent: result.parentevent as string,
+        primaryeventtype: result.primaryeventtype as string,
+        cost: result.cost as string,
+        eventimage: result.eventimage as string,
+        age: result.age as string,
+        bookings: result.bookings as string,
+        bookingsrequired: Boolean(result.bookingsrequired),
+        agerange: result.agerange as string,
+        libraryeventtypes: result.libraryeventtypes as string,
+        eventtype: result.eventtype as string,
+        status: result.status as string,
+        maximumparticipantcapacity: result.maximumparticipantcapacity as string,
+        activitytype: result.activitytype as string,
+        requirements: result.requirements as string,
+        meetingpoint: result.meetingpoint as string,
+        waterwayaccessfacilities: result.waterwayaccessfacilities as string,
+        waterwayaccessinformation: result.waterwayaccessinformation as string,
+        communityhall: result.communityhall as string,
+        image: result.image as string,
+        slug: result.slug as string || ''
+    } as Event;
 }
