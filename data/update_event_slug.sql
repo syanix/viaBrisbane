@@ -1,4 +1,3 @@
-BEGIN TRANSACTION;
 UPDATE events SET slug = 'brisbane-city-christmas-tree-king-george-square' WHERE event_id = 1;
 UPDATE events SET slug = 'asia-pacific-triennial-queensland-art-gallery-gallery-of-modern-art' WHERE event_id = 2;
 UPDATE events SET slug = 'asia-pacific-triennial-kids-childrens-art-centre' WHERE event_id = 3;
@@ -5949,4 +5948,3 @@ UPDATE events SET slug = 'little-artist-s-eye-spy-museum-of-brisbane' WHERE even
 UPDATE events SET slug = 'micro-museum-museum-of-brisbane' WHERE event_id = 5948;
 UPDATE events SET slug = 'aqua-yoga-bellbowrie-pool' WHERE event_id = 5949;
 UPDATE events SET slug = 'bush-babies-karawatha-forest-park-and-discovery-centre' WHERE event_id = 5950;
-COMMIT;
