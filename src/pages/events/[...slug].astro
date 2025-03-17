@@ -9,17 +9,21 @@ const { slug = '' } = Astro.params;
 
 const BASE_URL = import.meta.env.PUBLIC_BASE_URL || 'https://www.viabrisbane.com';
 
-// Split the path into segments
-const segments = slug.split('/');
+// Check if this is an old-style URL (with event ID)
+const isOldFormat = /^\d+\//.test(slug);
 
-// First segment should be the event ID
-const eventId = segments[0];
-
-const { event, dates } = await getEventBySlug(Astro.locals.runtime.env.DB, eventId);
+// Get the event data
+const { event, dates } = await getEventBySlug(Astro.locals.runtime.env.DB, slug);
 
 if (!event) {
-    console.log('Event not found for ID:', eventId);
+    console.log('Event not found for slug:', slug);
     return Astro.redirect('/404');
+}
+
+// If this is an old-style URL, redirect to the new format
+if (isOldFormat) {
+    const newSlug = event.slug || createSlug(event.subject, event.location);
+    return Astro.redirect(`/events/${newSlug}`, 301); // 301 permanent redirect for SEO
 }
 
 // Current date for comparison
@@ -76,8 +80,8 @@ const description = event.description?.slice(0, 160) || 'Event details';
 const keywords = `Brisbane events, ${event.subject}, ${event.location || ''}, ${event.primaryeventtype || ''}`.toLowerCase();
 const image = event.eventimage ? `${event.eventimage}` : `${BASE_URL}/images/viaBrisbane.png`;
 
-const eventSlug = createSlug(event.subject, event.location, Number(eventId));
-const eventUrl = `/events/${eventSlug}`;
+// Construct the event URL using the slug field if available
+const eventUrl = `/events/${event.slug || createSlug(event.subject, event.location)}`;
 
 // Add schema for events
 const eventSchema = {

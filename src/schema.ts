@@ -63,6 +63,7 @@ export const events = sqliteTable("events", {
   ward: text("ward", { length: 50 }), // Medium-length string
   locationifvenueunavailable: text("locationifvenueunavailable", { length: 255 }), // Medium-length string
   externaleventid: text("externaleventid", { length: 50 }),
+  slug: text("slug", { length: 255 })
 });
 
 export const foodTrucks = sqliteTable("food_trucks", {

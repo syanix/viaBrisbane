@@ -107,6 +107,11 @@ export interface Event {
   waterwayaccessinformation: string | null;
   communityhall: string | null;
   image: string | null;
+  suburb: string | null;
+  ward: string | null;
+  locationifvenueunavailable: string | null;
+  externaleventid: string | null;
+  slug: string | null;
 } 
 
 export interface FoodTruck {

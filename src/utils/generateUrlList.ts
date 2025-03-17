@@ -16,7 +16,7 @@ export async function generateUrlList(dbInstance: D1Database, type: string | und
                 break;
             case 'events':
             default:
-                query = 'SELECT event_id, subject, location FROM events';
+                query = 'SELECT event_id, subject, location, slug FROM events';
                 break;
         }
 
@@ -24,11 +24,15 @@ export async function generateUrlList(dbInstance: D1Database, type: string | und
         const { results }: { results: unknown[] } = await dbInstance.prepare(query).all();
 
         // Use type guards to ensure proper type narrowing.
-        const urls = results.map((item) => {
+        let urls = results.map((item) => {
             let slug: string;
 
             if (type === 'parking-meters' && isParkingMeter(item)) {
-                slug = createParkingMeterSlug(item.METER_NO, item.STREET, item.SUBURB);
+                slug = createParkingMeterSlug({ 
+                    METER_NO: item.METER_NO, 
+                    STREET: item.STREET, 
+                    SUBURB: item.SUBURB 
+                });
                 return {
                     URL: `/${type}/${slug}`
                 };
@@ -42,7 +46,8 @@ export async function generateUrlList(dbInstance: D1Database, type: string | und
                     URL: `/${type}/${slug}`
                 };
             } else if (type === 'events' && isEvent(item)) {
-                slug = createSlug(item.subject, item.location, item.event_id);
+                // Use the slug field if available, otherwise generate it
+                slug = item.slug || createSlug(item.subject, item.location);
                 // Ensure the slug doesn't start with a slash
                 if (slug.startsWith('/')) {
                     slug = slug.substring(1);
@@ -54,6 +59,15 @@ export async function generateUrlList(dbInstance: D1Database, type: string | und
                 throw new Error('Unexpected item structure');
             }
         });
+
+        // For events, remove duplicate URLs to ensure each URL appears only once
+        if (type === 'events') {
+            const uniqueUrls = new Map();
+            urls.forEach(item => {
+                uniqueUrls.set(item.URL, item);
+            });
+            urls = Array.from(uniqueUrls.values());
+        }
 
         return JSON.stringify(urls, null, 2);
     } catch (error) {
@@ -90,6 +104,8 @@ function isEvent(item: unknown): item is Event {
         item !== null &&
         'event_id' in item &&
         'subject' in item &&
-        'location' in item
+        'location' in item &&
+        // slug might be null for some events
+        ('slug' in item || true)
     );
 }

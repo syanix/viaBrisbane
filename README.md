@@ -1,6 +1,95 @@
 # Via Brisbane
 
-A modern web platform for Brisbane events, parking information, and local resources.
+A comprehensive guide to Brisbane city, featuring events, parking meters, and food trucks.
+
+## Features
+
+- **Events Listing**: Browse upcoming and past events in Brisbane
+- **Parking Meters**: Find parking meters throughout Brisbane
+- **Food Trucks**: Discover food trucks in Brisbane
+
+## Recent Updates
+
+### URL Structure Improvements
+
+We've simplified the URL structure for event detail pages:
+
+- **Old Format**: `/events/[EVENT_ID]/[SUBJECT]-[LOCATION]`
+- **New Format**: `/events/[SUBJECT]-[LOCATION]`
+
+This change improves:
+- SEO with more readable URLs
+- Database efficiency by using a dedicated slug field
+- User experience with cleaner URLs
+
+The system automatically:
+- Redirects old URLs to the new format (301 redirects)
+- Generates unique slugs for events with the same subject/location
+- Maintains backward compatibility for existing links
+
+### Past Events Archive
+
+We've implemented a comprehensive solution for handling past events:
+
+- Use query parameter approach (`?archive=true`) instead of separate URL paths
+- Dynamic page titles and descriptions based on archive context
+- Past event notice on expired event detail pages
+- Toggle between upcoming and past events on the main events page
+
+## Development
+
+### Prerequisites
+
+- Node.js (v18+)
+- npm or yarn
+
+### Setup
+
+1. Clone the repository
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start the development server:
+   ```
+   npm run dev
+   ```
+
+### Database
+
+The application uses SQLite with Drizzle ORM. To update the database schema:
+
+1. Modify the schema in `src/schema.ts`
+2. Generate migrations:
+   ```
+   npm run db:generate
+   ```
+3. Apply migrations:
+   ```
+   npm run db:migrate
+   ```
+
+### Utilities
+
+- **Slug Generation**: Use the `createSlug` function from `src/utils/slug.ts` to generate URL-friendly slugs
+
+## Deployment
+
+The site is deployed on Cloudflare Pages with D1 database integration.
+
+To deploy:
+1. Build the project:
+   ```
+   npm run build
+   ```
+2. Deploy to Cloudflare Pages:
+   ```
+   npm run deploy
+   ```
+
+## License
+
+MIT
 
 ## 🚀 Features
 

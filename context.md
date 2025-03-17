@@ -2,6 +2,26 @@
 
 ## Events System Enhancements
 
+### URL Structure Improvements
+
+1. **Simplified URL Structure**
+   - Changed event detail URLs from `/events/[EVENT_ID]/[SUBJECT]-[LOCATION]` to `/events/[SUBJECT]-[LOCATION]`
+   - Using dedicated `slug` field in the events table for direct lookups
+   - Implemented 301 redirects from old URL format to new format for SEO preservation
+   - Simplified database queries by using the slug field directly
+   - Preserved all existing features (booking info, social sharing, Google Maps)
+   - Updated sitemap generation to use the new URL format without event IDs
+   - Fixed compatibility issues with parking meters and food trucks slug generation
+   - Eliminated duplicate URLs in the events sitemap
+   - Updated test utilities to match new function signatures
+
+2. **Slug Generation**
+   - Updated slug creation functions to support both old and new URL formats
+   - Created `createSlug` function that generates slugs without event ID
+   - Maintained `createSlugWithId` for backward compatibility
+   - Restored `createParkingMeterSlugByMeter` and fixed `createTruckSlugByTruck` functions
+   - Slug field population is handled by a separate worker job outside this project
+
 ### Past Events Archive Implementation
 
 We've implemented a comprehensive solution for handling past events while maintaining SEO integrity:
@@ -81,6 +101,12 @@ We've implemented a comprehensive solution for handling past events while mainta
    - Implement event sharing functionality
    - Consider calendar view for events
 
-3. **Testing**
+3. **Data Migration**
+   - Ensure all existing events have the `slug` field populated
+   - Create a migration script to generate slugs for any events missing them
+   - Add validation to ensure new events always have a slug generated
+
+4. **Testing**
    - Verify SEO impact with analytics tools
-   - Test performance across different devices and browsers 
+   - Test performance across different devices and browsers
+   - Ensure all redirects from old URLs work correctly 

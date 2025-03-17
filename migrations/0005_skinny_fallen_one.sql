@@ -1,0 +1,1 @@
+ALTER TABLE `events` ADD `slug` text(255);
