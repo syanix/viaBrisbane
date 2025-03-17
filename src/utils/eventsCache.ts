@@ -118,7 +118,7 @@ dates: { event_id: number; formatteddatetime: string }[]
         } else {
             // New format: Use the slug field directly - just get events with this exact slug
             const { results: eventResults } = await dbInstance
-                .prepare('SELECT * FROM events WHERE slug = ? ORDER BY start_datetime DESC')
+                .prepare('SELECT * FROM events WHERE slug = ? ORDER BY start_datetime ASC')
                 .bind(slug)
                 .all();
                 
