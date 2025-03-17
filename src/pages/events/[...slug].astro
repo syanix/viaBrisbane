@@ -75,7 +75,7 @@ const datesToDisplay = hasFutureDates ? futureDates : dates;
 // Check if the event has already ended (for schema)
 const isEventPast = new Date(event.end_datetime) < currentDate;
 
-const title = `${event.subject} ${event.location} - Via Brisbane`;
+const title = `${event.subject} ${event.location ? `at ${event.location}` : ''} - Via Brisbane`;
 const description = event.description?.slice(0, 160) || 'Event details';
 const keywords = `Brisbane events, ${event.subject}, ${event.location || ''}, ${event.primaryeventtype || ''}`.toLowerCase();
 const image = event.eventimage ? `${event.eventimage}` : `${BASE_URL}/images/viaBrisbane.png`;
@@ -105,6 +105,7 @@ const eventSchema = {
   "url": `${BASE_URL}${eventUrl}`
 };
 ---
+
 <Layout 
     title={title} 
     description={description} 
@@ -113,158 +114,198 @@ const eventSchema = {
     url={eventUrl}
     schema={eventSchema}
 >
-    <main>
-        <div class="banner-container">
-            <img 
-                src={event.eventimage || '/images/default-image.jpg'} 
-                alt={event.subject} 
-                class="banner-image"
-            />
+    <!-- Banner Image -->
+    <div class="banner-container">
+        <img 
+            src={event.eventimage || '/images/default-image.jpg'} 
+            alt={event.subject} 
+            class="banner-image"
+        />
+        <div class="banner-overlay"></div>
+    </div>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumb-section">
+        <div class="content-box">
+            <Breadcrumbs paths={[
+                { name: 'Events', url: '/events' },
+                { name: event.subject }
+            ]} />
         </div>
+    </div>
 
-        <section class="breadcrumb-section">
-            <div class="content-box">
-                <!-- Breadcrumbs -->
-                <Breadcrumbs paths={[
-                    { name: 'Events', url: '/events' },
-                    { name: event.subject }
-                ]} />
-            </div>
-        </section>
+    <div class="event-detail">
+        <div class="content-box">
+            <!-- Past Event Notice -->
+            {showPastEventNotice && (
+                <div class="past-event-notice">
+                    <p>This event has already taken place. Check out our upcoming events for more things to do in Brisbane.</p>
+                    <a href="/events" class="primary">View Upcoming Events</a>
+                </div>
+            )}
 
-        <section class="highlight-section event-detail">
-            <div class="content-box">
-                <!-- Full-width title -->
-                <h1 class="section-heading full-width">{event.subject}</h1>
+            <h1 class="section-heading">{event.subject}</h1>
 
-                {showPastEventNotice && (
-                    <div class="past-event-notice">
-                        <p><strong>Note:</strong> This event has already ended. It is shown for archival purposes only.</p>
-                        <a href="/events" class="button secondary">View Upcoming Events</a>
-                    </div>
-                )}
-
-                <div class="event-content-grid">
-                    <!-- Left side: Event meta and booking info -->
-                    <div class="event-info">
-                        <div class="event-meta">
-                            {datesToDisplay.length > 0 && (
-                                <div class="event-dates">
-                                    <p><strong>{hasFutureDates ? 'Upcoming Dates:' : 'Event Dates:'}</strong></p>
-                                    <ul>
-                                        {datesToDisplay.map(date => (
-                                            <li>{date.formatteddatetime}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-                            {event.venue && (
-                                <p><strong>Venue:</strong> {event.venue}</p>
-                            )}
-                            {event.venueaddress && (
-                                <p><strong>Address:</strong> {event.venueaddress}</p>
-                            )}
-                            {event.cost && (
-                                <p><strong>Cost:</strong> {event.cost}</p>
-                            )}
-                            {event.age && (
-                                <p><strong>Age:</strong> {event.age}</p>
-                            )}
-                            {event.agerange && (
-                                <p><strong>Age Range:</strong> {event.agerange}</p>
-                            )}
-                            {event.maximumparticipantcapacity && (
-                                <p><strong>Capacity:</strong> {event.maximumparticipantcapacity}</p>
-                            )}
-                            {event.eventtype && (
-                                <p><strong>Event Type:</strong> {event.eventtype}</p>
-                            )}
-                            {event.primaryeventtype && (
-                                <p><strong>Category:</strong> {event.primaryeventtype}</p>
-                            )}
-                            {event.status && (
-                                <p><strong>Status:</strong> {event.status}</p>
-                            )}
-                        </div>
-
-                        {event.bookings && (
-                            <div class="booking-info">
-                                <h2>Booking Information</h2>
-                                <p set:html={event.bookings} />
+            <div class="event-content-grid">
+                <!-- Left Column: Event Info -->
+                <div class="event-info">
+                    <div class="event-meta">
+                        <h3>Event Details</h3>
+                        
+                        <!-- Event Dates -->
+                        {datesToDisplay.length > 0 && (
+                            <div class="event-dates">
+                                <p><strong>When:</strong></p>
+                                <ul>
+                                    {datesToDisplay.map(date => (
+                                        <li>
+                                            <span class="event-date-icon">🗓️</span>
+                                            <span>
+                                                {date.formatteddatetime}
+                                                {pastDates.some(pd => pd.formatteddatetime === date.formatteddatetime) && 
+                                                    <span class="past-date"> (Past)</span>
+                                                }
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                         )}
-
-                        <div class="social-share">
-                            <h3>Share This Event</h3>
-                            <div class="share-buttons">
-                                <a href={`https://www.facebook.com/dialog/share?app_id=530286526102392&display=popup&href=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&redirect_uri=https%3A%2F%2Fwww.viabrisbane.com`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="share-button">
-                                    F
-                                </a>
-                                <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out ${event.subject} at ${event.venue || 'Brisbane'}`)}
-                                    &url=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&image=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="share-button">
-                                    X
-                                </a>
-                                <a href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&media=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}&description=${encodeURIComponent(event.subject)}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="share-button">
-                                    P
-                                </a>
+                        
+                        <!-- Event Location -->
+                        {event.location && (
+                            <div class="event-location">
+                                <p>
+                                    <strong>Where:</strong>
+                                    <span class="event-location-icon">📍</span>
+                                    {event.location}
+                                </p>
                             </div>
-                        </div>
+                        )}
+                        
+                        <!-- Event Address -->
+                        {event.venueaddress && (
+                            <div class="event-address">
+                                <p><strong>Address:</strong> {event.venueaddress}</p>
+                            </div>
+                        )}
+                        
+                        <!-- Event Cost -->
+                        {event.cost && (
+                            <div class="event-additional-info">
+                                <p><strong>Cost:</strong> {event.cost}</p>
+                            </div>
+                        )}
+                        
+                        <!-- Event Age Range -->
+                        {event.agerange && (
+                            <div class="event-additional-info">
+                                <p><strong>Age Range:</strong> {event.agerange}</p>
+                            </div>
+                        )}
+                        
+                        <!-- Event Category -->
+                        {event.primaryeventtype && (
+                            <div class="event-category">
+                                <p><strong>Category:</strong> {event.primaryeventtype}</p>
+                            </div>
+                        )}
                     </div>
-
-                    <!-- Right side: Map and Share buttons -->
-                    <div class="event-right-column">
-                        <div class="event-map-container">
-                            {event.venueaddress && (
-                                <iframe
-                                    width="100%"
-                                    height="100%"
-                                    style="border:0"
-                                    loading="lazy"
-                                    allowfullscreen
-                                    referrerpolicy="no-referrer-when-downgrade"
-                                    src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(event.venueaddress)}`}
-                                ></iframe>
-                            )}
+                    
+                    <!-- Booking Info -->
+                    {event.bookings && (
+                        <div class="booking-info" id="booking-info">
+                            <h2>Booking Information</h2>
+                            <div class="booking-content" set:html={event.bookings} />
                         </div>
-                       
+                    )}
+                    
+                    <!-- Social Share -->
+                    <div class="social-share">
+                        <h3>Share This Event</h3>
+                        <div class="share-buttons">
+                            <a href={`https://www.facebook.com/dialog/share?app_id=530286526102392&display=popup&href=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&redirect_uri=https%3A%2F%2Fwww.viabrisbane.com`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="share-button facebook">
+                                F
+                            </a>
+                            <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out ${event.subject} at ${event.venue || 'Brisbane'}`)}
+                                &url=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&image=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="share-button twitter">
+                                X
+                            </a>
+                            <a href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&media=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}&description=${encodeURIComponent(event.subject)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="share-button pinterest">
+                                P
+                            </a>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Full-width description at bottom -->
-                <div class="event-description full-width">
-                    <h2>Description</h2>
-                    <p set:html={event.description} />
-
+                
+                <!-- Right Column: Description and Map -->
+                <div class="event-right-column">
+                    <!-- Event Description -->
+                    <div class="event-description">
+                        <h2>About This Event</h2>
+                        <div class="description-content" set:html={event.description} />
+                    </div>
+                    
+                    <!-- Requirements Section -->
                     {event.requirements && (
                         <div class="requirements">
                             <h2>Requirements</h2>
-                            <p set:html={event.requirements} />
+                            <div class="requirements-content" set:html={event.requirements} />
                         </div>
                     )}
-
+                    
+                    <!-- Meeting Point Section -->
                     {event.meetingpoint && (
                         <div class="meeting-point">
                             <h2>Meeting Point</h2>
-                            <p>{event.meetingpoint}</p>
+                            <div class="meeting-point-content" set:html={event.meetingpoint} />
+                        </div>
+                    )}
+                    
+                    <!-- Map -->
+                    {event.venueaddress && (
+                        <div class="event-map-container">
+                            <h3>Location</h3>
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                style="border:0"
+                                loading="lazy"
+                                allowfullscreen
+                                referrerpolicy="no-referrer-when-downgrade"
+                                src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(event.venueaddress)}`}
+                            ></iframe>
                         </div>
                     )}
                 </div>
-
-                <div class="event-actions full-width">
-                    <a href="/events" class="button primary">
-                        Back to Events
-                    </a>
-                </div>
             </div>
-        </section>
-    </main>
+            
+            <!-- Event Actions -->
+            <div class="event-actions">
+                {event.bookings && event.bookings.includes('href=') ? (
+                    <a href="#booking-info" class="primary">Book Now</a>
+                ) : (
+                    <a href="/events" class="secondary">Back to Events</a>
+                )}
+                <a href="/" class="secondary">Explore Brisbane</a>
+            </div>
+        </div>
+    </div>
 </Layout>
+
+<style>
+.past-date {
+    color: #856404;
+    font-style: italic;
+    font-size: 0.9em;
+}
+</style>
