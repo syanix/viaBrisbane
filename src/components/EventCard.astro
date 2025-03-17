@@ -1,48 +1,40 @@
 ---
-interface Props {
-  title: string;
-  description: string;
-  image: string;
-  date: string;
-  location: string;
-  locationCategory: string;
-  url: string;
-}
+import type { Event } from '../types/types';
 
-const { title, description, image, date, location, locationCategory, url } = Astro.props;
+const { event } = Astro.props as { event: Event };
 ---
 
 <div class="event-card bg-white shadow-md h-full flex flex-col">
   <div class="relative">
     <!-- Image container with aspect ratio -->
     <div class="aspect-w-16 aspect-h-9 overflow-hidden">
-      <img src={image} alt={title} class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+      <img src={event.eventimage || '/images/default-image.jpg'} alt={event.subject} class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
     </div>
     
     <!-- Date badge -->
     <div class="absolute bottom-0 left-0 bg-amber-400 text-black px-4 py-1 font-medium text-sm">
-      {date}
+      {event.formatteddatetime}
     </div>
   </div>
   
   <!-- Location tags -->
   <div class="flex mt-4 px-4">
-    <span class="bg-blue-400 text-white px-3 py-1 text-xs font-medium mr-2">{locationCategory}</span>
-    <span class="bg-black text-white px-3 py-1 text-xs font-medium">{location}</span>
+    <span class="bg-blue-400 text-white px-3 py-1 text-xs font-medium mr-2">{event.primaryeventtype}</span>
+    <span class="bg-black text-white px-3 py-1 text-xs font-medium">{event.location}</span>
   </div>
   
   <!-- Content -->
   <div class="p-4 flex-grow">
-    <h3 class="text-2xl font-bold mb-2">{title}</h3>
-    <p class="text-gray-700 mb-4">{description}</p>
+    <h3 class="text-2xl font-bold mb-2">{event.subject}</h3>
+    <p class="text-gray-700 mb-4">{event.description}</p>
   </div>
   
   <!-- Buttons -->
   <div class="p-4 pt-0 flex gap-4">
-    <a href={url} class="inline-block bg-black text-white px-4 py-2 font-bold uppercase text-sm hover:bg-gray-800 transition-colors">
+    <a href={event.web_link} class="inline-block bg-black text-white px-4 py-2 font-bold uppercase text-sm hover:bg-gray-800 transition-colors">
       VISIT WEBSITE
     </a>
-    <a href={`/events/${title.toLowerCase().replace(/\s+/g, '-')}`} class="inline-flex items-center text-black font-bold uppercase text-sm hover:text-blue-400 transition-colors">
+    <a href={`/events/${event.slug}`} class="inline-flex items-center text-black font-bold uppercase text-sm hover:text-blue-400 transition-colors">
       LEARN MORE
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />

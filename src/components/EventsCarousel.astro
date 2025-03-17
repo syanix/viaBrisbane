@@ -1,1 +1,37 @@
- 
+---
+import { getEventsByPage } from '../utils/eventsCache';
+import { createSlug } from '../utils/slug';
+import type { Event } from '../types/types';
+import EventCard from './EventCard.astro';
+const { page = 1, searchQuery = '', limit, includeExpired = false, events: propEvents, totalPages: propTotalPages } = Astro.props;
+
+// Use provided events and totalPages if available, otherwise fetch them
+const { events, totalPages } = propEvents && propTotalPages !== undefined
+    ? { events: propEvents, totalPages: propTotalPages }
+    : await getEventsByPage(Astro.locals.runtime.env.DB, page, searchQuery, includeExpired);
+
+// If limit is provided, slice the events array
+const displayEvents = limit ? events.slice(0, limit) : events;
+
+---
+
+<!-- Events Section -->
+<section id="events-section" class="highlight-section events-section">
+    <div class="content-box">
+        <div id="events-container">
+            {displayEvents.length > 0 ? (
+                <ul>
+                    {displayEvents.map((event: any) => (
+                        <li>
+                            <EventCard event={event} />
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No events available at the moment. Please try again later.</p>
+            )}
+        </div>
+
+        
+    </div>
+</section>
