@@ -1,5 +1,51 @@
 # Via Brisbane Project Context
 
+## NYC Tourism-Inspired Redesign
+
+### Overview
+We've implemented a comprehensive redesign of the Via Brisbane website, inspired by the NYC Tourism site. The redesign focuses on a clean, modern aesthetic with improved user experience, navigation, and visual appeal.
+
+### Key Components
+
+1. **New Layout System**
+   - Created `NewLayout.astro` with improved structure and styling
+   - Implemented a responsive header with "Plan Your Visit" CTA
+   - Designed a four-column footer with newsletter subscription
+   - Added accessibility features including skip-to-content link
+   - Fixed TypeScript linter errors for proper event handling
+
+2. **Alternative Homepage**
+   - Developed `index2.astro` as a new homepage option
+   - Implemented a hero carousel with rotating event banners
+   - Created a category navigation grid for exploring Brisbane
+   - Added sections for popular attractions with ratings
+   - Included a Brisbane highlight section with call-to-action
+   - Integrated latest news section with card layout
+   - Added newsletter subscription section
+   - Used Unsplash images to avoid 404 errors
+
+3. **Styling Improvements**
+   - Fully migrated to Tailwind CSS for consistent styling
+   - Implemented a black and white color scheme with Brisbane blue accents
+   - Enhanced typography using Inter and Montserrat fonts
+   - Created consistent component styling for buttons, cards, and navigation
+   - Added subtle animations and hover effects for interactive elements
+   - Ensured responsive design across all device sizes
+
+4. **Technical Enhancements**
+   - Fixed TypeScript linter errors in JavaScript components
+   - Implemented vanilla JavaScript for carousel functionality
+   - Ensured proper type safety in event handlers
+   - Added accessibility features throughout the site
+   - Optimized images for web performance
+
+### Next Steps
+1. Apply the new design system to inner pages (events, attractions, etc.)
+2. Enhance interactive elements with additional JavaScript functionality
+3. Implement further accessibility improvements
+4. Optimize performance for faster loading times
+5. Create additional page templates following the new design system
+
 ## Events System Enhancements
 
 ### URL Structure Improvements
