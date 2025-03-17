@@ -24,9 +24,13 @@
     "@astrojs/check": "^0.9.4",
     "@astrojs/cloudflare": "^12.0.1",
     "@astrojs/sitemap": "^3.2.1",
+    "@tailwindcss/vite": "^4.0.14",
     "astro": "^5.0.4",
+    "autoprefixer": "^10.4.21",
+    "cssnano": "^7.0.6",
     "drizzle-orm": "^0.38.3",
-    "sass": "^1.83.0"
+    "sass": "^1.83.0",
+    "tailwindcss": "^4.0.14"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241218.0",
