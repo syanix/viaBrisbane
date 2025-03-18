@@ -1,6 +1,7 @@
 ---
 import NewLayout from '../layouts/NewLayout.astro';
 import EventsCarousel from '../components/EventsCarousel.astro';
+import NewsSection from '../components/NewsSection.astro';
 import { Image } from 'astro:assets';
 const title = "Explore Brisbane: Your Guide to Events, Attractions & Experiences - Via Brisbane";
 const description = "Discover the best of Brisbane with Via Brisbane, your ultimate guide to local events, attractions, and hidden gems. Stay updated and explore the city like never before!";
@@ -40,148 +41,6 @@ const organizationSchema: Record<string, any> = {
 // Combine schemas
 const schema = [websiteSchema, organizationSchema];
 
-// Sample data for featured events (for carousel)
-const carouselEvents = [
-  {
-    id: 1,
-    title: "Brisbane Festival",
-    date: "September 1-25, 2023",
-    description: "Experience the magic of Brisbane's premier arts festival with spectacular performances, light shows, and cultural events throughout the city.",
-    image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6a3?q=80&w=2000&auto=format&fit=crop",
-    url: "/events/brisbane-festival"
-  },
-  {
-    id: 2,
-    title: "Riverfire Spectacular",
-    date: "September 25, 2023",
-    description: "Brisbane's iconic fireworks display lighting up the city skyline along the Brisbane River. A must-see annual event for locals and visitors alike.",
-    image: "https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?q=80&w=2000&auto=format&fit=crop",
-    url: "/events/riverfire-spectacular"
-  },
-  {
-    id: 3,
-    title: "City Botanic Gardens Tour",
-    date: "Every Saturday",
-    description: "Explore Brisbane's historic City Botanic Gardens with expert guides. Learn about native plants, history, and the garden's significance to the city.",
-    image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=2000&auto=format&fit=crop",
-    url: "/events/botanic-gardens-tour"
-  }
-];
-
-// Sample data for explore categories
-const exploreCategories = [
-  {
-    title: "Attractions",
-    image: "https://images.unsplash.com/photo-1566734904496-9309bb1798b5?q=80&w=1000&auto=format&fit=crop",
-    url: "/attractions"
-  },
-  {
-    title: "Dining",
-    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1000&auto=format&fit=crop",
-    url: "/dining"
-  },
-  {
-    title: "Shopping",
-    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop",
-    url: "/shopping"
-  },
-  {
-    title: "Outdoors",
-    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1000&auto=format&fit=crop",
-    url: "/outdoors"
-  },
-  {
-    title: "Arts & Culture",
-    image: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=1000&auto=format&fit=crop",
-    url: "/arts-culture"
-  },
-  {
-    title: "Nightlife",
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000&auto=format&fit=crop",
-    url: "/nightlife"
-  }
-];
-
-// Sample data for popular attractions
-const popularAttractions = [
-  {
-    title: "South Bank Parklands",
-    description: "Urban park with beaches, gardens, and dining options",
-    image: "https://images.unsplash.com/photo-1599596567801-3c68d71169be?q=80&w=1000&auto=format&fit=crop",
-    rating: 4.8,
-    url: "/attractions/south-bank-parklands"
-  },
-  {
-    title: "Story Bridge Adventure Climb",
-    description: "Panoramic views from Brisbane's iconic bridge",
-    image: "https://images.unsplash.com/photo-1528072164453-f4e8ef0d475a?q=80&w=1000&auto=format&fit=crop",
-    rating: 4.7,
-    url: "/attractions/story-bridge-adventure-climb"
-  },
-  {
-    title: "Lone Pine Koala Sanctuary",
-    description: "World's first and largest koala sanctuary",
-    image: "https://images.unsplash.com/photo-1459262838948-3e2de6c1ec80?q=80&w=1000&auto=format&fit=crop",
-    rating: 4.9,
-    url: "/attractions/lone-pine-koala-sanctuary"
-  }
-];
-
-// Sample data for news items
-const newsItems = [
-  {
-    title: "New Ferry Service Launches in Brisbane",
-    date: "June 15, 2023",
-    excerpt: "A new ferry service connecting West End to the CBD has launched, offering residents and visitors an alternative way to navigate the city.",
-    image: "https://images.unsplash.com/photo-1569263900347-06b1e8c825ab?q=80&w=1000&auto=format&fit=crop",
-    url: "/news/new-ferry-service"
-  },
-  {
-    title: "Brisbane Named Top 10 Most Livable City",
-    date: "June 10, 2023",
-    excerpt: "Brisbane has been ranked among the top 10 most livable cities in the world according to the latest Global Liveability Index.",
-    image: "https://images.unsplash.com/photo-1539155361328-40d3d0e62fd6?q=80&w=1000&auto=format&fit=crop",
-    url: "/news/brisbane-livability-ranking"
-  },
-  {
-    title: "New Cultural Precinct Opening in Fortitude Valley",
-    date: "June 5, 2023",
-    excerpt: "A new cultural precinct featuring galleries, performance spaces, and dining options is set to open in Fortitude Valley next month.",
-    image: "https://images.unsplash.com/photo-1526129318478-62ed807ebdf9?q=80&w=1000&auto=format&fit=crop",
-    url: "/news/cultural-precinct-opening"
-  }
-];
-
-// Sample events data
-const events = [
-  {
-    title: "The Outsiders",
-    description: "The gang of young \"greasers\" from S.E. Hinton's beloved novel comes to the Broadway stage.",
-    image: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80",
-    date: "Mar 15, 2024 - Ongoing",
-    location: "Times Square/Theatre District",
-    locationCategory: "Broadway",
-    url: "https://example.com/outsiders"
-  },
-  {
-    title: "MJ",
-    description: "This Broadway musical looks at the life of pop superstar Michael Jackson.",
-    image: "https://images.unsplash.com/photo-1561211974-8a2737b4dcac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
-    date: "Recurring Sun, Tues, Wed, Thurs, Fri, Sat",
-    location: "Times Square/Theatre District",
-    locationCategory: "Broadway",
-    url: "https://example.com/mj"
-  },
-  {
-    title: "The Book Of Mormon",
-    description: "This long-running Broadway blockbuster is an outrageous and strangely heartwarming musical.",
-    image: "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    date: "Recurring Sun, Tues, Wed, Thurs, Fri, Sat",
-    location: "Times Square/Theatre District",
-    locationCategory: "Broadway",
-    url: "https://example.com/book-of-mormon"
-  }
-];
 ---
 
 <NewLayout title={title} description={description} keywords={keywords} schema={schema}>
@@ -272,15 +131,15 @@ const events = [
   </section>
 
   <!-- Events Carousel Section -->
-  <EventsCarousel events={events} limit={6} title="Featured Events" />
+  <EventsCarousel limit={6} title="Featured Events" />
   
   <!-- Explore Brisbane Section -->
-  <section class="py-12">
+  <!-- <section class="py-12">
     <div class="container mx-auto px-4">
       <h2 class="text-3xl md:text-4xl font-bold mb-8">Explore Brisbane</h2>
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Category 1 -->
+        
         <div class="group relative overflow-hidden">
           <img 
             src="https://images.unsplash.com/photo-1599407384369-565e27024553?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
@@ -294,7 +153,7 @@ const events = [
           </div>
         </div>
         
-        <!-- Category 2 -->
+        
         <div class="group relative overflow-hidden">
           <img 
             src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
@@ -308,7 +167,7 @@ const events = [
           </div>
         </div>
         
-        <!-- Category 3 -->
+        
         <div class="group relative overflow-hidden">
           <img 
             src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
@@ -322,7 +181,7 @@ const events = [
           </div>
         </div>
         
-        <!-- Category 4 -->
+       
         <div class="group relative overflow-hidden">
           <img 
             src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
@@ -337,61 +196,10 @@ const events = [
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   
   <!-- Latest News Section -->
-  <section class="py-12 bg-gray-50">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl md:text-4xl font-bold mb-8">Latest News</h2>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- News Item 1 -->
-        <div class="bg-white shadow-md">
-          <img 
-            src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
-            alt="Brisbane Festival" 
-            class="w-full h-48 object-cover"
-          >
-          <div class="p-4">
-            <span class="text-blue-400 text-sm font-medium">Events</span>
-            <h3 class="text-xl font-bold mt-1 mb-2">Brisbane Festival Announces 2024 Program</h3>
-            <p class="text-gray-700 mb-4">The annual Brisbane Festival has announced its exciting lineup for 2024, featuring local and international artists.</p>
-            <a href="/news/brisbane-festival-2024" class="text-blue-400 hover:underline">Read More →</a>
-          </div>
-        </div>
-        
-        <!-- News Item 2 -->
-        <div class="bg-white shadow-md">
-          <img 
-            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
-            alt="New Restaurant" 
-            class="w-full h-48 object-cover"
-          >
-          <div class="p-4">
-            <span class="text-blue-400 text-sm font-medium">Dining</span>
-            <h3 class="text-xl font-bold mt-1 mb-2">Five New Restaurants Opening This Month</h3>
-            <p class="text-gray-700 mb-4">Brisbane's culinary scene continues to grow with five exciting new restaurants opening their doors this month.</p>
-            <a href="/news/new-restaurants-june" class="text-blue-400 hover:underline">Read More →</a>
-          </div>
-        </div>
-        
-        <!-- News Item 3 -->
-        <div class="bg-white shadow-md">
-          <img 
-            src="https://images.unsplash.com/photo-1530099486328-e021101a494a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2047&q=80" 
-            alt="Brisbane Tourism" 
-            class="w-full h-48 object-cover"
-          >
-          <div class="p-4">
-            <span class="text-blue-400 text-sm font-medium">Tourism</span>
-            <h3 class="text-xl font-bold mt-1 mb-2">Brisbane Named Top Tourism Destination for 2024</h3>
-            <p class="text-gray-700 mb-4">Brisbane has been recognized as one of the top tourism destinations for 2024 by international travel experts.</p>
-            <a href="/news/brisbane-top-destination" class="text-blue-400 hover:underline">Read More →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <NewsSection />
 </NewLayout>
 
 <script>

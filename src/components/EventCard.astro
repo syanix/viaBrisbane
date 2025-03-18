@@ -22,7 +22,7 @@ const venue = event.venue ? event.venue.split(',')[0].trim() : '';
     </div>
     
     <!-- Date badge -->
-    <div class="absolute bottom-4 left-4 bg-[#ffc800] text-black px-3 py-1 text-sm font-bold rounded-full">
+    <div class="absolute bottom-2 left-2 bg-[#ffc800] text-black px-3 py-1 text-sm font-bold rounded-sm">
       {event.formatteddatetime}
     </div>
   </div>
@@ -31,13 +31,13 @@ const venue = event.venue ? event.venue.split(',')[0].trim() : '';
   <div class="flex flex-wrap gap-2 mt-4 px-4">
     {eventType && (
       <a href={`/eventtypes/${eventType.toLowerCase().replace(/\s+/g, '-')}`} 
-         class="text-white px-3 py-1 text-sm font-bold rounded-md bg-[#2073E0]">
+         class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0]">
         {eventType}
       </a>
     )}
     {venue && (
       <a href={`/venues/${venue.toLowerCase().replace(/\s+/g, '-')}`} 
-         class="bg-black text-white px-3 py-1 text-sm font-bold rounded-md">
+         class="bg-black text-white px-3 py-1 text-sm font-bold rounded-sm">
         {venue}
       </a>
     )}
@@ -52,14 +52,10 @@ const venue = event.venue ? event.venue.split(',')[0].trim() : '';
     
     <!-- Buttons -->
     <div class="flex items-center mt-auto">
-      <a href={event.web_link || '#'} 
-         class="inline-block bg-black text-white px-4 py-2 text-sm font-bold uppercase tracking-wide mr-4 hover:bg-gray-800 transition-colors">
-        VISIT WEBSITE
-      </a>
       <a href={`/events/${event.slug || ''}`} 
-         class="inline-flex items-center text-gray-800 font-bold text-sm uppercase hover:underline">
-        LEARN MORE
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+         class="inline-flex items-center text-black text-md uppercase group">
+        <span class="font-black border-b-2 border-transparent group-hover:border-black transition-colors duration-200">LEARN MORE</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 ml-2 -mt-[3px]" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
         </svg>
       </a>
