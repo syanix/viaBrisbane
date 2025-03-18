@@ -155,4 +155,25 @@ We've implemented a comprehensive solution for handling past events while mainta
 4. **Testing**
    - Verify SEO impact with analytics tools
    - Test performance across different devices and browsers
-   - Ensure all redirects from old URLs work correctly 
+   - Ensure all redirects from old URLs work correctly
+
+# UI Updates - Event Cards and Carousel
+
+## Design Changes (2024-03-XX)
+- Implemented NYC Tourism-inspired design for events section
+- Updated card and carousel components to match reference design
+- Removed link underlines globally
+- Added Helvetica Neue as primary font family
+
+### Component Updates
+1. EventCard:
+   - Standardized card heights
+   - Removed shadows
+   - Updated button styling
+   - Added yellow date badge
+   - Implemented category tags with blue/black styling
+
+2. EventsCarousel:
+   - Added slide navigation with opacity transitions
+   - Implemented proper button visibility logic
+   - Added hover states for navigation 

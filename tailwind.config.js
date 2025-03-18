@@ -4,7 +4,7 @@ import typographyPlugin from '@tailwindcss/typography';
 
 export default {
     corePlugins: {
-        preflight: false, // Disables Tailwind’s default resets
+        preflight: false, // Disables Tailwind's default resets
     },
   content: ['./src/**/*.{astro,html,js,jsx,json,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
@@ -17,7 +17,7 @@ export default {
         muted: 'var(--aw-color-text-muted)',
       },
       fontFamily: {
-        sans: ['var(--aw-font-sans, ui-sans-serif)', ...defaultTheme.fontFamily.sans],
+        sans: ['NimbusSanL', 'Helvetica', ...defaultTheme.fontFamily.sans],
         serif: ['var(--aw-font-serif, ui-serif)', ...defaultTheme.fontFamily.serif],
         heading: ['var(--aw-font-heading, ui-sans-serif)', ...defaultTheme.fontFamily.sans],
       },

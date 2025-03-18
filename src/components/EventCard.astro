@@ -2,43 +2,67 @@
 import type { Event } from '../types/types';
 
 const { event } = Astro.props as { event: Event };
+
+// Split event types by comma and trim whitespace
+const eventType = event.primaryeventtype ?? (event.event_type?.split(',')[0].trim()) ?? '';
+
+// Get first part of location before comma, or entire location if no comma
+const venue = event.venue ? event.venue.split(',')[0].trim() : '';
 ---
 
-<div class="event-card bg-white shadow-md h-full flex flex-col">
+<div class="bg-white flex flex-col h-full shadow-[0px_2px_8px_rgba(0,0,0,0.1)]">
   <div class="relative">
-    <!-- Image container with aspect ratio -->
-    <div class="aspect-w-16 aspect-h-9 overflow-hidden">
-      <img src={event.eventimage || '/images/default-image.jpg'} alt={event.subject} class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+    <!-- Image container -->
+    <div class="relative pb-[66%] overflow-hidden">
+      <img 
+        src={event.eventimage || '/images/default-image.jpg'} 
+        alt={event.subject} 
+        class="absolute inset-0 w-full h-full object-cover"
+      >
     </div>
     
     <!-- Date badge -->
-    <div class="absolute bottom-0 left-0 bg-amber-400 text-black px-4 py-1 font-medium text-sm">
+    <div class="absolute bottom-4 left-4 bg-[#ffc800] text-black px-3 py-1 text-sm font-bold rounded-full">
       {event.formatteddatetime}
     </div>
   </div>
   
-  <!-- Location tags -->
-  <div class="flex mt-4 px-4">
-    <span class="bg-blue-400 text-white px-3 py-1 text-xs font-medium mr-2">{event.primaryeventtype}</span>
-    <span class="bg-black text-white px-3 py-1 text-xs font-medium">{event.location}</span>
+  <!-- Category tags -->
+  <div class="flex flex-wrap gap-2 mt-4 px-4">
+    {eventType && (
+      <a href={`/eventtypes/${eventType.toLowerCase().replace(/\s+/g, '-')}`} 
+         class="text-white px-3 py-1 text-sm font-bold rounded-md bg-[#2073E0]">
+        {eventType}
+      </a>
+    )}
+    {venue && (
+      <a href={`/venues/${venue.toLowerCase().replace(/\s+/g, '-')}`} 
+         class="bg-black text-white px-3 py-1 text-sm font-bold rounded-md">
+        {venue}
+      </a>
+    )}
   </div>
   
   <!-- Content -->
-  <div class="p-4 flex-grow">
-    <h3 class="text-2xl font-bold mb-2">{event.subject}</h3>
-    <p class="text-gray-700 mb-4">{event.description}</p>
-  </div>
-  
-  <!-- Buttons -->
-  <div class="p-4 pt-0 flex gap-4">
-    <a href={event.web_link} class="inline-block bg-black text-white px-4 py-2 font-bold uppercase text-sm hover:bg-gray-800 transition-colors">
-      VISIT WEBSITE
-    </a>
-    <a href={`/events/${event.slug}`} class="inline-flex items-center text-black font-bold uppercase text-sm hover:text-blue-400 transition-colors">
-      LEARN MORE
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-      </svg>
-    </a>
+  <div class="p-4 flex flex-col flex-1">
+    <div class="flex-1">
+      <h3 class="text-2xl font-bold mb-2 line-clamp-2">{event.subject}</h3>
+      <p class="text-gray-700 text-base mb-4 line-clamp-3">{event.description}</p>
+    </div>
+    
+    <!-- Buttons -->
+    <div class="flex items-center mt-auto">
+      <a href={event.web_link || '#'} 
+         class="inline-block bg-black text-white px-4 py-2 text-sm font-bold uppercase tracking-wide mr-4 hover:bg-gray-800 transition-colors">
+        VISIT WEBSITE
+      </a>
+      <a href={`/events/${event.slug || ''}`} 
+         class="inline-flex items-center text-gray-800 font-bold text-sm uppercase hover:underline">
+        LEARN MORE
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </a>
+    </div>
   </div>
 </div> 

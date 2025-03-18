@@ -1,3 +1,88 @@
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
+
+/* Move base styles into the @layer base */
+@layer base {
+  @font-face {
+    font-family: 'NimbusSanL';
+    src: url('../fonts/NimbusSanL-Reg.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'NimbusSanL';
+    src: url('../fonts/NimbusSanL-Bol.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Base styles */
+  :root {
+    font-family: 'NimbusSanL', Helvetica, Arial, sans-serif;
+  }
+
+  body,
+  p, span, a, input, textarea, select {
+    font-family: 'NimbusSanL', Helvetica, Arial, sans-serif;
+    font-weight: normal;
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  button {
+    font-family: 'NimbusSanL', Helvetica, Arial, sans-serif;
+    font-weight: bold;
+  }
+
+  /* Move link styles to base layer */
+  a {
+    text-decoration: none;
+  }
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Component styles */
+@layer components {
+  /* Cursor styles for carousel navigation */
+  #prev-button,
+  #next-button {
+    cursor: pointer;
+  }
+
+  /* Card shadows and transitions */
+  .event-card {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .event-card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Button styles */
+  .learn-more {
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .learn-more:hover {
+    color: #666;
+  }
+}
