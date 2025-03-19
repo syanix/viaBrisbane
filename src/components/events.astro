@@ -2,7 +2,7 @@
 import { getEventsByPage } from '../utils/eventsCache';
 import { createSlug } from '../utils/slug';
 import type { Event } from '../types/types';
-
+import EventCard from './EventCard.astro';
 const { page = 1, searchQuery = '', limit, includeExpired = false, events: propEvents, totalPages: propTotalPages } = Astro.props;
 
 // Use provided events and totalPages if available, otherwise fetch them
@@ -17,150 +17,149 @@ const displayEvents = limit ? events.slice(0, limit) : events;
 const showPagination = !limit && totalPages > 1 && events.length > 0;
 ---
 
-<!-- Events Section -->
-<section id="events-section" class="highlight-section events-section">
-    <div class="content-box">
-        <h1 class="section-heading">{includeExpired ? "Past Events Archive" : "Upcoming Events in Brisbane"}</h1>
-
-        {!limit && (
-            <div class="search-container">
-                <input 
-                    type="text" 
-                    id="eventSearch"
-                    placeholder="Search events by name..."
-                    value={searchQuery}
-                />
-                <div class="filter-options">
-                    <a href={includeExpired 
-                        ? `/events${searchQuery ? `?search=${searchQuery}` : ''}` 
-                        : `/events?archive=true${searchQuery ? `&search=${searchQuery}` : ''}`
-                    } class="button secondary">
-                        {includeExpired ? "View Upcoming Events" : "View Past Events Archive"}
-                    </a>
-                </div>
-            </div>
-        )}
-
-        <div id="events-container">
-            {displayEvents.length > 0 ? (
-                <ul>
-                    {displayEvents.map((event: any) => (
-                        <li>
-                                <a href={`/events/${event.slug || createSlug(
-                                    event.subject || '',
-                                    event.location || ''
-                                )}`}>
-                                    <div class="image-container">
-                                        <img 
-                                            src={event.eventimage || '/images/default-image.jpg'} 
-                                            alt={event.subject || 'No Title'} 
-                                        />
-                                    </div>
-                                    <h3 class="title">
-                                        {event.subject || 'No Title'}
-                                    </h3>
-                                </a>
-                                <p><strong>Date:</strong> {event.formatteddatetime || 'No Date'}</p>
-                                <p><strong>Location:</strong> {event.location || 'No Location'}</p>
-                                <p>
-                                    {event.description && event.description.length > 300
-                                        ? `${event.description.slice(0, 300)}...`
-                                        : event.description || 'No Description'}
-                                </p>
-                                <a href={`/events/${event.slug || createSlug(
-                                    event.subject || '',
-                                    event.location || ''
-                                )}`} class="button primary more-info-button">
-                                    More Event Info
-                                </a>
-
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p>No events available at the moment. Please try again later.</p>
-            )}
-        </div>
-
-        {showPagination && (
-            <div class="pagination">
-                {page > 1 && (
-                    <>
-                        <a 
-                            href={`/events?page=1${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                        >
-                            First
-                        </a>
-                        <a 
-                            href={`/events?page=${page - 1}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                        >
-                            Previous
-                        </a>
-                    </>
-                )}
-
-                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-                    const pageNum = Math.max(1, Math.min(page - 2, totalPages - 4)) + i;
-                    if (pageNum > totalPages || pageNum < 1) return null;
-                    return (
-                        <a 
-                            href={`/events?page=${pageNum}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                            class={pageNum === page ? 'active' : ''}
-                        >
-                            {pageNum}
-                        </a>
-                    );
-                })}
-
-                {page < totalPages && (
-                    <>
-                        <a 
-                            href={`/events?page=${page + 1}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                        >
-                            Next
-                        </a>
-                        <a 
-                            href={`/events?page=${totalPages}${includeExpired ? '&archive=true' : ''}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                        >
-                            Last
-                        </a>
-                    </>
-                )}
-            </div>
-        )}
+<!-- Hero Section -->
+<section class="relative">
+  <div class="h-[50vh] min-h-[400px] bg-slate-800 overflow-hidden">
+    <!-- Replace with actual image -->
+    <img 
+      src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=1920&auto=format&fit=crop" 
+      alt="Brisbane events and festivals" 
+      class="w-full h-full object-cover opacity-60"
+    />
+    <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+        {includeExpired ? "Past Events Archive" : "Upcoming Events in Brisbane"}
+      </h1>
+      <p class="text-xl text-white max-w-3xl">
+        {includeExpired 
+          ? "Browse our archive of past events that have taken place in Brisbane and surrounding areas."
+          : "Discover what's happening in Brisbane with our curated selection of upcoming events, festivals, and activities."
+        }
+      </p>
     </div>
+  </div>
+</section>
+
+<!-- Events Section -->
+<section class="py-16 bg-white">
+  <div class="mx-auto px-4">
+    <div class="max-w-5/6 mx-auto mb-12">
+      {!limit && (
+        <div class="bg-slate-50 p-6 rounded-lg shadow-sm">
+          <div class="flex items-center">
+            <div class="w-5/6">
+              <label for="eventSearch" class="block text-lg font-medium text-slate-700 mb-2">Search Events</label>
+              <input 
+                type="text" 
+                id="eventSearch"
+                placeholder="Enter event name, type, or venue..."
+                value={searchQuery}
+                class="w-full px-4 py-3 border border-slate-300 rounded-md focus:ring-2 focus:ring-[#2073E0] focus:border-[#2073E0] outline-none"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+
+    {displayEvents.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {displayEvents.map((event: any) => (
+          <div class="h-full">
+            <EventCard event={event} />
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto text-slate-400 mb-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+        </svg>
+        <p class="text-xl text-slate-700">No events available at the moment.</p>
+        <p class="mt-2 text-slate-500">Please try a different search or check back later.</p>
+      </div>
+    )}
+
+    {showPagination && (
+      <div class="flex justify-center mt-12 space-x-2">
+        {page > 1 && (
+          <>
+            <a 
+              href={`/events?page=1${searchQuery ? `&search=${searchQuery}` : ''}`}
+              class="px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+            >
+              First
+            </a>
+            <a 
+              href={`/events?page=${page - 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+              class="px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+            >
+              Previous
+            </a>
+          </>
+        )}
+
+        {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+          const pageNum = Math.max(1, Math.min(page - 2, totalPages - 4)) + i;
+          if (pageNum > totalPages || pageNum < 1) return null;
+          return (
+            <a 
+              href={`/events?page=${pageNum}${searchQuery ? `&search=${searchQuery}` : ''}`}
+              class={`px-4 py-2 border rounded-md ${pageNum === page 
+                ? 'bg-[#2073E0] text-white border-[#2073E0]' 
+                : 'border-slate-300 hover:bg-slate-50 text-slate-700'}`}
+            >
+              {pageNum}
+            </a>
+          );
+        })}
+
+        {page < totalPages && (
+          <>
+            <a 
+              href={`/events?page=${page + 1}${searchQuery ? `&search=${searchQuery}` : ''}`}
+              class="px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+            >
+              Next
+            </a>
+            <a 
+              href={`/events?page=${totalPages}${searchQuery ? `&search=${searchQuery}` : ''}`}
+              class="px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+            >
+              Last
+            </a>
+          </>
+        )}
+      </div>
+    )}
+  </div>
 </section>
 
 <script>
-    const searchInput = document.getElementById('eventSearch') as HTMLInputElement;
-    if (searchInput) {
-        let debounceTimer: ReturnType<typeof setTimeout>;
-        const currentValue = searchInput.value;
+  const searchInput = document.getElementById('eventSearch') as HTMLInputElement;
+  if (searchInput) {
+      let debounceTimer: ReturnType<typeof setTimeout>;
+      const currentValue = searchInput.value;
 
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
-                const searchValue = (e.target as HTMLInputElement).value.trim();
-                if (searchValue !== currentValue) {
-                    const url = new URL(window.location.href);
-                    
-                    if (searchValue) {
-                        url.searchParams.set('search', searchValue);
-                    } else {
-                        url.searchParams.delete('search');
-                    }
-                    
-                    // Reset to page 1 when searching
-                    url.searchParams.set('page', '1');
-                    
-                    // Preserve the archive parameter if it exists
-                    if (url.searchParams.has('archive')) {
-                        url.searchParams.set('archive', 'true');
-                    }
-                    
-                    window.location.href = url.toString();
-                }
-            }, 500);
-        });
-    }
+      searchInput.addEventListener('input', (e) => {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => {
+              const searchValue = (e.target as HTMLInputElement).value.trim();
+              if (searchValue !== currentValue) {
+                  const url = new URL(window.location.href);
+                  
+                  if (searchValue) {
+                      url.searchParams.set('search', searchValue);
+                  } else {
+                      url.searchParams.delete('search');
+                  }
+                  
+                  // Reset to page 1 when searching
+                  url.searchParams.set('page', '1');
+                  
+                  window.location.href = url.toString();
+              }
+          }, 500);
+      });
+  }
 </script>

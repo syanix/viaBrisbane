@@ -1,21 +1,19 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../layouts/NewLayout.astro';
 import Events from '../../components/events.astro';
 import { getEventsByPage } from '../../utils/eventsCache';
 
 const page = parseInt(Astro.url.searchParams.get('page') || '1');
 const searchQuery = Astro.url.searchParams.get('search') || '';
-const showArchive = Astro.url.searchParams.has('archive');
 
 // Get totalPages from the Events component
-const { events, totalPages } = await getEventsByPage(Astro.locals.runtime.env.DB, page, searchQuery, showArchive);
+const { events, totalPages } = await getEventsByPage(Astro.locals.runtime.env.DB, page, searchQuery, false);
 
 // Redirect to first page if page is out of range or invalid
 if ((page < 1 || page > totalPages) && page !== 1) {
     // Construct the redirect URL
     const redirectParams = new URLSearchParams();
     if (searchQuery) redirectParams.set('search', searchQuery);
-    if (showArchive) redirectParams.set('archive', 'true');
     const redirectUrl = `/events${redirectParams.toString() ? `?${redirectParams.toString()}` : ''}`;
     
     return Astro.redirect(redirectUrl, 302); // 302 temporary redirect to avoid caching issues
@@ -25,20 +23,12 @@ if ((page < 1 || page > totalPages) && page !== 1) {
 const paginationParams = new URLSearchParams();
 if (page > 1) paginationParams.set('page', page.toString());
 if (searchQuery) paginationParams.set('search', searchQuery);
-if (showArchive) paginationParams.set('archive', 'true');
 const pagination = paginationParams.toString() ? `?${paginationParams.toString()}` : '';
 
-// Set title and description based on whether we're showing archived events
-let title, description, keywords;
-if (showArchive) {
-    title = "Past Events Archive - Brisbane Events History - Via Brisbane";
-    description = "Browse our archive of past events in Brisbane. Explore the history of local events, festivals, markets, and more that have taken place in Brisbane City and surrounding areas.";
-    keywords = "Brisbane past events, Brisbane event history, previous events Brisbane, Brisbane event archive";
-} else {
-    title = "Brisbane Events - What's On in Brisbane - Via Brisbane";
-    description = "Discover upcoming events in Brisbane. Find local events, festivals, markets, and more happening in Brisbane City and surrounding areas.";
-    keywords = "Brisbane events, what's on Brisbane, Brisbane festivals, Brisbane markets, Brisbane activities";
-}
+// Set title and description
+let title = "Brisbane Events - What's On in Brisbane - Via Brisbane";
+let description = "Discover upcoming events in Brisbane. Find local events, festivals, markets, and more happening in Brisbane City and surrounding areas.";
+let keywords = "Brisbane events, what's on Brisbane, Brisbane festivals, Brisbane markets, Brisbane activities";
 
 // Add page number to title and description for paginated pages (except page 1)
 if (page > 1) {
@@ -57,6 +47,6 @@ if (page > 1) {
     totalPages={totalPages}
 >
     <main>
-        <Events page={page} searchQuery={searchQuery} includeExpired={showArchive} events={events} totalPages={totalPages} />
+        <Events page={page} searchQuery={searchQuery} events={events} totalPages={totalPages} />
     </main>
 </Layout>

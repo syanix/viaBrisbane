@@ -1,0 +1,439 @@
+---
+import NewLayout from "../../layouts/NewLayout.astro";
+import { Image } from "astro:assets";
+---
+
+<NewLayout
+  title="Brisbane Travel Guides & Visitor Information | Via Brisbane"
+  description="Explore Brisbane with our comprehensive travel guides, local tips, and curated experiences. Everything you need for an unforgettable visit to Brisbane."
+  keywords="Brisbane guides, Brisbane travel guide, Brisbane visitor information, Brisbane tips, things to do Brisbane, Brisbane experiences"
+>
+  <!-- Hero Section -->
+  <section class="relative">
+    <div class="h-[50vh] min-h-[400px] bg-slate-800 overflow-hidden">
+      <!-- Replace with actual image -->
+      <img 
+        src="https://images.unsplash.com/photo-1571396417048-8600858c4430?q=80&w=1920&auto=format&fit=crop" 
+        alt="Brisbane City skyline and river" 
+        class="w-full h-full object-cover opacity-60"
+      />
+      <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Brisbane Guides</h1>
+        <p class="text-xl text-white max-w-3xl">Expert advice and local insights for your perfect Brisbane experience</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8 text-center">Plan Your Brisbane Adventure</h2>
+        <p class="mb-6">
+          Welcome to Brisbane - Queensland's vibrant capital city where sunshine, culture, and adventure meet. Our comprehensive guides will help you discover the best of Brisbane, from iconic landmarks and hidden gems to local favorites and unforgettable experiences.
+        </p>
+        <p class="mb-6">
+          Whether you're planning a weekend getaway, family vacation, or business trip with leisure time, our insider tips and expert recommendations will ensure you make the most of your time in the River City.
+        </p>
+      </div>
+
+      <!-- Essential Guides -->
+      <div class="mt-16 max-w-6xl mx-auto">
+        <h3 class="text-2xl font-bold mb-8 text-center">Essential Brisbane Guides</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-slate-50 rounded-lg overflow-hidden shadow-sm">
+            <img 
+              src="https://images.unsplash.com/photo-1599540198486-6d50fc6b8897?q=80&w=600&auto=format&fit=crop" 
+              alt="Brisbane city skyline" 
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-6">
+              <h4 class="font-bold text-xl mb-2">First-Time Visitor Guide</h4>
+              <p class="text-sm mb-4">Essential information, must-see attractions, and practical tips for first-time visitors.</p>
+              <a href="#" class="text-blue-600 font-semibold hover:underline">Read Guide</a>
+            </div>
+          </div>
+          
+          <div class="bg-slate-50 rounded-lg overflow-hidden shadow-sm">
+            <img 
+              src="https://images.unsplash.com/photo-1517594632980-e8e8286cd2d9?q=80&w=600&auto=format&fit=crop" 
+              alt="Brisbane events" 
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-6">
+              <h4 class="font-bold text-xl mb-2">Seasonal Events Guide</h4>
+              <p class="text-sm mb-4">Discover what's on in Brisbane throughout the year, from festivals to sporting events.</p>
+              <a href="#" class="text-blue-600 font-semibold hover:underline">Read Guide</a>
+            </div>
+          </div>
+          
+          <div class="bg-slate-50 rounded-lg overflow-hidden shadow-sm">
+            <img 
+              src="https://images.unsplash.com/photo-1565881806207-324dd879a601?q=80&w=600&auto=format&fit=crop" 
+              alt="Brisbane budget travel" 
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-6">
+              <h4 class="font-bold text-xl mb-2">Budget Travel Guide</h4>
+              <p class="text-sm mb-4">How to experience the best of Brisbane without breaking the bank.</p>
+              <a href="#" class="text-blue-600 font-semibold hover:underline">Read Guide</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Themed Guides -->
+      <div class="mt-24 max-w-6xl mx-auto">
+        <h3 class="text-2xl font-bold mb-8 text-center">Themed Brisbane Guides</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm flex flex-col h-full">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-1/3">
+                <img 
+                  src="https://images.unsplash.com/photo-1586807480822-0595ace4a8dc?q=80&w=400&auto=format&fit=crop" 
+                  alt="Family activities in Brisbane" 
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-6 md:w-2/3">
+                <h4 class="font-bold text-xl mb-2">Family-Friendly Brisbane</h4>
+                <p class="text-sm mb-4">
+                  Brisbane offers countless activities for families with children of all ages. From interactive museums and wildlife experiences to outdoor adventures and kid-friendly dining, this guide covers everything for a memorable family vacation.
+                </p>
+                <p class="text-sm font-semibold text-slate-700 mb-2">Highlights:</p>
+                <ul class="text-sm list-disc ml-5 mb-4">
+                  <li>South Bank's Streets Beach and playgrounds</li>
+                  <li>Lone Pine Koala Sanctuary</li>
+                  <li>Queensland Museum and Science Centre</li>
+                  <li>New Farm Park and Powerhouse</li>
+                </ul>
+                <a href="#" class="text-blue-600 font-semibold hover:underline mt-auto">Read Guide</a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm flex flex-col h-full">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-1/3">
+                <img 
+                  src="https://images.unsplash.com/photo-1560259324-6440d221d741?q=80&w=400&auto=format&fit=crop" 
+                  alt="Outdoor adventures in Brisbane" 
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-6 md:w-2/3">
+                <h4 class="font-bold text-xl mb-2">Outdoor Adventure Guide</h4>
+                <p class="text-sm mb-4">
+                  With its subtropical climate and diverse natural landscapes, Brisbane is a playground for outdoor enthusiasts. This guide showcases the best hiking trails, water activities, parks, and adventure experiences in and around the city.
+                </p>
+                <p class="text-sm font-semibold text-slate-700 mb-2">Highlights:</p>
+                <ul class="text-sm list-disc ml-5 mb-4">
+                  <li>Mt Coot-tha walking tracks and lookout</li>
+                  <li>Kangaroo Point rock climbing</li>
+                  <li>Brisbane River kayaking</li>
+                  <li>Nearby national parks and reserves</li>
+                </ul>
+                <a href="#" class="text-blue-600 font-semibold hover:underline mt-auto">Read Guide</a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm flex flex-col h-full">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-1/3">
+                <img 
+                  src="https://images.unsplash.com/photo-1633872141683-0d8b14dd68c8?q=80&w=400&auto=format&fit=crop" 
+                  alt="Brisbane food and dining" 
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-6 md:w-2/3">
+                <h4 class="font-bold text-xl mb-2">Food & Drink Explorer</h4>
+                <p class="text-sm mb-4">
+                  Brisbane's culinary scene has exploded in recent years, with world-class restaurants, innovative chefs, and diverse food markets. This guide will take you on a gastronomic journey through the city's best dining experiences.
+                </p>
+                <p class="text-sm font-semibold text-slate-700 mb-2">Highlights:</p>
+                <ul class="text-sm list-disc ml-5 mb-4">
+                  <li>James Street dining precinct</li>
+                  <li>Fish Lane's restaurant row</li>
+                  <li>Eat Street Northshore market</li>
+                  <li>Brisbane's best coffee spots</li>
+                </ul>
+                <a href="#" class="text-blue-600 font-semibold hover:underline mt-auto">Read Guide</a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm flex flex-col h-full">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-1/3">
+                <img 
+                  src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=400&auto=format&fit=crop" 
+                  alt="Brisbane arts and culture" 
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-6 md:w-2/3">
+                <h4 class="font-bold text-xl mb-2">Arts & Culture Guide</h4>
+                <p class="text-sm mb-4">
+                  Brisbane's cultural scene is thriving, with world-class galleries, performances, and creative spaces. This guide takes you through the city's cultural highlights and artistic hotspots.
+                </p>
+                <p class="text-sm font-semibold text-slate-700 mb-2">Highlights:</p>
+                <ul class="text-sm list-disc ml-5 mb-4">
+                  <li>QAGOMA (Queensland Art Gallery and Gallery of Modern Art)</li>
+                  <li>Brisbane Powerhouse performances</li>
+                  <li>Cultural Centre precinct</li>
+                  <li>Street art and urban installations</li>
+                </ul>
+                <a href="#" class="text-blue-600 font-semibold hover:underline mt-auto">Read Guide</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seasonal Guides -->
+  <section class="py-16 bg-slate-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center mb-12">
+        <h2 class="text-3xl font-bold mb-6">Brisbane Through the Seasons</h2>
+        <p>
+          Brisbane enjoys a subtropical climate with warm, sunny days year-round, but each season offers its own unique experiences and events. Find out what makes each time of year special in Brisbane.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div class="h-40 bg-yellow-100 relative">
+            <img 
+              src="https://images.unsplash.com/photo-1548588627-f978862b85e1?q=80&w=400&auto=format&fit=crop" 
+              alt="Brisbane summer" 
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-4 left-4 bg-yellow-500 text-white px-3 py-1 rounded-full font-bold text-sm">
+              Summer
+            </div>
+          </div>
+          <div class="p-5">
+            <h4 class="font-bold mb-2">December - February</h4>
+            <p class="text-sm mb-3">Hot and occasionally humid with afternoon storms. Perfect for water activities and twilight events.</p>
+            <p class="text-sm font-semibold">Highlights:</p>
+            <ul class="text-sm list-disc ml-5 mt-1">
+              <li>New Year's Eve celebrations</li>
+              <li>Outdoor cinema events</li>
+              <li>South Bank beach days</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div class="h-40 bg-orange-100 relative">
+            <img 
+              src="https://images.unsplash.com/photo-1567351438519-8161ff7c323f?q=80&w=400&auto=format&fit=crop" 
+              alt="Brisbane autumn" 
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-4 left-4 bg-orange-500 text-white px-3 py-1 rounded-full font-bold text-sm">
+              Autumn
+            </div>
+          </div>
+          <div class="p-5">
+            <h4 class="font-bold mb-2">March - May</h4>
+            <p class="text-sm mb-3">Mild temperatures with lower humidity. Perfect for outdoor activities and exploring neighborhoods.</p>
+            <p class="text-sm font-semibold">Highlights:</p>
+            <ul class="text-sm list-disc ml-5 mt-1">
+              <li>World Science Festival</li>
+              <li>Brisbane Comedy Festival</li>
+              <li>Food and wine events</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div class="h-40 bg-blue-100 relative">
+            <img 
+              src="https://images.unsplash.com/photo-1613151848917-80e67f421fff?q=80&w=400&auto=format&fit=crop" 
+              alt="Brisbane winter" 
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-4 left-4 bg-blue-500 text-white px-3 py-1 rounded-full font-bold text-sm">
+              Winter
+            </div>
+          </div>
+          <div class="p-5">
+            <h4 class="font-bold mb-2">June - August</h4>
+            <p class="text-sm mb-3">Cool, dry days with clear blue skies. Perfect for hiking, sightseeing, and outdoor dining.</p>
+            <p class="text-sm font-semibold">Highlights:</p>
+            <ul class="text-sm list-disc ml-5 mt-1">
+              <li>Brisbane Festival</li>
+              <li>Regional food festivals</li>
+              <li>Scenic day trips</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div class="h-40 bg-green-100 relative">
+            <img 
+              src="https://images.unsplash.com/photo-1588432892841-e76757b65cea?q=80&w=400&auto=format&fit=crop" 
+              alt="Brisbane spring" 
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full font-bold text-sm">
+              Spring
+            </div>
+          </div>
+          <div class="p-5">
+            <h4 class="font-bold mb-2">September - November</h4>
+            <p class="text-sm mb-3">Warming temperatures with jacaranda blooms across the city. Perfect for garden visits and outdoor events.</p>
+            <p class="text-sm font-semibold">Highlights:</p>
+            <ul class="text-sm list-disc ml-5 mt-1">
+              <li>Jacaranda season</li>
+              <li>Riverfire celebration</li>
+              <li>Open-air concerts</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Day Trips Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center mb-12">
+        <h2 class="text-3xl font-bold mb-6">Day Trips from Brisbane</h2>
+        <p>
+          Brisbane's central location makes it the perfect base for exploring Southeast Queensland. 
+          Discover these incredible destinations, all within a 1-2 hour drive from the city.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div class="bg-slate-50 rounded-lg overflow-hidden shadow-sm">
+          <img 
+            src="https://images.unsplash.com/photo-1568287556950-44e714b98606?q=80&w=600&auto=format&fit=crop" 
+            alt="Gold Coast beaches" 
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="font-bold text-xl mb-2">Gold Coast</h3>
+            <p class="text-sm mb-4">Famous for its surf beaches, theme parks, and vibrant atmosphere. Just a 1-hour drive south of Brisbane.</p>
+            <a href="#" class="text-blue-600 font-semibold hover:underline">Gold Coast Guide</a>
+          </div>
+        </div>
+        
+        <div class="bg-slate-50 rounded-lg overflow-hidden shadow-sm">
+          <img 
+            src="https://images.unsplash.com/photo-1598573093660-dd0a6d345669?q=80&w=600&auto=format&fit=crop" 
+            alt="Sunshine Coast beaches" 
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="font-bold text-xl mb-2">Sunshine Coast</h3>
+            <p class="text-sm mb-4">Relaxed coastal communities, pristine beaches, and lush hinterland. A 1.5-hour drive north of Brisbane.</p>
+            <a href="#" class="text-blue-600 font-semibold hover:underline">Sunshine Coast Guide</a>
+          </div>
+        </div>
+        
+        <div class="bg-slate-50 rounded-lg overflow-hidden shadow-sm">
+          <img 
+            src="https://images.unsplash.com/photo-1551354515-d3c0bc886f81?q=80&w=600&auto=format&fit=crop" 
+            alt="Moreton Island" 
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="font-bold text-xl mb-2">Moreton Island</h3>
+            <p class="text-sm mb-4">World's third-largest sand island with shipwrecks, sand dunes, and crystal-clear waters. A 75-minute ferry ride from Brisbane.</p>
+            <a href="#" class="text-blue-600 font-semibold hover:underline">Moreton Island Guide</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Digital Guides Section -->
+  <section class="py-16 bg-blue-600 text-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-6">Digital Travel Resources</h2>
+        <p class="mb-8">
+          Take Brisbane with you by downloading our digital travel resources. From mobile apps to e-guides, these tools will help you navigate the city like a local.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left max-w-4xl mx-auto">
+          <div class="bg-white/10 p-6 rounded-lg">
+            <h3 class="font-bold text-xl mb-4">Brisbane Official App</h3>
+            <p class="mb-4">Download our free app for interactive maps, event listings, transport information, and exclusive deals.</p>
+            <div class="flex space-x-4">
+              <a href="#" class="inline-block bg-white text-blue-600 px-4 py-2 rounded font-semibold hover:bg-blue-50 transition-colors">
+                App Store
+              </a>
+              <a href="#" class="inline-block bg-white text-blue-600 px-4 py-2 rounded font-semibold hover:bg-blue-50 transition-colors">
+                Google Play
+              </a>
+            </div>
+          </div>
+          
+          <div class="bg-white/10 p-6 rounded-lg">
+            <h3 class="font-bold text-xl mb-4">Digital Travel Guides</h3>
+            <p class="mb-4">Download our comprehensive travel guides in PDF format for easy reference during your trip.</p>
+            <div class="space-y-2">
+              <a href="#" class="block bg-white text-blue-600 px-4 py-2 rounded font-semibold hover:bg-blue-50 transition-colors">
+                Brisbane Essentials Guide
+              </a>
+              <a href="#" class="block bg-white text-blue-600 px-4 py-2 rounded font-semibold hover:bg-blue-50 transition-colors">
+                Food & Drink Guide
+              </a>
+              <a href="#" class="block bg-white text-blue-600 px-4 py-2 rounded font-semibold hover:bg-blue-50 transition-colors">
+                Family Adventure Guide
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visitor Information -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center mb-12">
+        <h2 class="text-3xl font-bold mb-6">Planning Resources</h2>
+        <p>
+          Our comprehensive planning resources will help you organize every aspect of your Brisbane visit,
+          from transportation and accommodation to dining and activities.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <a href="/transportation" class="block bg-slate-50 rounded-lg p-8 text-center transition-transform hover:scale-105">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-4 text-blue-600">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+          </svg>
+          <h3 class="font-bold text-xl mb-2">Transportation</h3>
+          <p class="text-sm">Getting around Brisbane and beyond with our comprehensive transportation guide.</p>
+        </a>
+        
+        <a href="/where-to-stay" class="block bg-slate-50 rounded-lg p-8 text-center transition-transform hover:scale-105">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-4 text-blue-600">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+          </svg>
+          <h3 class="font-bold text-xl mb-2">Where to Stay</h3>
+          <p class="text-sm">Accommodation options for every budget, from luxury hotels to budget-friendly hostels.</p>
+        </a>
+        
+        <a href="/maps" class="block bg-slate-50 rounded-lg p-8 text-center transition-transform hover:scale-105">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-4 text-blue-600">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+          </svg>
+          <h3 class="font-bold text-xl mb-2">Maps & Navigation</h3>
+          <p class="text-sm">Detailed maps of Brisbane and surrounds to help you find your way around the city.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</NewLayout> 

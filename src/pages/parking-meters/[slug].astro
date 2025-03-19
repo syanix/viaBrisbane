@@ -94,14 +94,15 @@ if (meter.TAR_RATE_AH_WE) {
             )}
         </div>
 
-        <section class="breadcrumb-section">
-            <div class="content-box">
+        <!-- Breadcrumbs -->
+        <div class="bg-slate-100 border-b border-slate-200">
+            <div class="container mx-auto px-4 py-3">
                 <Breadcrumbs paths={[
                     { name: 'Parking Meters', url: '/parking-meters' },
                     { name: `Meter ${meter.METER_NO}` }
                 ]} />
             </div>
-        </section>
+        </div>
 
         <section class="highlight-section">
             <div class="content-box">

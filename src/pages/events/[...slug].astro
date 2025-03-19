@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../layouts/NewLayout.astro';
 import { getEventBySlug } from '../../utils/eventsCache';
 import { createSlug } from '../../utils/slug';
 import Breadcrumbs from '../../components/breadcrumbs.astro';
@@ -72,6 +72,9 @@ const showPastEventNotice = !hasFutureDates;
 // Determine which dates to display
 const datesToDisplay = hasFutureDates ? futureDates : dates;
 
+// Add venue handling using the same logic from EventCard
+const venue = event.venue ? event.venue.split(',')[0].trim() : '';
+
 // Check if the event has already ended (for schema)
 const isEventPast = new Date(event.end_datetime) < currentDate;
 
@@ -114,19 +117,37 @@ const eventSchema = {
     url={eventUrl}
     schema={eventSchema}
 >
-    <!-- Banner Image -->
-    <div class="banner-container">
-        <img 
-            src={event.eventimage || '/images/default-image.jpg'} 
-            alt={event.subject} 
-            class="banner-image"
-        />
-        <div class="banner-overlay"></div>
-    </div>
+    <!-- Hero Section -->
+    <section class="relative">
+        <div class="h-[50vh] min-h-[400px] bg-slate-800 overflow-hidden">
+            <img 
+                src={event.eventimage || '/images/default-image.jpg'} 
+                alt={event.subject} 
+                class="w-full h-full object-cover opacity-80"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 w-full p-8">
+                <div class="container mx-auto">
+                    <div class="flex flex-col gap-1 text-white max-w-4xl">
+                        <h1 class="text-3xl md:text-5xl font-bold">{event.subject}</h1>
+                        {event.location && (
+                            <p class="text-xl mt-2 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                </svg>
+                                {event.location}
+                            </p>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Breadcrumbs -->
-    <div class="breadcrumb-section">
-        <div class="content-box">
+    <!-- Breadcrumbs Section -->
+    <div class="bg-slate-100 border-b border-slate-200">
+        <div class="container mx-auto px-4 py-3">
             <Breadcrumbs paths={[
                 { name: 'Events', url: '/events' },
                 { name: event.subject }
@@ -134,178 +155,285 @@ const eventSchema = {
         </div>
     </div>
 
-    <div class="event-detail">
-        <div class="content-box">
-            <!-- Past Event Notice -->
-            {showPastEventNotice && (
-                <div class="past-event-notice">
-                    <p>This event has already taken place. Check out our upcoming events for more things to do in Brisbane.</p>
-                    <a href="/events" class="primary">View Upcoming Events</a>
-                </div>
+    <!-- Event Types Section -->
+    <div class="container mx-auto px-4 pt-6">
+        <div class="flex flex-wrap gap-2 mb-2">
+            {event.event_type && event.event_type.split(',').map(type => (
+                <a href={`/events?q=${encodeURIComponent(type.trim())}`} 
+                   class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0]">
+                    {type.trim()}
+                </a>
+            ))}
+            {venue && (
+                <a href={`/venues/${venue.toLowerCase().replace(/\s+/g, '-')}`} 
+                   class="bg-black text-white px-3 py-1 text-sm font-bold rounded-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block mr-1 -mt-0.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                    </svg>
+                    {venue}
+                </a>
             )}
+        </div>
+    </div>
 
-            <h1 class="section-heading">{event.subject}</h1>
+    <!-- Past Event Notice -->
+    {showPastEventNotice && (
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-6 mb-6 container mx-auto px-4">
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-yellow-500 mr-3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                </svg>
+                <div>
+                    <p class="text-yellow-700 font-medium">This event has already taken place.</p>
+                    <p class="text-yellow-700 mt-1">Check out our upcoming events for more things to do in Brisbane.</p>
+                </div>
+            </div>
+            <div class="mt-3">
+                <a href="/events" class="inline-block bg-[#2073E0] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#1b65c8] transition-colors text-sm">
+                    View Upcoming Events
+                </a>
+            </div>
+        </div>
+    )}
 
-            <div class="event-content-grid">
-                <!-- Left Column: Event Info -->
-                <div class="event-info">
-                    <div class="event-meta">
-                        <h3>Event Details</h3>
-                        
+    <!-- Main Content -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Left Column: Event Details -->
+                <div class="lg:col-span-2 order-2 lg:order-1">
+                    <!-- Event Description -->
+                    <div class="mb-12">
+                        <h2 class="text-2xl font-bold mb-6">About This Event</h2>
+                        <div class="prose prose-sm md:prose max-w-none overflow-hidden" set:html={event.description} />
+                    </div>
+
+                    <!-- Event Requirements -->
+                    {event.requirements && (
+                        <div class="mb-12">
+                            <h2 class="text-2xl font-bold mb-6">Requirements</h2>
+                            <div class="prose prose-sm md:prose max-w-none overflow-hidden" set:html={event.requirements} />
+                        </div>
+                    )}
+                    
+                    <!-- Meeting Point -->
+                    {event.meetingpoint && (
+                        <div class="mb-12">
+                            <h2 class="text-2xl font-bold mb-6">Meeting Point</h2>
+                            <div class="prose prose-sm md:prose max-w-none overflow-hidden" set:html={event.meetingpoint} />
+                        </div>
+                    )}
+                    
+                    <!-- Google Map -->
+                    {event.venueaddress && (
+                        <div class="mb-12">
+                            <h2 class="text-2xl font-bold mb-6">Location</h2>
+                            <div class="h-[400px] rounded-lg overflow-hidden border border-slate-200">
+                                <iframe
+                                    width="100%"
+                                    height="100%"
+                                    style="border:0"
+                                    loading="lazy"
+                                    allowfullscreen
+                                    referrerpolicy="no-referrer-when-downgrade"
+                                    src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(event.venueaddress)}`}
+                                ></iframe>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                <!-- Right Column: Event Meta -->
+                <div class="lg:col-span-1 order-1 lg:order-2">
+                    <div class="bg-slate-50 p-6 rounded-lg sticky top-24">
                         <!-- Event Dates -->
                         {datesToDisplay.length > 0 && (
-                            <div class="event-dates">
-                                <p><strong>When:</strong></p>
-                                <ul>
+                            <div class="mb-6">
+                                <h3 class="text-lg font-bold mb-3 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#2073E0]">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                                    </svg>
+                                    When
+                                </h3>
+                                <ul class="space-y-3">
                                     {datesToDisplay.map(date => (
-                                        <li>
-                                            <span class="event-date-icon">🗓️</span>
-                                            <span>
-                                                {date.formatteddatetime}
-                                                {pastDates.some(pd => pd.formatteddatetime === date.formatteddatetime) && 
-                                                    <span class="past-date"> (Past)</span>
-                                                }
-                                            </span>
+                                        <li class="flex">
+                                            <div class="flex-1">
+                                                <p class="text-slate-800">
+                                                    {date.formatteddatetime}
+                                                    {pastDates.some(pd => pd.formatteddatetime === date.formatteddatetime) && (
+                                                        <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded ml-2">Past</span>
+                                                    )}
+                                                </p>
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
                         )}
-                        
+
                         <!-- Event Location -->
-                        {event.location && (
-                            <div class="event-location">
-                                <p>
-                                    <strong>Where:</strong>
-                                    <span class="event-location-icon">📍</span>
-                                    {event.location}
-                                </p>
+                        {event.venue && (
+                            <div class="mb-6">
+                                <h3 class="text-lg font-bold mb-3 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#2073E0]">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                    </svg>
+                                    Where
+                                </h3>
+                                <div>
+                                    
+                                    {event.venueaddress && (
+                                        <p class="text-slate-600">{event.venueaddress}</p>
+                                    )}
+                                </div>
                             </div>
                         )}
-                        
-                        <!-- Event Address -->
-                        {event.venueaddress && (
-                            <div class="event-address">
-                                <p><strong>Address:</strong> {event.venueaddress}</p>
-                            </div>
-                        )}
-                        
+
                         <!-- Event Cost -->
                         {event.cost && (
-                            <div class="event-additional-info">
-                                <p><strong>Cost:</strong> {event.cost}</p>
+                            <div class="mb-6">
+                                <h3 class="text-lg font-bold mb-3 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#2073E0]">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                                    </svg>
+                                    Cost
+                                </h3>
+                                <p class="text-slate-800">{event.cost}</p>
                             </div>
                         )}
-                        
-                        <!-- Event Age Range -->
+
+                        <!-- Age Range -->
                         {event.agerange && (
-                            <div class="event-additional-info">
-                                <p><strong>Age Range:</strong> {event.agerange}</p>
+                            <div class="mb-6">
+                                <h3 class="text-lg font-bold mb-3 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#2073E0]">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                                    </svg>
+                                    Age Range
+                                </h3>
+                                <p class="text-slate-800">{event.agerange}</p>
                             </div>
                         )}
+
+                        <!-- Event Types -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-bold mb-3 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#2073E0]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+                                </svg>
+                                Categories
+                            </h3>
+                            <div class="flex flex-wrap gap-2">
+                                {event.event_type && 
+                                event.event_type.split(',').map(type => (
+                                    <a href={`/events?q=${encodeURIComponent(type.trim())}`} 
+                                    class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0]">
+                                        {type.trim()}
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
                         
-                        <!-- Event Category -->
-                        {event.primaryeventtype && (
-                            <div class="event-category">
-                                <p><strong>Category:</strong> {event.primaryeventtype}</p>
+
+                        <!-- Booking Info -->
+                        {event.bookings && (
+                            <div class="mb-6" id="booking-info">
+                                <h3 class="text-lg font-bold mb-3 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#2073E0]">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+                                    </svg>
+                                    Booking Information
+                                </h3>
+                                <div class="text-slate-800 prose max-w-none" set:html={event.bookings} />
                             </div>
                         )}
-                    </div>
-                    
-                    <!-- Booking Info -->
-                    {event.bookings && (
-                        <div class="booking-info" id="booking-info">
-                            <h2>Booking Information</h2>
-                            <div class="booking-content" set:html={event.bookings} />
+
+                        <!-- Social Share -->
+                        <div class="border-t border-slate-200 pt-6 mt-6">
+                            <h3 class="text-lg font-bold mb-3">Share This Event</h3>
+                            <div class="flex space-x-3">
+                                <a href={`https://www.facebook.com/dialog/share?app_id=530286526102392&display=popup&href=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&redirect_uri=https%3A%2F%2Fwww.viabrisbane.com`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="w-10 h-10 bg-blue-600 text-white flex items-center justify-center rounded-full hover:bg-blue-700 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+                                    </svg>
+                                </a>
+                                <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out ${event.subject} at ${event.venue || 'Brisbane'}`)}
+                                    &url=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&image=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="w-10 h-10 bg-black text-white flex items-center justify-center rounded-full hover:bg-gray-800 transition-colors">
+                                    <svg width="20" height="20" viewBox="0 0 1200 1227" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z" fill="currentColor"/>
+                                    </svg>
+                                </a>
+                                <a href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&media=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}&description=${encodeURIComponent(event.subject)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="w-10 h-10 bg-red-600 text-white flex items-center justify-center rounded-full hover:bg-red-700 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 0c-6.627 0-12 5.372-12 12 0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146 1.124.347 2.317.535 3.554.535 6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z" />
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
-                    )}
-                    
-                    <!-- Social Share -->
-                    <div class="social-share">
-                        <h3>Share This Event</h3>
-                        <div class="share-buttons">
-                            <a href={`https://www.facebook.com/dialog/share?app_id=530286526102392&display=popup&href=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&redirect_uri=https%3A%2F%2Fwww.viabrisbane.com`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="share-button facebook">
-                                F
-                            </a>
-                            <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out ${event.subject} at ${event.venue || 'Brisbane'}`)}
-                                &url=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&image=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="share-button twitter">
-                                X
-                            </a>
-                            <a href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(`${BASE_URL}${eventUrl}`)}&media=${encodeURIComponent(event.eventimage || '/images/default-image.jpg')}&description=${encodeURIComponent(event.subject)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="share-button pinterest">
-                                P
+
+                        <!-- Event Actions -->
+                        <div class="border-t border-slate-200 pt-6 mt-6">
+                            {event.bookings && event.bookings.includes('href=') ? (
+                                <a href="#booking-info" 
+                                   class="block text-center bg-[#2073E0] text-white px-6 py-3 rounded-md font-bold hover:bg-[#1b65c8] transition-colors">
+                                    Book Now
+                                </a>
+                            ) : (
+                                <a href="/events" 
+                                   class="block text-center bg-[#2073E0] text-white px-6 py-3 rounded-md font-bold hover:bg-[#1b65c8] transition-colors">
+                                    Back to Events
+                                </a>
+                            )}
+                            <a href="/" 
+                               class="block text-center bg-slate-200 text-slate-800 px-6 py-3 rounded-md font-bold hover:bg-slate-300 transition-colors mt-3">
+                                Explore Brisbane
                             </a>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Right Column: Description and Map -->
-                <div class="event-right-column">
-                    <!-- Event Description -->
-                    <div class="event-description">
-                        <h2>About This Event</h2>
-                        <div class="description-content" set:html={event.description} />
-                    </div>
-                    
-                    <!-- Requirements Section -->
-                    {event.requirements && (
-                        <div class="requirements">
-                            <h2>Requirements</h2>
-                            <div class="requirements-content" set:html={event.requirements} />
-                        </div>
-                    )}
-                    
-                    <!-- Meeting Point Section -->
-                    {event.meetingpoint && (
-                        <div class="meeting-point">
-                            <h2>Meeting Point</h2>
-                            <div class="meeting-point-content" set:html={event.meetingpoint} />
-                        </div>
-                    )}
-                    
-                    <!-- Map -->
-                    {event.venueaddress && (
-                        <div class="event-map-container">
-                            <h3>Location</h3>
-                            <iframe
-                                width="100%"
-                                height="100%"
-                                style="border:0"
-                                loading="lazy"
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
-                                src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(event.venueaddress)}`}
-                            ></iframe>
-                        </div>
-                    )}
-                </div>
-            </div>
-            
-            <!-- Event Actions -->
-            <div class="event-actions">
-                {event.bookings && event.bookings.includes('href=') ? (
-                    <a href="#booking-info" class="primary">Book Now</a>
-                ) : (
-                    <a href="/events" class="secondary">Back to Events</a>
-                )}
-                <a href="/" class="secondary">Explore Brisbane</a>
             </div>
         </div>
-    </div>
+    </section>
 </Layout>
 
 <style>
-.past-date {
-    color: #856404;
-    font-style: italic;
-    font-size: 0.9em;
+/* Fix for overflow issues with HTML content */
+.prose {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.prose :where(table) {
+  width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+
+.prose :where(img) {
+  max-width: 100%;
+  height: auto;
+}
+
+.prose :where(iframe) {
+  max-width: 100%;
+}
+
+.prose pre {
+  overflow-x: auto;
+  max-width: 100%;
 }
 </style>
