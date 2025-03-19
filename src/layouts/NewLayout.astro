@@ -1,6 +1,7 @@
 ---
 import "../assets/css/global.css";
 import Head from '../components/head.astro'
+import NavMenu from '../components/NavMenu.astro'
 const { 
     title, 
     description, 
@@ -32,154 +33,14 @@ const {
 	<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded">Skip to content</a>
 	
 	<!-- Header -->
-	<header class="bg-black text-white sticky top-0 z-50">
-		<div class="container mx-auto px-4 py-4 flex justify-between items-center">
+	<header class="text-white sticky top-0 z-50 border-b border-slate-700/40 shadow-md shadow-slate-900/30 backdrop-blur-sm bg-black/95">
+		<div class="mx-auto px-4 py-4 flex justify-between items-center">
 			<!-- Logo -->
 			<a href="/" class="text-2xl font-bold tracking-tight text-white">
-				<span class="inline-block">VIA</span>
-				<span class="inline-block text-blue-400">BRISBANE</span>
+				<span class="inline-block font-bold">VIA</span>
+				<span class="inline-block font-bold text-blue-400">BRISBANE</span>
 			</a>
-			
-			<!-- Desktop Navigation -->
-			<nav class="hidden md:flex space-x-8">
-				<div class="group relative">
-					<a href="#" class="text-white hover:text-blue-400 font-medium uppercase tracking-wide transition duration-150 ease-in-out py-1 flex items-center">
-						Now in Brisbane
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-							<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-						</svg>
-					</a>
-					<div class="absolute left-0 mt-2 w-48 bg-white rounded-none shadow-lg py-2 z-10 hidden group-hover:block">
-						<a href="/events" class="block px-4 py-2 text-black hover:bg-gray-100">Events</a>
-						<a href="/attractions" class="block px-4 py-2 text-black hover:bg-gray-100">Attractions</a>
-						<a href="/dining" class="block px-4 py-2 text-black hover:bg-gray-100">Dining</a>
-					</div>
-				</div>
-				<div class="group relative">
-					<a href="#" class="text-white hover:text-blue-400 font-medium uppercase tracking-wide transition duration-150 ease-in-out py-1 flex items-center">
-						Things to Do
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-							<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-						</svg>
-					</a>
-					<div class="absolute left-0 mt-2 w-48 bg-white rounded-none shadow-lg py-2 z-10 hidden group-hover:block">
-						<a href="/events" class="block px-4 py-2 text-black hover:bg-gray-100">Events</a>
-						<a href="/attractions" class="block px-4 py-2 text-black hover:bg-gray-100">Attractions</a>
-						<a href="/tours" class="block px-4 py-2 text-black hover:bg-gray-100">Tours</a>
-						<a href="/shopping" class="block px-4 py-2 text-black hover:bg-gray-100">Shopping</a>
-					</div>
-				</div>
-				<div class="group relative">
-					<a href="#" class="text-white hover:text-blue-400 font-medium uppercase tracking-wide transition duration-150 ease-in-out py-1 flex items-center">
-						Eat & Drink
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-							<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-						</svg>
-					</a>
-					<div class="absolute left-0 mt-2 w-48 bg-white rounded-none shadow-lg py-2 z-10 hidden group-hover:block">
-						<a href="/restaurants" class="block px-4 py-2 text-black hover:bg-gray-100">Restaurants</a>
-						<a href="/bars" class="block px-4 py-2 text-black hover:bg-gray-100">Bars & Nightlife</a>
-						<a href="/food-trucks" class="block px-4 py-2 text-black hover:bg-gray-100">Food Trucks</a>
-					</div>
-				</div>
-				<a href="/where-to-stay" class="text-white hover:text-blue-400 font-medium uppercase tracking-wide transition duration-150 ease-in-out py-1">
-					Where to Stay
-				</a>
-				<div class="group relative">
-					<a href="#" class="text-white hover:text-blue-400 font-medium uppercase tracking-wide transition duration-150 ease-in-out py-1 flex items-center">
-						Maps & Guides
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-							<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-						</svg>
-					</a>
-					<div class="absolute left-0 mt-2 w-48 bg-white rounded-none shadow-lg py-2 z-10 hidden group-hover:block">
-						<a href="/maps" class="block px-4 py-2 text-black hover:bg-gray-100">Maps</a>
-						<a href="/guides" class="block px-4 py-2 text-black hover:bg-gray-100">Guides</a>
-						<a href="/transportation" class="block px-4 py-2 text-black hover:bg-gray-100">Transportation</a>
-						<a href="/parking-meters" class="block px-4 py-2 text-black hover:bg-gray-100">Parking</a>
-					</div>
-				</div>
-			</nav>
-			
-			
-			<!-- Mobile Menu Button -->
-			<div class="md:hidden flex items-center">
-				<button class="text-white hover:text-blue-400 transition duration-150 ease-in-out mr-4">
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-					</svg>
-				</button>
-				<button id="mobile-menu-button" class="text-white hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 rounded-md p-2" aria-label="Toggle Menu" aria-expanded="false" aria-controls="mobile-menu">
-					<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-					</svg>
-				</button>
-			</div>
-		</div>
-		
-		<!-- Mobile Menu (Hidden by default) -->
-		<div id="mobile-menu" class="md:hidden hidden bg-black border-t border-gray-800 transition-all duration-300 ease-in-out" aria-hidden="true">
-			<div class="container mx-auto py-4 px-4">
-				<nav class="flex flex-col space-y-4" aria-label="Mobile Navigation">
-					<div class="border-b border-gray-800 pb-4">
-						<button class="flex items-center justify-between w-full text-white py-2">
-							<span class="font-medium uppercase">Now in Brisbane</span>
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-							</svg>
-						</button>
-						<div class="mt-2 pl-4 hidden">
-							<a href="/events" class="block py-2 text-gray-300 hover:text-white">Events</a>
-							<a href="/attractions" class="block py-2 text-gray-300 hover:text-white">Attractions</a>
-							<a href="/dining" class="block py-2 text-gray-300 hover:text-white">Dining</a>
-						</div>
-					</div>
-					<div class="border-b border-gray-800 pb-4">
-						<button class="flex items-center justify-between w-full text-white py-2">
-							<span class="font-medium uppercase">Things to Do</span>
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-							</svg>
-						</button>
-						<div class="mt-2 pl-4 hidden">
-							<a href="/events" class="block py-2 text-gray-300 hover:text-white">Events</a>
-							<a href="/attractions" class="block py-2 text-gray-300 hover:text-white">Attractions</a>
-							<a href="/tours" class="block py-2 text-gray-300 hover:text-white">Tours</a>
-							<a href="/shopping" class="block py-2 text-gray-300 hover:text-white">Shopping</a>
-						</div>
-					</div>
-					<div class="border-b border-gray-800 pb-4">
-						<button class="flex items-center justify-between w-full text-white py-2">
-							<span class="font-medium uppercase">Eat & Drink</span>
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-							</svg>
-						</button>
-						<div class="mt-2 pl-4 hidden">
-							<a href="/restaurants" class="block py-2 text-gray-300 hover:text-white">Restaurants</a>
-							<a href="/bars" class="block py-2 text-gray-300 hover:text-white">Bars & Nightlife</a>
-							<a href="/food-trucks" class="block py-2 text-gray-300 hover:text-white">Food Trucks</a>
-						</div>
-					</div>
-					<div class="border-b border-gray-800 pb-4">
-						<a href="/where-to-stay" class="block text-white py-2 font-medium uppercase">Where to Stay</a>
-					</div>
-					<div class="border-b border-gray-800 pb-4">
-						<button class="flex items-center justify-between w-full text-white py-2">
-							<span class="font-medium uppercase">Maps & Guides</span>
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-							</svg>
-						</button>
-						<div class="mt-2 pl-4 hidden">
-							<a href="/maps" class="block py-2 text-gray-300 hover:text-white">Maps</a>
-							<a href="/guides" class="block py-2 text-gray-300 hover:text-white">Guides</a>
-							<a href="/transportation" class="block py-2 text-gray-300 hover:text-white">Transportation</a>
-							<a href="/parking-meters" class="block py-2 text-gray-300 hover:text-white">Parking</a>
-						</div>
-					</div>
-				</nav>
-			</div>
+			<NavMenu />
 		</div>
 	</header>
 
@@ -189,7 +50,7 @@ const {
 
 	<!-- Footer -->
 	<footer class="bg-black text-white py-12">
-		<div class="container mx-auto px-4">
+		<div class="mx-auto px-4">
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 				<!-- Column 1 -->
 				<div>
@@ -210,7 +71,7 @@ const {
 						<li><a href="/membership" class="text-gray-300 hover:text-white transition duration-150">Membership</a></li>
 						<li><a href="/newsroom" class="text-gray-300 hover:text-white transition duration-150">Newsroom</a></li>
 						<li><a href="/travel-trade" class="text-gray-300 hover:text-white transition duration-150">Travel Trade</a></li>
-						<li><a href="/advertise" class="text-gray-300 hover:text-white transition duration-150">Advertise With Us</a></li>
+						<li><a href="mailto:info@viabrisbane.com" class="text-gray-300 hover:text-white transition duration-150">Advertise With Us</a></li>
 					</ul>
 				</div>
 				
@@ -228,18 +89,11 @@ const {
 				</div>
 				
 				<!-- Column 4 -->
-				<div>
+				<!-- <div>
 					<h3 class="text-xl font-bold mb-4 uppercase">Newsletter</h3>
 					<p class="text-gray-300 mb-4">What's good in Brisbane? From coverage of the latest attractions to deals on event tickets, incredible cuisine and more, our emails will make sure you never miss a thing.</p>
-					<form class="space-y-2">
-						<div class="flex flex-col">
-							<label for="email" class="text-gray-300 mb-1">*Email</label>
-							<input type="email" id="email" placeholder="Your email address" class="w-full px-4 py-2 rounded-none bg-white border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-600">
-						</div>
-						<p class="text-gray-400 text-sm">* Required Fields</p>
-						<button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-none transition duration-150 ease-in-out uppercase">Sign Up</button>
-					</form>
-				</div>
+					
+				</div> -->
 			</div>
 			
 			<div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">

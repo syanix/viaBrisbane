@@ -1,0 +1,156 @@
+---
+// JavaScript will be included for toggling menu functionality
+---
+
+<div class="relative z-50 w-full flex items-center justify-end">
+  <!-- Desktop Navigation -->
+  <nav class="hidden md:flex space-x-8 justify-end">
+      <div class="group relative">
+          <a href="#" class="text-white hover:text-blue-400 font-bold uppercase tracking-wide transition duration-150 ease-in-out py-1 flex items-center">
+              Now in Brisbane
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+          </a>
+          <div class="absolute right-0 mt-0 w-48 bg-slate-800 rounded-none shadow-lg py-2 z-10 hidden group-hover:block">
+              <a href="/events" class="block px-4 py-2 text-white hover:bg-blue-400 font-bold ">Events</a>
+              <a href="/attractions" class="block px-4 py-2 text-white hover:bg-blue-400 font-bold ">Attractions</a>
+              <a href="/dining" class="block px-4 py-2 text-white hover:bg-blue-400 font-bold ">Dining</a>
+          </div>
+      </div>
+      <div class="group relative">
+          <a href="#" class="text-white hover:text-blue-400 font-bold uppercase tracking-wide transition duration-150 ease-in-out py-1 flex items-center">
+              Things to Do
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+          </a>
+          <div class="absolute right-0 mt-2 w-48 bg-white rounded-none shadow-lg py-2 z-10 hidden group-hover:block">
+              <a href="/events" class="block px-4 py-2 text-black hover:bg-gray-100">Events</a>
+              <a href="/attractions" class="block px-4 py-2 text-black hover:bg-gray-100">Attractions</a>
+              <a href="/tours" class="block px-4 py-2 text-black hover:bg-gray-100">Tours</a>
+              <a href="/shopping" class="block px-4 py-2 text-black hover:bg-gray-100">Shopping</a>
+          </div>
+      </div>
+      <div class="group relative">
+          <a href="#" class="text-white hover:text-blue-400 font-bold uppercase tracking-wide transition duration-150 ease-in-out py-1 flex items-center">
+              Eat & Drink
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+          </a>
+          <div class="absolute right-0 mt-2 w-48 bg-white rounded-none shadow-lg py-2 z-10 hidden group-hover:block">
+              <a href="/restaurants" class="block px-4 py-2 text-black hover:bg-gray-100">Restaurants</a>
+              <a href="/bars" class="block px-4 py-2 text-black hover:bg-gray-100">Bars & Nightlife</a>
+              <a href="/food-trucks" class="block px-4 py-2 text-black hover:bg-gray-100">Food Trucks</a>
+          </div>
+      </div>
+      <a href="/where-to-stay" class="text-white hover:text-blue-400 font-bold uppercase tracking-wide transition duration-150 ease-in-out py-1">
+          Where to Stay
+      </a>
+      <div class="group relative">
+          <a href="#" class="text-white hover:text-blue-400 font-bold uppercase tracking-wide transition duration-150 ease-in-out py-1 flex items-center">
+              Maps & Guides
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+          </a>
+          <div class="absolute right-0 mt-2 w-48 bg-white rounded-none shadow-lg py-2 z-10 hidden group-hover:block">
+              <a href="/maps" class="block px-4 py-2 text-black hover:bg-gray-100">Maps</a>
+              <a href="/guides" class="block px-4 py-2 text-black hover:bg-gray-100">Guides</a>
+              <a href="/transportation" class="block px-4 py-2 text-black hover:bg-gray-100">Transportation</a>
+              <a href="/parking-meters" class="block px-4 py-2 text-black hover:bg-gray-100">Parking</a>
+          </div>
+      </div>
+  </nav>
+
+  <!-- Mobile Menu Button -->
+  <div class="md:hidden absolute right-8 z-50">
+      <button onclick="toggleMobileMenu()" type="button" class="bg-black text-white border border-white hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md p-2" aria-label="Toggle Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+      </button>
+  </div>
+</div>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="absolute w-full h-screen top-0 right-0 bg-black z-0 hidden mt-24">
+    <div class="container h-full overflow-y-auto">
+        <nav aria-label="Mobile Navigation" class="px-6">
+            <!-- Main navigation items with right chevron -->
+            <div class="border-b border-gray-800">
+                <a href="/now-in-brisbane" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
+                    NOW IN BRISBANE
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="border-b border-gray-800">
+                <a href="/things-to-do" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
+                    THINGS TO DO
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="border-b border-gray-800">
+                <a href="/eat-drink" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
+                    EAT & DRINK
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="border-b border-gray-800">
+                <a href="/where-to-stay" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
+                    WHERE TO STAY
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="border-b border-gray-800">
+                <a href="/maps-guides" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
+                    MAPS & GUIDES
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="border-b border-gray-800 mb-10">
+                <a href="/business" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
+                    BUSINESS IN BRISBANE
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+            
+           
+        </nav>
+    </div>
+</div>
+
+<script is:inline>
+    function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenu) {
+            mobileMenu.classList.toggle('hidden');
+        }
+    }
+
+    // Close menu on window resize
+    window.addEventListener('resize', () => {
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (window.innerWidth >= 768 && mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+        }
+    });
+</script>

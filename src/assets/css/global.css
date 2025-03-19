@@ -37,6 +37,11 @@
     font-weight: bold;
   }
 
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
   /* Move link styles to base layer */
   a {
     text-decoration: none;
