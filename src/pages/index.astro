@@ -43,10 +43,28 @@ const schema = [websiteSchema, organizationSchema];
 ---
 <Layout title={title} description={description} keywords={keywords} schema={schema}>
 	<main>
-        <section class="hero homepage">
-            <div class="hero-text">
-                <h1>Discover Brisbane</h1>
-                <p>Welcome to Via Brisbane! Your comprehensive guide to exploring the vibrant city of Brisbane.</p>
+        <section class="relative h-[70vh] min-h-[500px] overflow-hidden">
+            <!-- Background Image -->
+            <img 
+                src="/images/brisbane-skyline.jpg" 
+                alt="Brisbane Skyline" 
+                class="absolute inset-0 w-full h-full object-cover"
+            />
+            
+            <!-- Overlay Layer - darkens and adds depth -->
+            <div class="absolute inset-0 bg-black opacity-40"></div>
+            
+            <!-- Optional: Gradient Overlay for better text readability -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+            
+            <!-- Hero Content -->
+            <div class="relative h-full flex flex-col items-center justify-center text-center px-4 z-10">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 max-w-4xl">
+                    Discover Brisbane
+                </h1>
+                <p class="text-xl md:text-2xl text-white max-w-2xl">
+                    Welcome to Via Brisbane! Your comprehensive guide to exploring the vibrant city of Brisbane.
+                </p>
             </div>
         </section>
 

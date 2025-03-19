@@ -1,43 +1,237 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../layouts/NewLayout.astro';
 import LinksSection from '../../components/links.astro'
 const title = "Resources for Exploring Brisbane: Travel Tips, Guides & More - Via Brisbane";
 const description = "Access a curated selection of resources to help you explore Brisbane. From travel tips to local guides, Via Brisbane has everything you need for your adventure.";
 const keywords = "Brisbane resources, travel tips Brisbane, local guides Brisbane, Brisbane planning, travel resources Brisbane, explore Brisbane tips";
 ---
 <Layout title={title} description={description} keywords={keywords}>
-<main>
-    <section class="hero resourcespage">
-        <div class="hero-text">
-            <h2>Resources</h2>
-            <p>Explore these resources to make the most of your time in Brisbane.</p>
+    <!-- Hero Section -->
+    <section class="relative">
+        <div class="h-[50vh] min-h-[400px] bg-slate-800 overflow-hidden">
+            <img 
+                src="/images/banner-resources.jpg" 
+                alt="Brisbane Resources" 
+                class="w-full h-full object-cover opacity-60"
+            />
+            <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    Resources
+                </h1>
+                <p class="text-xl text-white max-w-3xl">
+                    Explore these resources to make the most of your time in Brisbane.
+                </p>
+            </div>
         </div>
     </section>
 
-    <section class="highlight-section">
-        <div class="content-box">
-            <h2 class="section-heading">Useful Links</h2>
-            <p class="section-text">We've compiled a list of useful resources and links to help you navigate Brisbane and make the most of your visit.</p>
-            <ul class="section-text">
-                <li><a href="https://translink.com.au/" target="_blank">TransLink - Public Transport Information</a></li>
-                <li><a href="https://www.bom.gov.au/qld/forecasts/brisbane.shtml" target="_blank">Bureau of Meteorology - Brisbane Weather</a></li>
-                <li><a href="https://www.brisbane.qld.gov.au/" target="_blank">Brisbane City Council</a></li>
-                <li><a href="https://www.visitbrisbane.com.au/" target="_blank">Visit Brisbane - Official Visitor Guide</a></li>
-                <li><a href="https://www.qld.gov.au/about/contact-government/contact-council" target="_blank">Queensland Government - Contact Your Local Council</a></li>
-            </ul>
+    <!-- Main Content -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <!-- Travel Guides Section -->
+                <!-- <div class="mb-16">
+                    <h2 class="text-3xl font-bold mb-6">Travel Guides</h2>
+                    <div class="prose max-w-none">
+                        <p class="text-lg mb-6">
+                            Our comprehensive travel guides provide detailed information on various aspects of visiting and exploring Brisbane.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                        <a href="/guides/getting-around" class="block bg-slate-50 p-6 rounded-lg shadow-sm transition hover:shadow-md">
+                            <h3 class="text-xl font-bold mb-2">Getting Around Brisbane</h3>
+                            <p>Navigate Brisbane's public transportation system with ease using our comprehensive guide.</p>
+                        </a>
+                        
+                        <a href="/guides/neighborhoods" class="block bg-slate-50 p-6 rounded-lg shadow-sm transition hover:shadow-md">
+                            <h3 class="text-xl font-bold mb-2">Brisbane Neighborhoods</h3>
+                            <p>Discover the unique character and attractions of Brisbane's diverse neighborhoods.</p>
+                        </a>
+                        
+                        <a href="/guides/dining" class="block bg-slate-50 p-6 rounded-lg shadow-sm transition hover:shadow-md">
+                            <h3 class="text-xl font-bold mb-2">Brisbane Dining Guide</h3>
+                            <p>Explore Brisbane's culinary scene with recommendations for every taste and budget.</p>
+                        </a>
+                        
+                        <a href="/guides/outdoor-activities" class="block bg-slate-50 p-6 rounded-lg shadow-sm transition hover:shadow-md">
+                            <h3 class="text-xl font-bold mb-2">Outdoor Activities</h3>
+                            <p>Make the most of Brisbane's beautiful weather with our guide to outdoor activities.</p>
+                        </a>
+                    </div>
+                </div> -->
+                
+                <!-- Useful Links Section -->
+                <div class="mb-16">
+                    <h2 class="text-3xl font-bold mb-6">Useful Links</h2>
+                    <div class="prose max-w-none">
+                        <p class="text-lg mb-6">
+                            We've compiled a list of useful resources and links to help you navigate Brisbane and make the most of your visit.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <a href="https://translink.com.au/" target="_blank" rel="noopener" class="text-blue-400 font-bold hover:underline">TransLink - Public Transport Information</a>
+                            </li>
+                            
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <a href="https://www.bom.gov.au/qld/forecasts/brisbane.shtml" target="_blank" rel="noopener" class="text-blue-400 font-bold hover:underline">Bureau of Meteorology - Brisbane Weather</a>
+                            </li>
+                            
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <a href="https://www.brisbane.qld.gov.au/" target="_blank" rel="noopener" class="text-blue-400 font-bold hover:underline">Brisbane City Council</a>
+                            </li>
+                            
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <a href="https://www.visitbrisbane.com.au/" target="_blank" rel="noopener" class="text-blue-400 font-bold hover:underline">Visit Brisbane - Official Visitor Guide</a>
+                            </li>
+                            
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <a href="https://www.qld.gov.au/about/contact-government/contact-council" target="_blank" rel="noopener" class="text-blue-400 font-bold hover:underline">Queensland Government - Contact Your Local Council</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Emergency Contacts Section -->
+                <div class="mb-16">
+                    <h2 class="text-3xl font-bold mb-6">Emergency Contacts</h2>
+                    <div class="prose max-w-none">
+                        <p class="text-lg mb-6">
+                            In case of an emergency, here are some important contacts to have on hand during your stay in Brisbane.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg">
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <div class="bg-red-100 p-2 rounded-full mr-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-lg">Emergency Services: 000</p>
+                                    <p class="text-gray-700">For Police, Fire, and Ambulance</p>
+                                </div>
+                            </li>
+                            
+                            <li class="flex items-start">
+                                <div class="bg-red-100 p-2 rounded-full mr-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-lg">Poison Information Centre: 13 11 26</p>
+                                    <p class="text-gray-700">For advice on poisoning and poisoning prevention</p>
+                                </div>
+                            </li>
+                            
+                            <li class="flex items-start">
+                                <div class="bg-red-100 p-2 rounded-full mr-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-lg">SES (State Emergency Service): 132 500</p>
+                                    <p class="text-gray-700">For assistance in floods and storms</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apps & Digital Tools Section -->
+                <div class="mb-16">
+                    <h2 class="text-3xl font-bold mb-6">Apps & Digital Tools</h2>
+                    <div class="prose max-w-none">
+                        <p class="text-lg mb-6">
+                            Download these useful apps to enhance your Brisbane experience and navigate the city like a local.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-slate-50 p-6 rounded-lg text-center">
+                            <div class="bg-blue-100 p-3 inline-flex rounded-full mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">TransLink App</h3>
+                            <p class="mb-4">Plan your journey, check timetables, and buy tickets for Brisbane's public transport.</p>
+                            <div class="flex justify-center space-x-2">
+                                <a href="https://apps.apple.com/au/app/translink/id6504676908" target="_blank" rel="noopener" class="text-blue-400 font-bold hover:underline">iOS</a>
+                                <span class="text-gray-300">|</span>
+                                <a href="https://play.google.com/store/apps/details?id=de.hafas.android.translink&hl=en_US" target="_blank" rel="noopener" class="text-blue-400 font-bold hover:underline">Android</a>
+                            </div>
+                        </div>
+                        
+                        <!-- <div class="bg-slate-50 p-6 rounded-lg text-center">
+                            <div class="bg-blue-100 p-3 inline-flex rounded-full mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Brisbane Maps</h3>
+                            <p class="mb-4">Interactive maps of Brisbane with points of interest and offline navigation.</p>
+                            <div class="flex justify-center space-x-2">
+                                <a href="#" class="text-blue-400 hover:underline">iOS</a>
+                                <span class="text-gray-300">|</span>
+                                <a href="#" class="text-blue-400 hover:underline">Android</a>
+                            </div>
+                        </div> -->
+                        
+                        <div class="bg-slate-50 p-6 rounded-lg text-center">
+                            <div class="bg-blue-100 p-3 inline-flex rounded-full mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Brisbane</h3>
+                            <p class="mb-4">Official Brisbane tourism app with comprehensive guides and event listings.</p>
+                            <div class="flex justify-center space-x-2">
+                                <a href="https://apps.apple.com/au/app/brisbane/id1575312096" target="_blank" rel="noopener" class="text-blue-400 font-bold hover:underline">iOS</a>
+                                <span class="text-gray-300">|</span>
+                                <a href="https://play.google.com/store/apps/details?id=au.gov.qld.brisbane.app" target="_blank" rel="noopener" class="text-blue-400 font-bold hover:underline">Android</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
-
-    <section class="highlight-section">
-        <div class="content-box">
-            <h2 class="section-heading">Emergency Contacts</h2>
-            <p class="section-text">In case of an emergency, here are some important contacts:</p>
-            <ul class="section-text">
-                <li><strong>Emergency Services:</strong> 000 (Police, Fire, Ambulance)</li>
-                <li><strong>Poison Information Centre:</strong> 13 11 26</li>
-            </ul>
-        </div>
-    </section>
-    <LinksSection />
-</main>
 </Layout>
+
+<style>
+/* Fix for overflow issues with HTML content */
+.prose {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.prose :where(img) {
+  max-width: 100%;
+  height: auto;
+}
+</style>
