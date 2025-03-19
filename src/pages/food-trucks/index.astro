@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../layouts/NewLayout.astro';
 import FoodTrucks from '../../components/food-trucks.astro';
 import { getFoodTrucksByPage } from '../../utils/foodTrucksCache';
 
@@ -44,7 +44,5 @@ if (page > 1) {
     searchQuery={searchQuery}
     totalPages={totalPages}
 >
-    <main>
-        <FoodTrucks page={page} searchQuery={searchQuery} trucks={trucks} totalPages={totalPages} />
-    </main>
+    <FoodTrucks page={page} searchQuery={searchQuery} trucks={trucks} totalPages={totalPages} />
 </Layout> 

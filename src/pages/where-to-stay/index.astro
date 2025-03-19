@@ -1,0 +1,390 @@
+---
+import Layout from '../../layouts/NewLayout.astro';
+import HotelCard from '../../components/HotelCard.astro';
+import { EPSRapidAPI } from '../../utils/expediaAPI';
+
+const title = "Where to Stay in Brisbane - Accommodation Guide - Via Brisbane";
+const description = "Find the perfect accommodation in Brisbane. From luxury hotels and boutique stays to budget-friendly hostels and serviced apartments, discover the best places to stay during your Brisbane visit.";
+const keywords = "Brisbane accommodation, Brisbane hotels, where to stay Brisbane, Brisbane CBD accommodation, budget accommodation Brisbane, luxury hotels Brisbane";
+
+// Mock data for now - in production, this would use the actual API
+// Sample hotel data structured like events for demonstration
+const featuredHotels = [
+  {
+    id: 'hotel1',
+    name: "W Brisbane",
+    description: "Luxury hotel in the heart of Brisbane with river views, featuring a rooftop pool and modern design.",
+    category: {
+      id: 'luxury',
+      name: "Luxury"
+    },
+    area: "CBD",
+    price: "From $350 per night",
+    image: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop",
+    starRating: 5,
+    guestRating: {
+      value: 4.7,
+      count: 1243
+    }
+  },
+  {
+    id: 'hotel2',
+    name: "Emporium Hotel South Bank",
+    description: "Award-winning 5-star boutique hotel with rooftop bar and infinity pool overlooking the city.",
+    category: {
+      id: 'luxury',
+      name: "Luxury"
+    },
+    area: "South Bank",
+    price: "From $320 per night",
+    image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2074&auto=format&fit=crop",
+    starRating: 5,
+    guestRating: {
+      value: 4.8,
+      count: 972
+    }
+  },
+  {
+    id: 'hotel3',
+    name: "The Calile Hotel",
+    description: "Urban resort in Fortitude Valley with architectural design, palm-fringed pool and acclaimed restaurants.",
+    category: {
+      id: 'boutique',
+      name: "Boutique"
+    },
+    area: "Fortitude Valley",
+    price: "From $280 per night",
+    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop",
+    starRating: 5,
+    dealBadge: "Member Discount",
+    guestRating: {
+      value: 4.9,
+      count: 1102
+    }
+  },
+  {
+    id: 'hotel4',
+    name: "Ovolo The Valley",
+    description: "Vibrant designer hotel with quirky interiors, rooftop swimming pool and complimentary minibar.",
+    category: {
+      id: 'boutique',
+      name: "Boutique"
+    },
+    area: "Fortitude Valley",
+    price: "From $250 per night",
+    image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2070&auto=format&fit=crop",
+    starRating: 4.5,
+    guestRating: {
+      value: 4.6,
+      count: 865
+    }
+  },
+  {
+    id: 'hotel5',
+    name: "Crystalbrook Vincent",
+    description: "Art-inspired hotel at Howard Smith Wharves with sustainable ethos and riverside dining options.",
+    category: {
+      id: 'luxury',
+      name: "Luxury"
+    },
+    area: "CBD",
+    price: "From $290 per night",
+    image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=2070&auto=format&fit=crop",
+    starRating: 5,
+    guestRating: {
+      value: 4.5,
+      count: 743
+    }
+  },
+  {
+    id: 'hotel6',
+    name: "Arise Brisbane Skytower",
+    description: "Modern apartments in one of Brisbane's tallest buildings with citywide views and rooftop amenities.",
+    category: {
+      id: 'apartments',
+      name: "Apartments"
+    },
+    area: "CBD",
+    price: "From $200 per night",
+    image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=2071&auto=format&fit=crop",
+    starRating: 4,
+    guestRating: {
+      value: 4.2,
+      count: 558
+    }
+  }
+];
+
+/* 
+// Example of how to fetch from Expedia API for server-side rendering
+// In production, you'd implement this functionality
+
+// Server-side API call to get hotel data - commented out for demo
+export async function getStaticProps() {
+  try {
+    // Initialize the Expedia API client with credentials
+    const epsClient = new EPSRapidAPI({
+      apiKey: process.env.EXPEDIA_API_KEY,
+      secret: process.env.EXPEDIA_SECRET
+    });
+
+    // Fetch properties in Brisbane
+    const hotels = await epsClient.getProperties({
+      location: 'Brisbane,QLD,Australia',
+      checkIn: '2023-12-01',
+      checkOut: '2023-12-03',
+      rooms: 1,
+      adults: 2
+    });
+
+    return {
+      props: {
+        hotels
+      }
+    };
+  } catch (error) {
+    console.error('Failed to fetch hotel data:', error);
+    return {
+      props: {
+        hotels: [] 
+      }
+    };
+  }
+}
+*/
+---
+
+<Layout 
+  title={title} 
+  description={description} 
+  keywords={keywords}
+>
+  <!-- Hero Section -->
+  <section class="relative">
+    <div class="h-[50vh] min-h-[400px] bg-slate-800 overflow-hidden">
+      <img 
+        src="https://images.unsplash.com/photo-1587874522487-fe10e9d4eac5?q=80&w=1920&auto=format&fit=crop" 
+        alt="Brisbane Accommodation" 
+        class="w-full h-full object-cover opacity-60"
+      />
+      <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+          Where to Stay in Brisbane
+        </h1>
+        <p class="text-xl text-white max-w-3xl">
+          Find the perfect accommodation for your Brisbane visit, from luxury hotels to budget-friendly options.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search Widget Section -->
+  <section class="py-12 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8 text-center">Find Your Perfect Stay</h2>
+        <div class="bg-slate-50 p-6 rounded-lg shadow-sm mb-8">
+          <div class="eg-widget" data-widget="search" data-program="au-expedia" data-lobs="stays,flights" data-network="pz" data-camref="1100l4Zb9G" data-pubref="viaBrisbane-hotel"></div>
+          <script class="eg-widgets-script" src="https://affiliates.expediagroup.com/products/widgets/assets/eg-widgets.js"></script>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Hotels Section -->
+  <section class="py-12 bg-slate-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold mb-8 text-center">Featured Brisbane Hotels</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {featuredHotels.map((hotel) => (
+          <div class="h-full">
+            <HotelCard hotel={hotel} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Accommodation Guide Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8">Brisbane Accommodation Guide</h2>
+        
+        <div class="prose max-w-none">
+          <p class="text-lg mb-6">
+            Brisbane offers a wide range of accommodation options to suit every traveler's needs and budget. Whether you're looking for a luxury hotel with river views, a boutique stay in a trendy neighborhood, or a budget-friendly hostel, Brisbane has you covered.
+          </p>
+
+          <!-- CBD Section -->
+          <div class="bg-slate-50 p-6 rounded-lg mb-12">
+            <h3 class="text-2xl font-bold mb-4">Brisbane CBD</h3>
+            <p class="mb-4">
+              Staying in Brisbane's Central Business District (CBD) puts you at the heart of the city with easy access to shopping, dining, and cultural attractions. The CBD is ideal for business travelers or tourists who want to be close to major attractions like Queen Street Mall, the City Botanic Gardens, and South Bank Parklands.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="font-bold">Luxury Options</h4>
+                <ul class="list-disc list-inside mt-2">
+                  <li><a href="https://expedia.com/affiliates/brisbane-hotels-w-brisbane.HmY3iuM" target="_blank">W Brisbane</a></li>
+                  <li><a href="https://www.westin.com/en-us/hotels/bne-wst/westin-brisbane-hotel-and-spa/index.html" target="_blank">The Westin Brisbane</a></li>
+                  <li><a href="https://www.emporiumhotel.com.au/" target="_blank">Emporium Hotel South Bank</a></li>
+                  <li><a href="https://www.crystalbrook.com.au/hotels/vincent/" target="_blank">Crystalbrook Vincent</a></li>
+                </ul>
+              </div>
+              <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="font-bold">Mid-Range Options</h4>
+                <ul class="list-disc list-inside mt-2">
+                  <li>Ibis Brisbane</li>
+                  <li>Mantra on Queen</li>
+                  <li>Royal on the Park</li>
+                  <li>Four Points by Sheraton</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- South Bank Section -->
+          <div class="bg-slate-50 p-6 rounded-lg mb-12">
+            <h3 class="text-2xl font-bold mb-4">South Bank</h3>
+            <p class="mb-4">
+              South Bank is Brisbane's premier lifestyle and cultural destination. Staying here gives you access to the South Bank Parklands, Queensland Cultural Centre, and numerous restaurants and cafes. It's perfect for families and those seeking a more relaxed atmosphere while still being close to the city center.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="font-bold">Luxury Options</h4>
+                <ul class="list-disc list-inside mt-2">
+                  <li>Emporium Hotel South Bank</li>
+                  <li>The Sebel Brisbane South Bank</li>
+                </ul>
+              </div>
+              <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="font-bold">Mid-Range Options</h4>
+                <ul class="list-disc list-inside mt-2">
+                  <li>Mantra South Bank</li>
+                  <li>Novotel Brisbane South Bank</li>
+                  <li>Rydges South Bank</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fortitude Valley Section -->
+          <div class="bg-slate-50 p-6 rounded-lg mb-12">
+            <h3 class="text-2xl font-bold mb-4">Fortitude Valley</h3>
+            <p class="mb-4">
+              Known as "The Valley," this vibrant neighborhood is Brisbane's entertainment precinct, packed with nightlife, boutique shopping, and a thriving music scene. Stay here if you want to experience Brisbane's nightlife and cultural edge.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="font-bold">Boutique Options</h4>
+                <ul class="list-disc list-inside mt-2">
+                  <li>The Calile Hotel</li>
+                  <li>Ovolo The Valley</li>
+                  <li>The Fantauzzo</li>
+                </ul>
+              </div>
+              <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="font-bold">Mid-Range Options</h4>
+                <ul class="list-disc list-inside mt-2">
+                  <li>TRYP by Wyndham Fortitude Valley</li>
+                  <li>Alex Perry Hotel & Apartments</li>
+                  <li>FV by Peppers</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- New Farm & Teneriffe Section -->
+          <div class="bg-slate-50 p-6 rounded-lg mb-12">
+            <h3 class="text-2xl font-bold mb-4">New Farm & Teneriffe</h3>
+            <p class="mb-4">
+              These riverside suburbs offer a relaxed atmosphere with upscale dining, beautiful parks, and converted woolstore apartments. Perfect for those who want a more local experience while still being close to the city.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="font-bold">Boutique Options</h4>
+                <ul class="list-disc list-inside mt-2">
+                  <li>Spicers Balfour Hotel</li>
+                  <li>The Constance</li>
+                </ul>
+              </div>
+              <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="font-bold">Apartment Options</h4>
+                <ul class="list-disc list-inside mt-2">
+                  <li>Adina Apartment Hotel Brisbane Anzac Square</li>
+                  <li>Quest New Farm</li>
+                  <li>Meriton Suites Herschel Street</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Budget Options Section -->
+          <div class="bg-slate-50 p-6 rounded-lg mb-12">
+            <h3 class="text-2xl font-bold mb-4">Budget-Friendly Options</h3>
+            <p class="mb-4">
+              Brisbane has plenty of affordable accommodation options that don't compromise on comfort or location.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="font-bold">Hostels</h4>
+                <ul class="list-disc list-inside mt-2">
+                  <li>Brisbane City YHA</li>
+                  <li>Nomads Brisbane</li>
+                  <li>Brisbane Backpackers Resort</li>
+                  <li>Summer House Backpackers Brisbane</li>
+                </ul>
+              </div>
+              <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="font-bold">Budget Hotels</h4>
+                <ul class="list-disc list-inside mt-2">
+                  <li>Ibis Budget Windsor Brisbane</li>
+                  <li>George Williams Hotel</li>
+                  <li>Brisbane Manor Hotel</li>
+                  <li>Snooze Inn</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tips Section -->
+          <h3 class="text-2xl font-bold mb-4">Tips for Booking Accommodation in Brisbane</h3>
+          <ul class="list-disc pl-6 mb-8">
+            <li class="mb-2">Book well in advance if visiting during major events or holidays, especially for the Christmas and New Year period.</li>
+            <li class="mb-2">Consider properties with air conditioning, as Brisbane summers can be hot and humid.</li>
+            <li class="mb-2">Look for accommodation near public transport routes for easy access to attractions.</li>
+            <li class="mb-2">Many hotels offer discounted rates for longer stays (5+ nights).</li>
+            <li class="mb-2">Check if your accommodation offers parking, as city center parking can be expensive.</li>
+            <li class="mb-2">Consider serviced apartments for family stays or longer visits.</li>
+          </ul>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
+            <p class="text-yellow-800">
+              <strong>Note:</strong> Prices vary significantly depending on season, events, and demand. We recommend booking in advance to secure the best rates and availability.
+            </p>
+          </div>
+
+          <p class="text-lg">
+            Whether you're visiting for business, leisure, or a special event, Brisbane offers accommodation options to suit every need and budget. The city's excellent public transport system makes it easy to get around, so you can enjoy all that Brisbane has to offer regardless of where you choose to stay.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+/* Fix for overflow issues with HTML content */
+.prose {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.prose :where(img) {
+  max-width: 100%;
+  height: auto;
+}
+</style> 
