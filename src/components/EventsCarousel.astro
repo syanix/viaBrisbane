@@ -21,8 +21,8 @@ const displayEvents = limit ? events.slice(0, limit) : events;
     <div class="mx-auto px-4">
         <h2 class="text-4xl font-bold mb-8">{title}</h2>
         
-        <div class="relative" id="carousel-container">
-            <div class="overflow-hidden">
+        <div class="relative overflow-hidden" id="carousel-container">
+
             <div class="flex transition-transform duration-500 ease-in-out space-x-6 overflow-visible" id="carousel-track">
                 {displayEvents.map((event: Event) => (
                     <div class="flex-shrink-0 w-[85%] md:w-[45%] lg:w-[30%]">
@@ -35,7 +35,7 @@ const displayEvents = limit ? events.slice(0, limit) : events;
             
             <button
                 id="prev-button"
-                class="absolute -left-5 top-1/2 -translate-y-1/2 bg-black text-white w-10 h-10 flex items-center justify-center opacity-0 transition-opacity cursor-pointer hover:opacity-100 z-100"
+                class="absolute left-5 top-1/2 -translate-y-1/2 bg-black text-white w-10 h-10 flex items-center justify-center opacity-0 transition-opacity cursor-pointer hover:opacity-100 z-100"
                 aria-label="Previous slide"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
@@ -45,14 +45,14 @@ const displayEvents = limit ? events.slice(0, limit) : events;
             
             <button
                 id="next-button"
-                class="absolute -right-5 top-1/2 -translate-y-1/2 bg-black text-white w-10 h-10 flex items-center justify-center opacity-0 transition-opacity cursor-pointer hover:opacity-100 z-100"
+                class="absolute right-5 top-1/2 -translate-y-1/2 bg-black text-white w-10 h-10 flex items-center justify-center opacity-0 transition-opacity cursor-pointer hover:opacity-100 z-100"
                 aria-label="Next slide"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
             </button>
-         </div>
+         
         </div>
     </div>
 </section>
