@@ -1,7 +1,10 @@
 /index.html / 301
-/about* /about-us 301
+/about.html /about-us 301
 /contact.html /contact-us 301
 /resources.html /resources 301
+/events.html /events 301
+/contact /contact-us 301
+/about /about-us 301
 /parking /parking-meters 301
 /*/$ /$1 301
 /events/children-s-storytime-in-the-park-7th-brigade-park-chermside /events/children-s-storytime-in-the-park-7th-brigade-park-chermside-7th-brigade-park 301
@@ -62,11 +65,7 @@
 /category/uncategorized/ / 301
 /category/uncategorized/events.html /events 301
 /sample-page/resources.html /resources 301
-/resources.html /resources 301
 /sample-page/about.html /about-us 301
 /sample-page/index.html / 301
 /irelaaquaandfitness.com/events.html /events 301
 /sample-page/events.html /events 301
-/contact.html /contact-us 301
-/events.html /events 301
-/contact /contact-us 301
