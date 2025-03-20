@@ -61,8 +61,8 @@ export async function getEventsByPage(
     
     // Only filter by end date if we're not including expired events
     if (!includeExpired) {
-        query += " WHERE end_datetime > datetime('now')";
-        countQuery += " WHERE end_datetime > datetime('now')";
+        query += " WHERE datetime(end_datetime) > datetime('now')";
+        countQuery += " WHERE datetime(end_datetime) > datetime('now')";
     } else {
         query += " WHERE 1=1"; // Always true condition to simplify adding more conditions
         countQuery += " WHERE 1=1";
@@ -287,7 +287,7 @@ export async function getEventsByVenue(
             slug
         FROM events
         WHERE venue LIKE ? 
-        AND end_datetime > datetime('now')
+        AND datetime(end_datetime) > datetime('now')
     `;
 
     // Count query for pagination
@@ -295,7 +295,7 @@ export async function getEventsByVenue(
         SELECT COUNT(*) as count 
         FROM events 
         WHERE venue LIKE ? 
-        AND end_datetime > datetime('now')
+        AND datetime(end_datetime) > datetime('now')
     `;
 
     // Get total count for pagination
@@ -387,7 +387,7 @@ export async function getEventsByCategory(
             slug
         FROM events
         WHERE (event_type LIKE ? OR primaryeventtype LIKE ?)
-        AND end_datetime > datetime('now')
+        AND datetime(end_datetime) > datetime('now')
     `;
 
     // Count query for pagination
@@ -395,7 +395,7 @@ export async function getEventsByCategory(
         SELECT COUNT(*) as count 
         FROM events 
         WHERE (event_type LIKE ? OR primaryeventtype LIKE ?)
-        AND end_datetime > datetime('now')
+        AND datetime(end_datetime) > datetime('now')
     `;
 
     // Parameters for the query (search for category in both event_type and primaryeventtype)
