@@ -102,6 +102,11 @@
   a {
     text-decoration: none;
   }
+
+  p, li {
+    @apply text-base;
+    @apply text-gray-700;
+  }
 }
 
 @layer utilities {

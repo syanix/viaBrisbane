@@ -4,7 +4,7 @@ import typographyPlugin from '@tailwindcss/typography';
 
 export default {
     corePlugins: {
-        preflight: false, // Disables Tailwind's default resets
+        preflight: true, // Disables Tailwind's default resets
     },
   content: ['./src/**/*.{astro,html,js,jsx,json,md,mdx,svelte,ts,tsx,vue}'],
   theme: {

@@ -72,7 +72,7 @@ The NYC Tourism website (nyctourism.com) features:
    - **New**: Created alternative homepage (index2.astro) with rotating banner carousel for events
 
 3. **Layout Components**
-   - **New**: Created NewLayout.astro with improved structure and styling
+   - **New**: Created Layout.astro with improved structure and styling
    - Enhanced with border-bottom hover effects for navigation links
    - Improved mobile menu styling with icons and better spacing
    - Added scroll effects for better user experience
@@ -96,7 +96,7 @@ The NYC Tourism website (nyctourism.com) features:
    - Added icon indicators for navigation links
    - Improved newsletter subscription form
    - Enhanced social media links with hover effects
-   - Integrated with NewLayout.astro for consistent styling
+   - Integrated with Layout.astro for consistent styling
    - Black background with white text for strong contrast
    - Clear section headings for different content categories
 
@@ -168,7 +168,7 @@ The NYC Tourism website (nyctourism.com) features:
    - Newsletter subscription section with blue background
    - Fully responsive layout matching NYC Tourism aesthetic
 
-2. **NewLayout.astro** - Improved layout component with:
+2. **Layout.astro** - Improved layout component with:
    - Enhanced header with "Plan Your Visit" CTA
    - Improved mobile menu with icons and animations
    - Four-column footer with newsletter subscription

@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/NewLayout.astro';
+import Layout from '../../layouts/Layout.astro';
 import HotelCard from '../../components/HotelCard.astro';
 import { EPSRapidAPI } from '../../utils/expediaAPI';
 
@@ -180,8 +180,8 @@ export async function getStaticProps() {
 
   <!-- Search Widget Section -->
   <section class="py-12 bg-white">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
+    <div class="mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
         <h2 class="text-3xl font-bold mb-8 text-center">Find Your Perfect Stay</h2>
         <div class="bg-slate-50 p-6 rounded-lg shadow-sm mb-8">
           <div class="eg-widget" data-widget="search" data-program="au-expedia" data-lobs="stays,flights" data-network="pz" data-camref="1100l4Zb9G" data-pubref="viaBrisbane-hotel"></div>
@@ -208,8 +208,8 @@ export async function getStaticProps() {
 
   <!-- Accommodation Guide Section -->
   <section class="py-16 bg-white">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
+    <div class="mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
         <h2 class="text-3xl font-bold mb-8">Brisbane Accommodation Guide</h2>
         
         <div class="prose max-w-none">

@@ -8,7 +8,7 @@ We've implemented a comprehensive redesign of the Via Brisbane website, inspired
 ### Key Components
 
 1. **New Layout System**
-   - Created `NewLayout.astro` with improved structure and styling
+   - Created `Layout.astro` with improved structure and styling
    - Implemented a responsive header with "Plan Your Visit" CTA
    - Designed a four-column footer with newsletter subscription
    - Added accessibility features including skip-to-content link

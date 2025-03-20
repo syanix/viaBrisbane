@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/NewLayout.astro';
+import Layout from '../../layouts/Layout.astro';
 import { getEventBySlug } from '../../utils/eventsCache';
 import { createSlug } from '../../utils/slug';
 import Breadcrumbs from '../../components/breadcrumbs.astro';
@@ -209,7 +209,7 @@ const eventSchema = {
                     <!-- Event Description -->
                     <div class="mb-12">
                         <h2 class="text-2xl font-bold mb-6">About This Event</h2>
-                        <div class="prose max-w-none" set:html={event.description} />
+                        <div class="prose max-w-none text-gray-700 text-lg" set:html={event.description} />
                     </div>
 
                     <!-- Event Requirements -->
@@ -259,11 +259,11 @@ const eventSchema = {
                                     </svg>
                                     When
                                 </h3>
-                                <ul class="space-y-3">
+                                <ul class="ps-0">
                                     {datesToDisplay.map(date => (
                                         <li class="flex">
                                             <div class="flex-1">
-                                                <p class="text-slate-800">
+                                                <p class="text-grey-700">
                                                     {date.formatteddatetime}
                                                     {pastDates.some(pd => pd.formatteddatetime === date.formatteddatetime) && (
                                                         <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded ml-2">Past</span>
@@ -289,7 +289,7 @@ const eventSchema = {
                                 <div>
                                     
                                     {event.venueaddress && (
-                                        <p class="text-slate-600">{event.venueaddress}</p>
+                                        <p class="text-grey-700">{event.venueaddress}</p>
                                     )}
                                 </div>
                             </div>
@@ -304,7 +304,7 @@ const eventSchema = {
                                     </svg>
                                     Cost
                                 </h3>
-                                <p class="text-slate-800">{event.cost}</p>
+                                <p class="text-grey-700">{event.cost}</p>
                             </div>
                         )}
 
@@ -317,7 +317,7 @@ const eventSchema = {
                                     </svg>
                                     Age Range
                                 </h3>
-                                <p class="text-slate-800">{event.agerange}</p>
+                                <p class="text-grey-700">{event.agerange}</p>
                             </div>
                         )}
 
@@ -351,7 +351,7 @@ const eventSchema = {
                                     </svg>
                                     Booking Information
                                 </h3>
-                                <div class="text-slate-800 prose max-w-none" set:html={event.bookings} />
+                                <div class="text-grey-700 text-base prose max-w-none" set:html={event.bookings} />
                             </div>
                         )}
 
