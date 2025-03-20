@@ -5,29 +5,109 @@ const title = "About Us - Learn About Via Brisbane's Mission & Story";
 const description = "Discover Via Brisbane's mission to connect locals and visitors with the best of Brisbane. Learn more about our story and passion for showcasing Brisbane's hidden gems.";
 const keywords = "About Via Brisbane, Brisbane mission, Brisbane story, local events team, Brisbane experiences, community guide Brisbane";
 ---
+
 <Layout title={title} description={description} keywords={keywords}>
-    <main>
-        <section class="hero aboutpage">
-            <div class="hero-text">
-                <h2>About Us</h2>
-                <p>Discover who we are and what drives us to bring you the best of Brisbane.</p>
+    <!-- Hero Section -->
+    <section class="relative">
+        <div class="h-[50vh] min-h-[400px] bg-slate-800 overflow-hidden">
+            <img 
+                src="/images/banner-about-us.jpg" 
+                alt="About Us" 
+                class="w-full h-full object-cover opacity-60"
+            />
+            <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    About Us
+                </h1>
+                <p class="text-xl text-white max-w-3xl">
+                    Discover who we are and what drives us to bring you the best of Brisbane.
+                </p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="highlight-section">
-            <div class="content-box">
-                <h2 class="section-heading">Our Mission</h2>
-                <p class="section-text">At Via Brisbane, our mission is to connect locals and visitors with the best experiences Brisbane has to offer. Whether you're looking for the latest events, top attractions, or hidden gems, we're here to guide you every step of the way.</p>
+    <!-- Main Content -->
+    <section class="py-16 bg-white">
+        <div class="mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="prose max-w-none mb-16">
+                    <h2 class="text-3xl font-bold mb-6">Our Mission</h2>
+                    <p class="text-lg mb-6">
+                        At Via Brisbane, our mission is to connect locals and visitors with the best experiences Brisbane has to offer. 
+                        Whether you're looking for the latest events, top attractions, or hidden gems, we're here to guide you every step of the way.
+                    </p>
+                    <p class="text-lg mb-6">
+                        We believe that Brisbane is one of Australia's most vibrant and exciting cities, with a unique blend of urban sophistication and 
+                        laid-back Queensland charm. Our goal is to showcase all the incredible experiences that make Brisbane special, from its world-class 
+                        cultural institutions to its stunning outdoor spaces.
+                    </p>
+                </div>
+
+                <div class="prose max-w-none mb-16">
+                    <h2 class="text-3xl font-bold mb-6">Our Story</h2>
+                    <p class="text-lg mb-6">
+                        Via Brisbane was founded by a group of passionate Brisbane locals who wanted to share their love for the city. What started as a small 
+                        blog has grown into a comprehensive guide, helping thousands of people explore Brisbane each year.
+                    </p>
+                    <p class="text-lg mb-6">
+                        Our team has deep roots in the local community and extensive knowledge of what makes Brisbane tick. We're constantly exploring the city, 
+                        attending events, and discovering new places so we can bring you the most up-to-date and authentic recommendations.
+                    </p>
+                </div>
+
+                <div class="prose max-w-none">
+                    <h2 class="text-3xl font-bold mb-6">Our Values</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                        <div class="bg-slate-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-3">Community First</h3>
+                            <p>We believe in supporting local businesses, artists, and events that make Brisbane unique. Our recommendations prioritize authentic experiences that contribute positively to our community.</p>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-3">Inclusivity</h3>
+                            <p>Brisbane belongs to everyone. We strive to showcase experiences that are accessible and appealing to people of all backgrounds, abilities, and interests.</p>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-3">Sustainability</h3>
+                            <p>We're committed to promoting sustainable tourism and highlighting businesses and events that respect and protect Brisbane's natural environment.</p>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-3">Authenticity</h3>
+                            <p>We promise honest, unbiased recommendations based on real experiences. Our team personally visits the places we feature to ensure we're providing accurate information.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 mb-12">
+                        <h3 class="text-xl font-bold mb-3">Join Our Community</h3>
+                        <p class="mb-4">We're always looking to connect with Brisbane locals and visitors who share our passion for this amazing city. Follow us on social media, subscribe to our newsletter, or reach out directly if you'd like to collaborate or share your Brisbane experiences.</p>
+                        <p>
+                            <a href="/contact-us" class="inline-flex items-center text-blue-600 font-bold hover:text-blue-800">
+                                Get in touch
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        </p>
+                    </div>
+                </div>
             </div>
-        </section>
-
-        <section class="highlight-section">
-            <div class="content-box">
-                <h2 class="section-heading">Our Story</h2>
-                <p class="section-text">Via Brisbane was founded by a group of passionate Brisbane locals who wanted to share their love for the city. What started as a small blog has grown into a comprehensive guide, helping thousands of people explore Brisbane each year.</p>
-            </div>
-        </section>
-
-        <LinksSection />
-    </main>
+        </div>
+    </section>
 </Layout>
+
+<style>
+/* Fix for overflow issues with HTML content */
+.prose {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.prose :where(img) {
+  max-width: 100%;
+  height: auto;
+}
+</style>

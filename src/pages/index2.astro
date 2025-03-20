@@ -1,0 +1,270 @@
+---
+import NewLayout from '../layouts/Layout.astro';
+import EventsCarousel from '../components/EventsCarousel.astro';
+import NewsSection from '../components/NewsSection.astro';
+import { Image } from 'astro:assets';
+const title = "Explore Brisbane: Your Guide to Events, Attractions & Experiences - Via Brisbane";
+const description = "Discover the best of Brisbane with Via Brisbane, your ultimate guide to local events, attractions, and hidden gems. Stay updated and explore the city like never before!";
+const keywords = "Brisbane, Brisbane guide, local events, Brisbane attractions, things to do in Brisbane, Brisbane experiences, explore Brisbane";
+
+// Create website schema
+const BASE_URL = import.meta.env.PUBLIC_BASE_URL || 'https://www.viabrisbane.com';
+const websiteSchema: Record<string, any> = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Via Brisbane",
+  "url": BASE_URL,
+  "description": description,
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": `${BASE_URL}/events?search={search_term_string}`
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
+
+// Create organization schema
+const organizationSchema: Record<string, any> = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Via Brisbane",
+  "url": BASE_URL,
+  "logo": `${BASE_URL}/images/viaBrisbane.png`,
+  "sameAs": [
+    "https://www.facebook.com/viabrisbane",
+    "https://www.instagram.com/viabrisbane"
+  ]
+};
+
+// Combine schemas
+const schema = [websiteSchema, organizationSchema];
+
+---
+
+<NewLayout title={title} description={description} keywords={keywords} schema={schema}>
+  <!-- Hero Banner -->
+  <section class="relative bg-black text-white">
+    <div class="hero-carousel relative overflow-hidden h-[70vh]">
+      <!-- Hero Slides -->
+      <div class="hero-slides flex transition-transform duration-700 h-full">
+        <!-- <div class="hero-slide w-full flex-shrink-0 relative">
+          <img 
+            src="https://images.unsplash.com/photo-1598264294394-ba29cf557627?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+            alt="Brisbane Skyline" 
+            class="w-full h-full object-cover"
+          >
+          <div class="absolute inset-0 bg-black opacity-40"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+          <div class="absolute inset-0 flex items-center">
+            <div class="container mx-auto px-4">
+              <div class="max-w-2xl">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">Discover Brisbane</h1>
+                <p class="text-xl mb-8 drop-shadow-md">Experience the vibrant culture, stunning landscapes, and unforgettable adventures.</p>
+                <a href="/things-to-do" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 text-lg transition-colors shadow-md">
+                  Explore Now
+                </a>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="hero-slide w-full flex-shrink-0 relative">
+          <img 
+            src="/images/banner-events.jpg" 
+            alt="Brisbane Events" 
+            class="w-full h-full object-cover"
+          >
+          <!-- Dark overlay for better contrast -->
+          <div class="absolute inset-0 bg-black opacity-40"></div>
+          
+          <!-- Gradient overlay for improved text legibility -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+          
+          <div class="absolute inset-0 flex items-center">
+            <div class="container mx-auto px-4">
+              <div class="max-w-2xl">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">Brisbane Events</h1>
+                <p class="text-xl mb-8 drop-shadow-md">Find the best events, festivals, and performances happening in Brisbane.</p>
+                <a href="/events" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 text-lg transition-colors shadow-md">
+                  See Events
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-slide w-full flex-shrink-0 relative">
+          <img 
+            src="/images/banner-food-trucks.avif" 
+            alt="Brisbane Food Trucks" 
+            class="w-full h-full object-cover"
+          >
+          <!-- Dark overlay for better contrast -->
+          <div class="absolute inset-0 bg-black opacity-40"></div>
+          
+          <!-- Gradient overlay for improved text legibility -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+          
+          <div class="absolute inset-0 flex items-center">
+            <div class="container mx-auto px-4">
+              <div class="max-w-2xl">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">Brisbane Food Trucks</h1>
+                <p class="text-xl mb-8 drop-shadow-md">Find the best food trucks in Brisbane.</p>
+                <a href="/food-trucks" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 text-lg transition-colors shadow-md">
+                  Find Food Trucks
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Hero Navigation -->
+      <div class="absolute bottom-8 left-0 right-0 flex justify-center space-x-2">
+        <button class="hero-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-opacity" data-index="0"></button>
+        <button class="hero-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-opacity" data-index="1"></button>
+      </div>
+      
+      <!-- Hero Arrows -->
+      <button class="hero-prev absolute top-1/2 left-4 -translate-y-1/2 bg-black bg-opacity-50 text-white w-10 h-10 flex items-center justify-center z-10 hover:bg-blue-400 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      
+      <button class="hero-next absolute top-1/2 right-4 -translate-y-1/2 bg-black bg-opacity-50 text-white w-10 h-10 flex items-center justify-center z-10 hover:bg-blue-400 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- Events Carousel Section -->
+  <EventsCarousel limit={6} title="Featured Events" />
+  
+  <!-- Explore Brisbane Section -->
+  <!-- <section class="py-12">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold mb-8">Explore Brisbane</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="group relative overflow-hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1599407384369-565e27024553?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+            alt="Attractions" 
+            class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+          >
+          <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+          <div class="absolute bottom-0 left-0 p-4">
+            <h3 class="text-white text-xl font-bold">Attractions</h3>
+            <a href="/attractions" class="text-blue-400 hover:underline mt-2 inline-block">Explore →</a>
+          </div>
+        </div>
+        
+        
+        <div class="group relative overflow-hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+            alt="Dining" 
+            class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+          >
+          <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+          <div class="absolute bottom-0 left-0 p-4">
+            <h3 class="text-white text-xl font-bold">Dining</h3>
+            <a href="/dining" class="text-blue-400 hover:underline mt-2 inline-block">Explore →</a>
+          </div>
+        </div>
+        
+        
+        <div class="group relative overflow-hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+            alt="Nightlife" 
+            class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+          >
+          <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+          <div class="absolute bottom-0 left-0 p-4">
+            <h3 class="text-white text-xl font-bold">Nightlife</h3>
+            <a href="/nightlife" class="text-blue-400 hover:underline mt-2 inline-block">Explore →</a>
+          </div>
+        </div>
+        
+       
+        <div class="group relative overflow-hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+            alt="Shopping" 
+            class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+          >
+          <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+          <div class="absolute bottom-0 left-0 p-4">
+            <h3 class="text-white text-xl font-bold">Shopping</h3>
+            <a href="/shopping" class="text-blue-400 hover:underline mt-2 inline-block">Explore →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+  
+  <!-- Latest News Section -->
+  <NewsSection />
+</NewLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Hero Carousel
+    const heroSlides = document.querySelector('.hero-slides');
+    const heroDots = document.querySelectorAll('.hero-dot');
+    const heroPrev = document.querySelector('.hero-prev');
+    const heroNext = document.querySelector('.hero-next');
+    
+    if (heroSlides && heroDots.length && heroPrev && heroNext) {
+      let currentSlide = 0;
+      const totalSlides = heroDots.length;
+      
+      // Set initial active dot
+      heroDots[0].classList.add('bg-opacity-100');
+      
+      // Update slide position
+      const updateSlidePosition = () => {
+        if (heroSlides instanceof HTMLElement) {
+          heroSlides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+        
+        // Update dots
+        heroDots.forEach((dot, index) => {
+          dot.classList.toggle('bg-opacity-100', index === currentSlide);
+          dot.classList.toggle('bg-opacity-50', index !== currentSlide);
+        });
+      };
+      
+      // Handle dot clicks
+      heroDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          currentSlide = index;
+          updateSlidePosition();
+        });
+      });
+      
+      // Handle prev button
+      heroPrev.addEventListener('click', () => {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateSlidePosition();
+      });
+      
+      // Handle next button
+      heroNext.addEventListener('click', () => {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateSlidePosition();
+      });
+      
+      // Auto rotate slides
+      setInterval(() => {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateSlidePosition();
+      }, 5000);
+    }
+  });
+</script>

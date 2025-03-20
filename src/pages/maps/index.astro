@@ -1,0 +1,272 @@
+---
+import NewLayout from "../../layouts/Layout.astro";
+import { Image } from "astro:assets";
+
+// Import images - these are placeholders, you'll need to replace with actual images
+import heroImage from "../../assets/images/maps/brisbane-map-hero.jpg";
+---
+
+<NewLayout
+  title="Brisbane Maps | Interactive City Maps & Guides | Via Brisbane"
+  description="Find your way around Brisbane with our collection of interactive maps, public transport guides, and tourist maps. Plan your perfect Brisbane adventure."
+  keywords="Brisbane maps, city maps, interactive maps, Brisbane tourist map, Brisbane public transport map, Brisbane attractions map"
+>
+  <!-- Hero Section -->
+  <section class="relative">
+    <div class="h-[50vh] min-h-[400px] bg-slate-800 overflow-hidden">
+      <!-- Replace with actual image -->
+      <img 
+        src="/images/banner-map.jpg" 
+        alt="Aerial view of Brisbane City with river" 
+        class="w-full h-full object-cover opacity-60"
+      />
+      <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Brisbane Maps</h1>
+        <p class="text-xl text-white max-w-3xl">Find your way around our beautiful city with these helpful maps and guides</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8 text-center">Find Your Way Around Brisbane</h2>
+        <p class="mb-6">
+          Brisbane is a vibrant, walkable city with a mix of historic landmarks, modern attractions, and stunning natural beauty. 
+          Whether you're exploring the CBD, wandering through the trendy neighborhoods, or planning a day trip, our collection of maps 
+          will help you navigate the River City with ease.
+        </p>
+      </div>
+
+      <!-- Interactive City Map -->
+      <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+        <div>
+          <h3 class="text-2xl font-bold mb-4">Interactive City Map</h3>
+          <p class="mb-4">
+            Our interactive map highlights the best Brisbane has to offer - from must-see attractions and hidden gems to 
+            public transport hubs and visitor information centers.
+          </p>
+          <p class="mb-4">
+            Use the map to:
+          </p>
+          <ul class="list-disc ml-6 mb-6 space-y-2">
+            <li>Locate major attractions and landmarks</li>
+            <li>Find public transport options</li>
+            <li>Discover dining and shopping districts</li>
+            <li>Identify parks and recreational areas</li>
+            <li>Locate public facilities and services</li>
+          </ul>
+          <a href="https://www.brisbane.qld.gov.au/traffic-and-transport/public-transport/suburban-bus-interchanges-centres/maps" 
+             class="inline-block bg-blue-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors" 
+             target="_blank" rel="noopener noreferrer">
+            View Interactive Map
+          </a>
+        </div>
+        <div class="bg-slate-100 p-4 rounded-lg shadow-md h-[400px] flex items-center justify-center">
+          <!-- Replace with actual map embed or image -->
+          <img 
+            src="https://images.unsplash.com/photo-1661347366575-99c46ae8555a?q=80&w=800&auto=format&fit=crop" 
+            alt="Brisbane interactive map" 
+            class="w-full h-full object-cover rounded"
+          />
+        </div>
+      </div>
+
+      <!-- Public Transport Maps -->
+      <div class="mt-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+        <div class="order-2 md:order-1 bg-slate-100 p-4 rounded-lg shadow-md h-[400px] flex items-center justify-center">
+          <!-- Replace with actual public transport map image -->
+          <img 
+            src="https://images.unsplash.com/photo-1592168054345-55047ea9e1e8?q=80&w=800&auto=format&fit=crop" 
+            alt="Brisbane public transport map showing buses, trains and ferries" 
+            class="w-full h-full object-cover rounded"
+          />
+        </div>
+        <div class="order-1 md:order-2">
+          <h3 class="text-2xl font-bold mb-4">Public Transport Maps</h3>
+          <p class="mb-4">
+            Brisbane's comprehensive public transport network makes it easy to get around the city and suburbs. 
+            From trains and buses to CityCats and ferries, you have multiple options to explore the city.
+          </p>
+          <div class="space-y-4 mb-6">
+            <div>
+              <h4 class="font-bold">Train Network</h4>
+              <p>Brisbane's train network extends throughout the city and connects to the Gold Coast and Sunshine Coast.</p>
+            </div>
+            <div>
+              <h4 class="font-bold">Bus Routes</h4>
+              <p>Extensive bus routes cover the city, with dedicated busways providing quick transport between key locations.</p>
+            </div>
+            <div>
+              <h4 class="font-bold">River Transport</h4>
+              <p>CityCats and ferries offer a scenic way to travel along the Brisbane River, connecting many popular destinations.</p>
+            </div>
+          </div>
+          <a href="https://translink.com.au/plan-your-journey/maps" 
+             class="inline-block bg-blue-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors" 
+             target="_blank" rel="noopener noreferrer">
+            Download Transport Maps
+          </a>
+        </div>
+      </div>
+
+      <!-- Walking Maps -->
+      <div class="mt-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+        <div>
+          <h3 class="text-2xl font-bold mb-4">Walking Maps & Trails</h3>
+          <p class="mb-4">
+            Discover Brisbane on foot with our curated walking maps. From scenic riverside paths to heritage trails through historic neighborhoods,
+            these routes showcase the best of Brisbane at a leisurely pace.
+          </p>
+          <p class="mb-4">Popular walking trails include:</p>
+          <ul class="list-disc ml-6 mb-6 space-y-2">
+            <li><strong>Brisbane River Loop</strong> - A scenic 5km walk around the Brisbane River, passing the Botanic Gardens and South Bank</li>
+            <li><strong>City Heritage Trail</strong> - Explore Brisbane's colonial architecture and historic sites</li>
+            <li><strong>Mt Coot-tha Summit Track</strong> - Trek to the summit for panoramic views of the city</li>
+            <li><strong>South Bank Cultural Circuit</strong> - Connect Brisbane's major cultural venues through this walking path</li>
+            <li><strong>New Farm and Teneriffe Walk</strong> - Discover these trendy riverside suburbs and their industrial heritage</li>
+          </ul>
+          <a href="https://www.brisbane.qld.gov.au/things-to-see-and-do/outdoor-activities/walking-in-brisbane/walking-tracks" 
+             class="inline-block bg-blue-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors" 
+             target="_blank" rel="noopener noreferrer">
+            Explore Walking Trails
+          </a>
+        </div>
+        <div class="bg-slate-100 p-4 rounded-lg shadow-md h-[400px] flex items-center justify-center">
+          <!-- Replace with actual walking trail map image -->
+          <img 
+            src="https://images.unsplash.com/photo-1517226084609-0932aee3b0d3?q=80&w=800&auto=format&fit=crop" 
+            alt="Brisbane river walking trail map" 
+            class="w-full h-full object-cover rounded"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Section -->
+  <section class="py-16 bg-slate-100">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-6">Download Maps for Your Visit</h2>
+        <p class="mb-8">
+          Planning a trip to Brisbane? Download our printable maps to have handy guides during your visit.
+          Available in multiple languages for your convenience.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="font-bold text-xl mb-2">Tourist Attractions Map</h3>
+            <p class="text-sm mb-4">All major attractions, museums, galleries and lookout points</p>
+            <a href="#" class="text-blue-600 font-semibold hover:underline">Download PDF</a>
+          </div>
+          
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="font-bold text-xl mb-2">CBD Dining & Shopping</h3>
+            <p class="text-sm mb-4">Best restaurants, cafes, markets and shopping districts</p>
+            <a href="#" class="text-blue-600 font-semibold hover:underline">Download PDF</a>
+          </div>
+          
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="font-bold text-xl mb-2">Transport Network</h3>
+            <p class="text-sm mb-4">Comprehensive public transport network with key stations</p>
+            <a href="#" class="text-blue-600 font-semibold hover:underline">Download PDF</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brisbane Suburbs -->
+  <!-- <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center mb-12">
+        <h2 class="text-3xl font-bold mb-6">Brisbane Suburbs & Districts</h2>
+        <p>
+          Brisbane is made up of diverse neighborhoods, each with its own unique character and attractions.
+          Explore our suburb guides to discover what each area has to offer.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div class="bg-slate-50 rounded-lg overflow-hidden shadow-sm">
+          <img 
+            src="https://images.unsplash.com/photo-1598840234125-ba92b6b5e375?q=80&w=600&auto=format&fit=crop" 
+            alt="South Bank Brisbane" 
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="font-bold text-xl mb-2">South Bank</h3>
+            <p class="text-sm mb-4">Cultural hub with museums, galleries, parklands and dining</p>
+            <a href="#" class="text-blue-600 font-semibold hover:underline">Explore South Bank</a>
+          </div>
+        </div>
+        
+        <div class="bg-slate-50 rounded-lg overflow-hidden shadow-sm">
+          <img 
+            src="https://images.unsplash.com/photo-1504217051514-96afa06398be?q=80&w=600&auto=format&fit=crop" 
+            alt="Fortitude Valley Brisbane" 
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="font-bold text-xl mb-2">Fortitude Valley</h3>
+            <p class="text-sm mb-4">Entertainment district with live music, bars, and shopping</p>
+            <a href="#" class="text-blue-600 font-semibold hover:underline">Discover The Valley</a>
+          </div>
+        </div>
+        
+        <div class="bg-slate-50 rounded-lg overflow-hidden shadow-sm">
+          <img 
+            src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=600&auto=format&fit=crop" 
+            alt="New Farm Brisbane" 
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="font-bold text-xl mb-2">New Farm & Teneriffe</h3>
+            <p class="text-sm mb-4">Riverside living with parks, cafes, and converted woolstores</p>
+            <a href="#" class="text-blue-600 font-semibold hover:underline">Explore New Farm</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- Visitor Information -->
+  <section class="py-16 bg-blue-400 text-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-6">Brisbane Visitor Information Centers</h2>
+        <p class="mb-8">
+          Stop by one of our visitor information centers for personalized assistance, maps, brochures, and local tips.
+          Our friendly staff are ready to help you make the most of your Brisbane experience.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+          <div class="bg-white/10 p-6 rounded-lg">
+            <h3 class="font-bold text-xl mb-2">Brisbane City Hall Visitor Information</h3>
+            <p class="mb-2">King George Square, Brisbane City</p>
+            <p class="mb-2">Open daily: 9am - 5pm</p>
+            <p class="mb-4">Phone: (07) 3006 6290</p>
+            <a href="https://maps.app.goo.gl/WhmhXq9hNmtm4rHt5" 
+               class="inline-block bg-white text-blue-400 px-4 py-2 rounded font-semibold hover:bg-blue-50 transition-colors" 
+               target="_blank" rel="noopener noreferrer">
+              Get Directions
+            </a>
+          </div>
+          
+          <div class="bg-white/10 p-6 rounded-lg">
+            <h3 class="font-bold text-xl mb-2">South Bank Visitor Information</h3>
+            <p class="mb-2">Stanley Street Plaza, South Bank</p>
+            <p class="mb-2">Open daily: 9am - 5pm</p>
+            <p class="mb-4">Phone: (07) 3156 6366</p>
+            <a href="https://maps.app.goo.gl/dGo4RURXNiU7eRNa6" 
+               class="inline-block bg-white text-blue-400 px-4 py-2 rounded font-semibold hover:bg-blue-50 transition-colors" 
+               target="_blank" rel="noopener noreferrer">
+              Get Directions
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</NewLayout> 

@@ -1,9 +1,7 @@
 ---
-import '../assets/sass/main.scss';
 import "../assets/css/global.css";
 import Head from '../components/head.astro'
-import Header from '../components/header.astro'
-import Footer from '../components/footer.astro'
+import NavMenu from '../components/NavMenu.astro'
 const { 
     title, 
     description, 
@@ -18,7 +16,7 @@ const {
 } = Astro.props;
 ---
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <Head 
     title={title} 
     description={description} 
@@ -31,9 +29,156 @@ const {
     totalPages={totalPages}
     schema={schema}
 />
-<body>
-	<Header />
+<body class="font-sans text-black antialiased">
+	<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded">Skip to content</a>
+	
+	<!-- Header -->
+	<header class="text-white sticky top-0 z-50 border-b border-slate-700/40 shadow-md shadow-slate-900/30 backdrop-blur-sm bg-black/95">
+		<div class="mx-auto px-4 py-4 flex justify-between items-center">
+			<!-- Logo -->
+			<a href="/" class="text-2xl font-bold tracking-tight text-white">
+				<span class="inline-block font-bold">VIA</span>
+				<span class="inline-block font-bold text-blue-400">BRISBANE</span>
+			</a>
+			<NavMenu />
+		</div>
+	</header>
+
+	<main id="main-content">
     <slot />
-	<Footer />
+	</main>
+
+	<!-- Footer -->
+	<footer class="bg-black text-white py-12">
+		<div class="mx-auto px-4">
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+				<!-- Column 1 -->
+				<div>
+					<h3 class="text-xl font-bold mb-4 uppercase">Brisbane</h3>
+					<ul class="space-y-2">
+						<li><a href="/events" class="text-gray-300 hover:text-white transition duration-150">Things to Do</a></li>
+						<!-- <li><a href="/eat-drink" class="text-gray-300 hover:text-white transition duration-150">Eat & Drink</a></li> -->
+						<li><a href="/where-to-stay" class="text-gray-300 hover:text-white transition duration-150">Where to Stay</a></li>
+						<!-- <li><a href="/guides" class="text-gray-300 hover:text-white transition duration-150">Guides & Experiences</a></li> -->
+					</ul>
+				</div>
+				
+				<!-- Column 2 -->
+				<div>
+					<h3 class="text-xl font-bold mb-4 uppercase">Visitor Information</h3>
+					<ul class="space-y-2">
+						<!-- <li><a href="/welcome" class="text-gray-300 hover:text-white transition duration-150">Welcome to Brisbane</a></li>
+						<li><a href="/weather" class="text-gray-300 hover:text-white transition duration-150">Weather and Climate</a></li>
+						<li><a href="/transportation" class="text-gray-300 hover:text-white transition duration-150">Transportation</a></li> -->
+						<li><a href="/resources" class="text-gray-300 hover:text-white transition duration-150">Resources</a></li>
+					</ul>
+				</div>
+				
+				<!-- Column 3 -->
+				<div>
+					<h3 class="text-xl font-bold mb-4 uppercase">Site Information</h3>
+					<ul class="space-y-2">
+						
+						<li><a href="/about-us" class="text-gray-300 hover:text-white transition duration-150">About Us</a></li>
+						<li><a href="/contact-us" class="text-gray-300 hover:text-white transition duration-150">Contact Us</a></li>
+						
+						<!-- <li><a href="/accessibility" class="text-gray-300 hover:text-white transition duration-150">Accessibility</a></li> -->
+						<li><a href="/privacy-policy" class="text-gray-300 hover:text-white transition duration-150">Privacy Policy</a></li>
+						<li><a href="/terms" class="text-gray-300 hover:text-white transition duration-150">Terms of Use</a></li>
+						<li><a href="mailto:info@viabrisbane.com" class="text-gray-300 hover:text-white transition duration-150">Advertise With Us</a></li>
+					</ul>
+				</div>
+				
+				<!-- Column 4 -->
+				<div>
+					<h3 class="text-xl font-bold mb-4 uppercase">Connect With Us</h3>
+					<ul class="space-y-2">
+						<li class="flex items-center">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+								<path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+								<path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+							</svg>
+							<a href="mailto:info@viabrisbane.com" class="text-gray-300 hover:text-white transition duration-150">info@viabrisbane.com</a>
+						</li>
+						<!-- <li class="flex items-center">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+								<path fill-rule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.022A9.578 9.578 0 0110 4.836c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.933.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10c0-5.523-4.477-10-10-10z" clip-rule="evenodd" />
+							</svg>
+							<a href="https://github.com/viabrisbane" target="_blank" rel="noopener" class="text-gray-300 hover:text-white transition duration-150">GitHub</a>
+						</li>
+						<li class="flex items-center">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+								<path fill-rule="evenodd" d="M18 5.629V4a2 2 0 00-2-2H4a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-1.629A4.03 4.03 0 0018 5.63zM4 2h12a2 2 0 012 2v1.629a4.03 4.03 0 00-2 0V4a2 2 0 00-2-2H4zm12 16H4a2 2 0 01-2-2V6.257A7.456 7.456 0 012.5 8 7.5 7.5 0 110 8a7.456 7.456 0 01.5-1.743V14a2 2 0 002 2h12z" clip-rule="evenodd" />
+							</svg>
+							<a href="https://twitter.com/viabrisbane" target="_blank" rel="noopener" class="text-gray-300 hover:text-white transition duration-150">Twitter</a>
+						</li>
+						<li class="flex items-center">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+								<path fill-rule="evenodd" d="M10 0a10 10 0 1010 10A10.009 10.009 0 0010 0zm6.613 4.614a8.523 8.523 0 011.93 5.32 20.094 20.094 0 00-5.949-.274c-.059-.149-.122-.292-.184-.441a23.879 23.879 0 00-.566-1.239 11.41 11.41 0 004.769-3.366zM8 1.707a8.821 8.821 0 012-.238 8.5 8.5 0 015.664 2.152 9.608 9.608 0 00-4.476 3.087A45.758 45.758 0 008 1.707zM1.642 8.262a8.57 8.57 0 014.73-5.981A53.998 53.998 0 018.53 7.256a14.299 14.299 0 00-6.887 1.006zm2.003 7.46a8.526 8.526 0 01-2.2-5.707v-.262a31.64 31.64 0 018.454-1.311c.159.346.305.67.452.985a17.51 17.51 0 01-6.706 6.295zm8.3 1.248c-1.387.014-2.725-.336-3.881-.986a15.423 15.423 0 005.993-6.167 16.664 16.664 0 01.924 1.736 24.14 24.14 0 01.67 1.681 8.554 8.554 0 01-3.706 3.736zm1.661-4.389c-.122-.285-.251-.566-.385-.85a19.8 19.8 0 00-.624-1.289c1.8-.189 3.826-.222 5.913-.04a8.636 8.636 0 01-1.975 5.076 23.466 23.466 0 00-2.93-2.897z" clip-rule="evenodd" />
+							</svg>
+							<a href="https://www.linkedin.com/company/viabrisbane" target="_blank" rel="noopener" class="text-gray-300 hover:text-white transition duration-150">LinkedIn</a>
+						</li> -->
+					</ul>
+				</div>
+			</div>
+			
+			<div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+				<p class="text-gray-400 text-sm mb-4 md:mb-0">&copy; {new Date().getFullYear()} ViaBrisbane. All rights reserved.</p>
+			</div>
+		</div>
+	</footer>
+
+	<script>
+		// Mobile menu toggle
+		document.addEventListener('DOMContentLoaded', () => {
+			const mobileMenuButton = document.getElementById('mobile-menu-button');
+			const mobileMenu = document.getElementById('mobile-menu');
+			
+			if (mobileMenuButton && mobileMenu) {
+				mobileMenuButton.addEventListener('click', () => {
+					const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+					mobileMenuButton.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+					mobileMenu.setAttribute('aria-hidden', isExpanded ? 'true' : 'false');
+					mobileMenu.classList.toggle('hidden');
+				});
+			}
+			
+			// Mobile submenu toggles
+			const submenuButtons = document.querySelectorAll('#mobile-menu button');
+			submenuButtons.forEach(button => {
+				button.addEventListener('click', () => {
+					const submenu = button.nextElementSibling;
+					if (submenu) {
+						submenu.classList.toggle('hidden');
+						const icon = button.querySelector('svg');
+						if (icon) {
+							icon.classList.toggle('rotate-180');
+						}
+					}
+				});
+			});
+			
+			// Close mobile menu when clicking outside
+			document.addEventListener('click', (event) => {
+				const target = event.target as Node;
+				if (mobileMenu && !mobileMenu.classList.contains('hidden') && 
+					mobileMenuButton && !mobileMenuButton.contains(target) && 
+					!mobileMenu.contains(target)) {
+					mobileMenuButton.setAttribute('aria-expanded', 'false');
+					mobileMenu.setAttribute('aria-hidden', 'true');
+					mobileMenu.classList.add('hidden');
+				}
+			});
+			
+			// Close mobile menu on escape key
+			document.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape' && mobileMenu && !mobileMenu.classList.contains('hidden') && mobileMenuButton) {
+					mobileMenuButton.setAttribute('aria-expanded', 'false');
+					mobileMenu.setAttribute('aria-hidden', 'true');
+					mobileMenu.classList.add('hidden');
+				}
+			});
+		});
+	</script>
 </body>
 </html>
