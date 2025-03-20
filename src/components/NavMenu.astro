@@ -42,7 +42,7 @@
   </nav>
 
   <!-- Mobile Menu Button -->
-  <div class="md:hidden absolute right-8 z-50">
+  <div class="md:hidden absolute z-50">
       <button onclick="toggleMobileMenu()" type="button" class="bg-black text-white border border-white hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md p-2" aria-label="Toggle Menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -57,57 +57,52 @@
         <nav aria-label="Mobile Navigation" class="px-6">
             <!-- Main navigation items with right chevron -->
             <div class="border-b border-gray-800">
-                <a href="/now-in-brisbane" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
+                <a href="/events" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
                     NOW IN BRISBANE
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
                 </a>
             </div>
             
             <div class="border-b border-gray-800">
-                <a href="/things-to-do" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
-                    THINGS TO DO
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </a>
-            </div>
-            
-            <div class="border-b border-gray-800">
-                <a href="/eat-drink" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
-                    EAT & DRINK
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </a>
+                <!-- Menu item with submenu -->
+                <div class="mobile-menu-item">
+                    <div class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5 cursor-pointer">
+                        <span class="font-bold">EAT & DRINK</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mobile-menu-arrow h-6 w-6 text-white transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="mobile-submenu hidden pl-4 pb-4">
+                        <a href="/food-trucks" class="block text-white text-xl py-3 border-l-2 border-gray-700 pl-4 hover:border-blue-400 hover:text-blue-400 transition-colors">
+                            Food Trucks
+                        </a>
+                    </div>
+                </div>
             </div>
             
             <div class="border-b border-gray-800">
                 <a href="/where-to-stay" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
                     WHERE TO STAY
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
                 </a>
             </div>
             
             <div class="border-b border-gray-800">
-                <a href="/maps-guides" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
-                    MAPS & GUIDES
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </a>
-            </div>
-            
-            <div class="border-b border-gray-800 mb-10">
-                <a href="/business" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
-                    BUSINESS IN BRISBANE
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </a>
+                <!-- Menu item with submenu -->
+                <div class="mobile-menu-item">
+                    <div class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5 cursor-pointer">
+                        <span class="font-bold">MAPS & GUIDES</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mobile-menu-arrow h-6 w-6 text-white transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="mobile-submenu hidden pl-4 pb-4">
+                        <a href="/resources" class="block text-white text-xl py-3 border-l-2 border-gray-700 pl-4 hover:border-blue-400 hover:text-blue-400 transition-colors">
+                            Resources
+                        </a>
+                        <a href="/parking-meters" class="block text-white text-xl py-3 border-l-2 border-gray-700 pl-4 hover:border-blue-400 hover:text-blue-400 transition-colors">
+                            Parking Meters
+                        </a>
+                    </div>
+                </div>
             </div>
         </nav>
     </div>
@@ -127,5 +122,28 @@
         if (window.innerWidth >= 768 && mobileMenu && !mobileMenu.classList.contains('hidden')) {
             mobileMenu.classList.add('hidden');
         }
+    });
+
+    // Initialize mobile submenu functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
+        
+        mobileMenuItems.forEach(item => {
+            const toggleButton = item.querySelector('.flex.justify-between');
+            const submenu = item.querySelector('.mobile-submenu');
+            const arrow = item.querySelector('.mobile-menu-arrow');
+            
+            toggleButton.addEventListener('click', () => {
+                // Toggle submenu visibility
+                submenu.classList.toggle('hidden');
+                
+                // Rotate arrow when expanded
+                if (arrow.classList.contains('rotate-180')) {
+                    arrow.classList.remove('rotate-180');
+                } else {
+                    arrow.classList.add('rotate-180');
+                }
+            });
+        });
     });
 </script>
