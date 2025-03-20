@@ -97,7 +97,7 @@ const showPagination = totalPages > 1 && currentMeters.length > 0;
               
               <!-- Category tags -->
               <div class="flex flex-wrap gap-2 mt-4 px-4">
-                <a href={`/parking-meters?search=${encodeURIComponent(meter.SUBURB)}`} 
+                <a href={`/parking-meters/suburb/${meter.SUBURB.toLowerCase().replace(/\s+/g, '-')}`} 
                    class="bg-black text-white px-3 py-1 text-sm font-bold rounded-sm">
                   {meter.SUBURB}
                 </a>

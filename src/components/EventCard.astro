@@ -30,13 +30,13 @@ const venue = event.venue ? event.venue.split(',')[0].trim() : '';
   <!-- Category tags -->
   <div class="flex flex-wrap gap-2 mt-4 px-4">
     {eventType && (
-      <a href={`/eventtypes/${eventType.toLowerCase().replace(/\s+/g, '-')}`} 
+      <a href={`/events/category/${eventType.toLowerCase().replace(/\s+/g, '-')}`} 
          class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0]">
         {eventType}
       </a>
     )}
     {venue && (
-      <a href={`/venues/${venue.toLowerCase().replace(/\s+/g, '-')}`} 
+      <a href={`/events/venue/${venue.toLowerCase().replace(/\s+/g, '-')}`} 
          class="bg-black text-white px-3 py-1 text-sm font-bold rounded-sm">
         {venue}
       </a>

@@ -6,7 +6,11 @@ const CACHE_EXPIRY_MS = 60 * 60 * 1000; // 1 hour
 
 interface EventsCache {
     [key: string]: {
-        data: { events: Partial<Event>[]; totalPages: number };
+        data: { 
+            events: Partial<Event>[]; 
+            totalPages: number;
+            totalCount?: number; 
+        };
         expiry: number;
     };
 }
@@ -240,4 +244,207 @@ function convertToEvent(result: Record<string, unknown>): Event {
         image: result.image as string,
         slug: result.slug as string || ''
     } as Event;
+}
+
+/**
+ * Get events filtered by venue name
+ */
+export async function getEventsByVenue(
+    dbInstance: D1Database,
+    venue: string,
+    page: number = 1
+): Promise<{ events: Partial<Event>[]; totalCount: number; totalPages: number }> {
+    const ITEMS_PER_PAGE = 30;
+    const cacheKey = `events_venue_${venue}_${page}`;
+    const now = Date.now();
+    
+    // Check cache
+    if (globalThis._eventsCache[cacheKey] && globalThis._eventsCache[cacheKey].expiry > now) {
+        return globalThis._eventsCache[cacheKey].data as { events: Partial<Event>[]; totalCount: number; totalPages: number };
+    }
+    
+    // Decode the venue name from the URL format
+    const decodedVenue = decodeURIComponent(venue).replace(/-/g, ' ');
+    
+    // Calculate offset for pagination
+    const offset = (page - 1) * ITEMS_PER_PAGE;
+    const params: any[] = [decodedVenue + '%']; // Use wildcard to match venue names starting with the search term
+
+    // Query to get events filtered by venue
+    let query = `
+        SELECT 
+            event_id,
+            subject,
+            eventimage,
+            venue,
+            venueaddress,
+            event_type,
+            primaryeventtype,
+            formatteddatetime,
+            location,
+            description,
+            end_datetime,
+            slug
+        FROM events
+        WHERE venue LIKE ? 
+        AND end_datetime > datetime('now')
+    `;
+
+    // Count query for pagination
+    let countQuery = `
+        SELECT COUNT(*) as count 
+        FROM events 
+        WHERE venue LIKE ? 
+        AND end_datetime > datetime('now')
+    `;
+
+    // Get total count for pagination
+    const countResult = await dbInstance.prepare(countQuery).bind(...params).all();
+    const totalCount = countResult.results[0].count as number;
+    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+
+    // Get events for the current page with order
+    query += `
+        ORDER BY 
+        CASE 
+            WHEN formatteddatetime LIKE '%ongoing%' THEN 1 
+            ELSE 0 
+        END,
+        start_datetime ASC 
+        LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+
+    const { results } = await dbInstance.prepare(query).bind(...params).all();
+
+    // Process the events
+    const events = results.map(result => {
+        // Generate slug if missing
+        const slug = result.slug || createSlug(result.subject as string, result.location as string);
+        
+        return {
+            event_id: result.event_id as number,
+            subject: result.subject as string,
+            eventimage: result.eventimage as string,
+            venue: result.venue as string,
+            venueaddress: result.venueaddress as string,
+            event_type: result.event_type as string,
+            primaryeventtype: result.primaryeventtype as string,
+            formatteddatetime: result.formatteddatetime as string,
+            location: result.location as string,
+            description: result.description as string,
+            slug: slug
+        };
+    }) as Partial<Event>[];
+    
+    // Cache the results
+    const result = { events, totalCount, totalPages };
+    globalThis._eventsCache[cacheKey] = {
+        data: result,
+        expiry: now + CACHE_EXPIRY_MS
+    };
+    
+    return result;
+}
+
+/**
+ * Get events filtered by category/event type
+ */
+export async function getEventsByCategory(
+    dbInstance: D1Database,
+    category: string,
+    page: number = 1
+): Promise<{ events: Partial<Event>[]; totalCount: number; totalPages: number }> {
+    const ITEMS_PER_PAGE = 30;
+    const cacheKey = `events_category_${category}_${page}`;
+    const now = Date.now();
+    
+    // Check cache
+    if (globalThis._eventsCache[cacheKey] && globalThis._eventsCache[cacheKey].expiry > now) {
+        return globalThis._eventsCache[cacheKey].data as { events: Partial<Event>[]; totalCount: number; totalPages: number };
+    }
+    
+    // Decode the category name from the URL format
+    const decodedCategory = decodeURIComponent(category).replace(/-/g, ' ');
+    
+    // Calculate offset for pagination
+    const offset = (page - 1) * ITEMS_PER_PAGE;
+
+    // Query to get events filtered by category
+    // Note: event_type is a comma-separated list, so we use LIKE to find partial matches
+    let query = `
+        SELECT 
+            event_id,
+            subject,
+            eventimage,
+            venue,
+            venueaddress,
+            event_type,
+            primaryeventtype,
+            formatteddatetime,
+            location,
+            description,
+            end_datetime,
+            slug
+        FROM events
+        WHERE (event_type LIKE ? OR primaryeventtype LIKE ?)
+        AND end_datetime > datetime('now')
+    `;
+
+    // Count query for pagination
+    let countQuery = `
+        SELECT COUNT(*) as count 
+        FROM events 
+        WHERE (event_type LIKE ? OR primaryeventtype LIKE ?)
+        AND end_datetime > datetime('now')
+    `;
+
+    // Parameters for the query (search for category in both event_type and primaryeventtype)
+    const queryParams = [`%${decodedCategory}%`, `%${decodedCategory}%`];
+
+    // Get total count for pagination
+    const countResult = await dbInstance.prepare(countQuery).bind(...queryParams).all();
+    const totalCount = countResult.results[0].count as number;
+    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+
+    // Get events for the current page with order
+    query += `
+        ORDER BY 
+        CASE 
+            WHEN formatteddatetime LIKE '%ongoing%' THEN 1 
+            ELSE 0 
+        END,
+        start_datetime ASC 
+        LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+
+    const { results } = await dbInstance.prepare(query).bind(...queryParams).all();
+
+    // Process the events
+    const events = results.map(result => {
+        // Generate slug if missing
+        const slug = result.slug || createSlug(result.subject as string, result.location as string);
+        
+        return {
+            event_id: result.event_id as number,
+            subject: result.subject as string,
+            eventimage: result.eventimage as string,
+            venue: result.venue as string,
+            venueaddress: result.venueaddress as string,
+            event_type: result.event_type as string,
+            primaryeventtype: result.primaryeventtype as string,
+            formatteddatetime: result.formatteddatetime as string,
+            location: result.location as string,
+            description: result.description as string,
+            slug: slug
+        };
+    }) as Partial<Event>[];
+    
+    // Cache the results
+    const result = { events, totalCount, totalPages };
+    globalThis._eventsCache[cacheKey] = {
+        data: result,
+        expiry: now + CACHE_EXPIRY_MS
+    };
+    
+    return result;
 }

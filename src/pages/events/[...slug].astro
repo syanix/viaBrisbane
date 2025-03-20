@@ -161,13 +161,13 @@ const eventSchema = {
             <div class="flex flex-wrap gap-2 mb-2">
                 {event.event_type && 
                 event.event_type.split(',').map(type => (
-                    <a href={`/events?q=${encodeURIComponent(type.trim())}`} 
+                    <a href={`/events/category/${type.trim().toLowerCase().replace(/\s+/g, '-')}`} 
                        class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0]">
                         {type.trim()}
                     </a>
                 ))}
                 {venue && (
-                    <a href={`/venues/${venue.toLowerCase().replace(/\s+/g, '-')}`} 
+                    <a href={`/events/venue/${venue.toLowerCase().replace(/\s+/g, '-')}`} 
                        class="bg-black text-white px-3 py-1 text-sm font-bold rounded-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block mr-1 -mt-0.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -333,7 +333,7 @@ const eventSchema = {
                             <div class="flex flex-wrap gap-2">
                                 {event.event_type && 
                                 event.event_type.split(',').map(type => (
-                                    <a href={`/events?q=${encodeURIComponent(type.trim())}`} 
+                                    <a href={`/events/category/${type.trim().toLowerCase().replace(/\s+/g, '-')}`} 
                                     class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0]">
                                         {type.trim()}
                                     </a>

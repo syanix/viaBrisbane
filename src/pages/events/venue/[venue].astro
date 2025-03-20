@@ -1,0 +1,142 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import EventCard from '../../../components/EventCard.astro';
+import { getEventsByVenue } from '../../../utils/eventsCache';
+
+const { venue } = Astro.params;
+const page = parseInt(Astro.url.searchParams.get('page') || '1');
+
+// If venue param is missing, redirect to events page
+if (!venue) {
+    return Astro.redirect('/events', 302);
+}
+
+// Get events for this venue with pagination
+const { events, totalCount, totalPages } = await getEventsByVenue(
+    Astro.locals.runtime.env.DB,
+    venue,
+    page
+);
+
+// Decode the venue name for display purposes
+const decodedVenue = decodeURIComponent(venue).replace(/-/g, ' ');
+
+// Redirect to first page if page is out of range or invalid
+if ((page < 1 || page > totalPages) && page !== 1 && totalCount > 0) {
+    const redirectUrl = `/events/venue/${venue}`;
+    return Astro.redirect(redirectUrl, 302);
+}
+
+// Format the venue name for display
+const formattedVenue = decodedVenue.replace(/\b\w/g, letter => letter.toUpperCase());
+
+// Set title and description
+const title = `Events at ${formattedVenue} - What's On in Brisbane`;
+const description = `Discover upcoming events at ${formattedVenue} in Brisbane. Find local events, performances, and activities happening at this venue.`;
+const keywords = `${formattedVenue} events, Brisbane ${formattedVenue}, events at ${formattedVenue}, ${formattedVenue} Brisbane`;
+---
+
+<Layout 
+    title={title} 
+    description={description} 
+    keywords={keywords}
+>
+    <!-- Hero Section -->
+    <section class="relative">
+        <div class="h-[50vh] min-h-[400px] bg-slate-800 overflow-hidden">
+            <img 
+                src="/images/banner-events.jpg" 
+                alt={`Events at ${formattedVenue}`} 
+                class="w-full h-full object-cover opacity-60"
+            />
+            <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    Events at {formattedVenue}
+                </h1>
+                <p class="text-xl text-white max-w-3xl">
+                    Discover what's happening at {formattedVenue} in Brisbane.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section class="py-16 bg-white">
+        <div class="mx-auto px-4">
+            <div class="max-w-5/6 mx-auto mb-12">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-3xl font-bold">Upcoming Events at {formattedVenue}</h2>
+                    <a href="/events" class="text-blue-600 hover:text-blue-800 flex items-center">
+                        <span>Back to all events</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            {events.length > 0 ? (
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    {events.map((event: any) => (
+                        <div class="h-full">
+                            <EventCard event={event} />
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div class="text-center py-12">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto text-slate-400 mb-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                    </svg>
+                    <p class="text-xl text-slate-700">No upcoming events at {formattedVenue}.</p>
+                    <p class="mt-2 text-slate-500">
+                        Check back later or <a href="/events" class="text-blue-600 hover:underline">browse all events</a>.
+                    </p>
+                </div>
+            )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+                <div class="flex justify-center mt-12 space-x-2">
+                    {page > 1 && (
+                        <>
+                            <a 
+                                href={`/events/venue/${venue}`}
+                                class="px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+                            >
+                                First
+                            </a>
+                            <a 
+                                href={`/events/venue/${venue}?page=${page - 1}`}
+                                class="px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+                            >
+                                Previous
+                            </a>
+                        </>
+                    )}
+
+                    <span class="px-4 py-2 bg-blue-500 text-white rounded-md">
+                        {page} of {totalPages}
+                    </span>
+
+                    {page < totalPages && (
+                        <>
+                            <a 
+                                href={`/events/venue/${venue}?page=${page + 1}`}
+                                class="px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+                            >
+                                Next
+                            </a>
+                            <a 
+                                href={`/events/venue/${venue}?page=${totalPages}`}
+                                class="px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+                            >
+                                Last
+                            </a>
+                        </>
+                    )}
+                </div>
+            )}
+        </div>
+    </section>
+</Layout> 

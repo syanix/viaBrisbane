@@ -1,0 +1,208 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getParkingMetersBySuburb } from '../../../utils/parkingCache';
+import { createParkingMeterSlugByMeter } from '../../../utils/slug';
+import type { ParkingMeter } from '../../../types/types';
+
+const { suburb } = Astro.params;
+const page = parseInt(Astro.url.searchParams.get('page') || '1');
+
+// If suburb param is missing, redirect to parking meters page
+if (!suburb) {
+    return Astro.redirect('/parking-meters', 302);
+}
+
+// Get parking meters for this suburb with pagination
+const { meters, totalCount, totalPages } = await getParkingMetersBySuburb(
+    Astro.locals.runtime.env.DB,
+    suburb,
+    page
+);
+
+// Decode the suburb name for display purposes
+const decodedSuburb = decodeURIComponent(suburb).replace(/-/g, ' ');
+
+// Redirect to first page if page is out of range or invalid
+if ((page < 1 || page > totalPages) && page !== 1 && totalCount > 0) {
+    const redirectUrl = `/parking-meters/suburb/${suburb}`;
+    return Astro.redirect(redirectUrl, 302);
+}
+
+// Format the suburb name for display (capitalize first letter of each word)
+const formattedSuburb = decodedSuburb.replace(/\b\w/g, letter => letter.toUpperCase());
+
+// Set title and description
+const title = `Parking Meters in ${formattedSuburb} - Brisbane Parking`;
+const description = `Find parking meters in ${formattedSuburb}, Brisbane. View rates, locations, and restrictions for parking in ${formattedSuburb}.`;
+const keywords = `${formattedSuburb} parking, parking meters ${formattedSuburb}, Brisbane ${formattedSuburb} parking, parking in ${formattedSuburb}`;
+---
+
+<Layout 
+    title={title} 
+    description={description} 
+    keywords={keywords}
+>
+    <!-- Hero Section -->
+    <section class="relative">
+        <div class="h-[50vh] min-h-[400px] bg-slate-800 overflow-hidden">
+            <img 
+                src="/images/banner-parking-meters.jpg" 
+                alt={`Parking Meters in ${formattedSuburb}, Brisbane`} 
+                class="w-full h-full object-cover opacity-60"
+            />
+            <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    Parking in {formattedSuburb}
+                </h1>
+                <p class="text-xl text-white max-w-3xl">
+                    Find parking meters and rates in {formattedSuburb}, Brisbane.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parking Meters Section -->
+    <section class="py-16 bg-white">
+        <div class="mx-auto px-4">
+            <div class="max-w-5/6 mx-auto mb-12">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-3xl font-bold">Parking Meters in {formattedSuburb}</h2>
+                    <a href="/parking-meters" class="text-blue-600 hover:text-blue-800 flex items-center">
+                        <span>Back to all parking meters</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            {meters.length > 0 ? (
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    {meters.map((meter: ParkingMeter) => (
+                        <div class="h-full">
+                            <div class="bg-white flex flex-col h-full shadow-[0px_2px_8px_rgba(0,0,0,0.1)]">
+                                <div class="relative">
+                                    <!-- Meter Number Badge -->
+                                    <div class="absolute top-0 left-0 bg-[#2073E0] text-white px-4 py-2 text-xl font-bold">
+                                    #{meter.METER_NO}
+                                    </div>
+                                    
+                                    <!-- Placeholder map image -->
+                                    <div class="w-full h-48 bg-slate-200 overflow-hidden">
+                                    <div class="w-full h-full flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-slate-400">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                        </svg>
+                                    </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Category tags -->
+                                <div class="flex flex-wrap gap-2 mt-4 px-4">
+                                    <a href={`/parking-meters/suburb/${meter.SUBURB.toLowerCase().replace(/\s+/g, '-')}`} 
+                                    class="bg-black text-white px-3 py-1 text-sm font-bold rounded-sm">
+                                    {meter.SUBURB}
+                                    </a>
+                                    {meter.CATEGORY && (
+                                    <a href={`/parking-meters?search=${encodeURIComponent(meter.CATEGORY)}`} 
+                                        class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0]">
+                                        {meter.CATEGORY}
+                                    </a>
+                                    )}
+                                </div>
+                                
+                                <!-- Content -->
+                                <div class="p-4 flex flex-col flex-1">
+                                    <div class="flex-1">
+                                    <h3 class="text-2xl font-bold mb-2 line-clamp-2">{meter.STREET}</h3>
+                                    <div class="space-y-2 text-gray-700 mb-4">
+                                        <p class="flex justify-between">
+                                        <span class="font-medium">Hours:</span>
+                                        <span>{meter.OPERATIONAL_TIME}</span>
+                                        </p>
+                                        <p class="flex justify-between">
+                                        <span class="font-medium">Max Stay:</span>
+                                        <span>{meter.MAX_STAY_HRS} hours</span>
+                                        </p>
+                                        {meter.TAR_RATE_WEEKDAY && (
+                                        <p class="flex justify-between">
+                                            <span class="font-medium">Rate:</span>
+                                            <span>${meter.TAR_RATE_WEEKDAY.toFixed(2)}</span>
+                                        </p>
+                                        )}
+                                    </div>
+                                    </div>
+                                    
+                                    <!-- Button -->
+                                    <div class="flex items-center mt-auto">
+                                    <a href={`/parking-meters/${createParkingMeterSlugByMeter(meter)}`} 
+                                        class="inline-flex items-center text-black text-md uppercase group">
+                                        <span class="font-black border-b-2 border-transparent group-hover:border-black transition-colors duration-200">VIEW DETAILS</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 ml-2 -mt-[3px]" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div class="text-center py-12">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto text-slate-400 mb-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                    </svg>
+                    <p class="text-xl text-slate-700">No parking meters found in {formattedSuburb}.</p>
+                    <p class="mt-2 text-slate-500">
+                        <a href="/parking-meters" class="text-blue-600 hover:underline">View all parking meters</a> or try another suburb.
+                    </p>
+                </div>
+            )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+                <div class="flex justify-center mt-12 space-x-2">
+                    {page > 1 && (
+                        <>
+                            <a 
+                                href={`/parking-meters/suburb/${suburb}`}
+                                class="px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+                            >
+                                First
+                            </a>
+                            <a 
+                                href={`/parking-meters/suburb/${suburb}?page=${page - 1}`}
+                                class="px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+                            >
+                                Previous
+                            </a>
+                        </>
+                    )}
+
+                    <span class="px-4 py-2 bg-blue-500 text-white rounded-md">
+                        {page} of {totalPages}
+                    </span>
+
+                    {page < totalPages && (
+                        <>
+                            <a 
+                                href={`/parking-meters/suburb/${suburb}?page=${page + 1}`}
+                                class="px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+                            >
+                                Next
+                            </a>
+                            <a 
+                                href={`/parking-meters/suburb/${suburb}?page=${totalPages}`}
+                                class="px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+                            >
+                                Last
+                            </a>
+                        </>
+                    )}
+                </div>
+            )}
+        </div>
+    </section>
+</Layout> 
