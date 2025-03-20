@@ -1,7 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ParkingMeters from '../../components/parking-meters.astro';
-import LinksSection from '../../components/links.astro';
 import { getParkingMetersWithCache } from '../../utils/parkingCache';
 import type { ParkingMeter } from '../../types/types';
 
@@ -61,8 +60,5 @@ if (page > 1) {
     searchQuery={searchQuery}
     totalPages={totalPages}
 >
-    <main>
-        <ParkingMeters page={page} searchQuery={searchQuery} meters={metersForPage} totalPages={totalPages} />
-        <LinksSection />
-    </main>
+    <ParkingMeters page={page} searchQuery={searchQuery} meters={metersForPage} totalPages={totalPages} />
 </Layout> 

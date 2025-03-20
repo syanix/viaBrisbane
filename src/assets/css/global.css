@@ -1,3 +1,154 @@
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
+
+/* Move base styles into the @layer base */
+@layer base {
+  /* Primary Font - Satoshi */
+  @font-face {
+    font-family: 'Satoshi';
+    src: url('../fonts/Satoshi-Regular.woff2') format('woff2'),
+         url('../fonts/Satoshi-Regular.woff') format('woff'),
+         url('../fonts/Satoshi-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Satoshi';
+    src: url('../fonts/Satoshi-Bold.woff2') format('woff2'),
+         url('../fonts/Satoshi-Bold.woff') format('woff'),
+         url('../fonts/Satoshi-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Satoshi';
+    src: url('../fonts/Satoshi-Medium.woff2') format('woff2'),
+         url('../fonts/Satoshi-Medium.woff') format('woff'),
+         url('../fonts/Satoshi-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Satoshi';
+    src: url('../fonts/Satoshi-Black.woff2') format('woff2'),
+         url('../fonts/Satoshi-Black.woff') format('woff'),
+         url('../fonts/Satoshi-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Satoshi';
+    src: url('../fonts/Satoshi-Light.woff2') format('woff2'),
+         url('../fonts/Satoshi-Light.woff') format('woff'),
+         url('../fonts/Satoshi-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Secondary Font - NimbusSanL */
+  @font-face {
+    font-family: 'NimbusSanL';
+    src: url('../fonts/NimbusSanL-Reg.woff2') format('woff2'),
+         url('../fonts/NimbusSanL-Reg.woff') format('woff'),
+         url('../fonts/NimbusSanL-Reg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'NimbusSanL';
+    src: url('../fonts/NimbusSanL-Bol.woff2') format('woff2'),
+         url('../fonts/NimbusSanL-Bol.woff') format('woff'),
+         url('../fonts/NimbusSanL-Bol.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Base styles */
+  :root {
+    font-family: 'Satoshi', 'NimbusSanL', Helvetica, Arial, sans-serif;
+  }
+
+  body,
+  p, span, a, input, textarea, select {
+    font-family: 'Satoshi', 'NimbusSanL', Helvetica, Arial, sans-serif;
+    font-weight: normal;
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  button {
+    font-family: 'Satoshi', 'NimbusSanL', Helvetica, Arial, sans-serif;
+    font-weight: bold;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Move link styles to base layer */
+  a {
+    text-decoration: none;
+  }
+
+  p, li {
+    @apply text-base;
+    @apply text-gray-700;
+  }
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Component styles */
+@layer components {
+  /* Cursor styles for carousel navigation */
+  #prev-button,
+  #next-button {
+    cursor: pointer;
+  }
+
+  /* Card shadows and transitions */
+  .event-card {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .event-card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Button styles */
+  .learn-more {
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .learn-more:hover {
+    color: #666;
+  }
+}

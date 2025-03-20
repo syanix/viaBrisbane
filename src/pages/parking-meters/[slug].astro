@@ -80,87 +80,223 @@ if (meter.TAR_RATE_AH_WE) {
   url={meterUrl}
   schema={parkingMeterSchema}
 >
-    <main>
-        <!-- Map Section -->
-        <div class="map-banner">
+    <!-- Hero Section -->
+    <section class="relative">
+        <div class="h-[50vh] min-h-[400px] bg-slate-800 overflow-hidden">
             {!isCrawler && (
                 <iframe
-                    class="map-embed"
-                    src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyCCQ8ZqAJjDm1O-ToZopbRlv4-zg9jpph4&center=${meter.LATITUDE},${meter.LONGITUDE}&zoom=17)}`}
+                    src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyCCQ8ZqAJjDm1O-ToZopbRlv4-zg9jpph4&center=${meter.LATITUDE},${meter.LONGITUDE}&zoom=17&maptype=roadmap`}
                     allowfullscreen
                     loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"
+                    class="w-full h-full object-cover"
                 ></iframe>
             )}
-        </div>
-
-        <section class="breadcrumb-section">
-            <div class="content-box">
-                <Breadcrumbs paths={[
-                    { name: 'Parking Meters', url: '/parking-meters' },
-                    { name: `Meter ${meter.METER_NO}` }
-                ]} />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-8">
+                <div class="mx-auto">
+                    <div class="flex flex-col gap-1 text-white max-w-4xl">
+                        <h1 class="text-3xl md:text-5xl font-bold">Parking Meter {meter.METER_NO}</h1>
+                        <p class="text-xl mt-2 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                            </svg>
+                            {meter.STREET}, {meter.SUBURB}
+                        </p>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="highlight-section">
-            <div class="content-box">
-                <h1 class="section-heading">Parking Meter {meter.METER_NO}</h1>
-                <div class="meter-detail">
-                    <div class="meter-info">
-                        <div class="info-group">
-                            <h2>Location</h2>
-                            <p>
-                                <a 
-                                    href={`https://www.google.com/maps?q=${meter.LATITUDE},${meter.LONGITUDE}`} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                >
-                                    View on Google Maps
-                                </a>
-                            </p>
-                            <p><strong>Street:</strong> {meter.STREET}</p>
-                            <p><strong>Suburb:</strong> {meter.SUBURB}</p>
-                            <p><strong>Description:</strong> {meter.LOC_DESC}</p>
+    <!-- Breadcrumbs Section -->
+    <div class="bg-slate-100 border-b border-slate-200">
+        <div class=" mx-auto px-4 py-3">
+            <Breadcrumbs paths={[
+                { name: 'Parking Meters', url: '/parking-meters' },
+                { name: `Meter ${meter.METER_NO}` }
+            ]} />
+        </div>
+    </div>
+
+    <!-- Tag Section -->
+    <div class="mx-auto px-4 pt-6">
+        <div class="flex flex-wrap gap-2 mb-2">
+            <a href={`/parking-meters/suburb/${meter.SUBURB.toLowerCase().replace(/\s+/g, '-')}`} 
+               class="bg-black text-white px-3 py-1 text-sm font-bold rounded-sm">
+                {meter.SUBURB}
+            </a>
+            {meter.CATEGORY && (
+                <a href={`/parking-meters?category=${encodeURIComponent(meter.CATEGORY.toLowerCase())}`} 
+                   class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0]">
+                    {meter.CATEGORY}
+                </a>
+            )}
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="py-12">
+        <div class="mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Left Column: Details -->
+                <div class="lg:col-span-2 order-2 lg:order-1">
+                    <!-- Location Section -->
+                    <div class="mb-12">
+                        <h2 class="text-2xl font-bold mb-6">Location</h2>
+                        <div class="prose max-w-none overflow-hidden">
+                            <p class="text-lg mb-4">{meter.LOC_DESC}</p>
+                            <div class="h-[400px] rounded-lg overflow-hidden border border-slate-200 mt-4">
+                                <iframe
+                                    width="100%"
+                                    height="100%"
+                                    style="border:0"
+                                    loading="lazy"
+                                    allowfullscreen
+                                    referrerpolicy="no-referrer-when-downgrade"
+                                    src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyCCQ8ZqAJjDm1O-ToZopbRlv4-zg9jpph4&q=${meter.LATITUDE},${meter.LONGITUDE}&zoom=17&maptype=roadmap`}
+                                ></iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Restrictions Section -->
+                    {meter.RESTRICTIONS && (
+                        <div class="mb-12">
+                            <h2 class="text-2xl font-bold mb-6">Restrictions</h2>
+                            <div class="prose max-w-none overflow-hidden bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                                <p class="text-yellow-800">{meter.RESTRICTIONS}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                <!-- Right Column: Meta Info -->
+                <div class="lg:col-span-1 order-1 lg:order-2">
+                    <div class="bg-slate-50 p-6 rounded-lg sticky top-24">
+                        <!-- Operational Hours -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-bold mb-3 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#2073E0]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Operating Hours
+                            </h3>
+                            <div class="space-y-2">
+                                <p class="flex justify-between">
+                                    <span class="text-slate-600">Days:</span>
+                                    <span class="font-medium">{meter.OPERATIONAL_DAY}</span>
+                                </p>
+                                <p class="flex justify-between">
+                                    <span class="text-slate-600">Hours:</span>
+                                    <span class="font-medium">{meter.OPERATIONAL_TIME}</span>
+                                </p>
+                                <p class="flex justify-between">
+                                    <span class="text-slate-600">Max Stay:</span>
+                                    <span class="font-medium">{meter.MAX_STAY_HRS} hours</span>
+                                </p>
+                            </div>
                         </div>
 
-                        <div class="info-group">
-                            <h2>Operating Hours</h2>
-                            <p><strong>Days:</strong> {meter.OPERATIONAL_DAY}</p>
-                            <p><strong>Hours:</strong> {meter.OPERATIONAL_TIME}</p>
-                            <p><strong>Max Stay:</strong> {meter.MAX_STAY_HRS} hours</p>
+                        <!-- Rates -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-bold mb-3 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#2073E0]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                                </svg>
+                                Rates
+                            </h3>
+                            <div class="space-y-2">
+                                {meter.TAR_RATE_WEEKDAY && (
+                                    <p class="flex justify-between">
+                                        <span class="text-slate-600">Weekday:</span>
+                                        <span class="font-medium">${meter.TAR_RATE_WEEKDAY.toFixed(2)}</span>
+                                    </p>
+                                )}
+                                {meter.TAR_RATE_AH_WE && (
+                                    <p class="flex justify-between">
+                                        <span class="text-slate-600">Weekend/After Hours:</span>
+                                        <span class="font-medium">${meter.TAR_RATE_AH_WE.toFixed(2)}</span>
+                                    </p>
+                                )}
+                                <p class="flex justify-between">
+                                    <span class="text-slate-600">Zone:</span>
+                                    <span class="font-medium">{meter.TAR_ZONE}</span>
+                                </p>
+                            </div>
                         </div>
 
-                        <div class="info-group">
-                            <h2>Rates</h2>
-                            {meter.TAR_RATE_WEEKDAY && (
-                                <p><strong>Weekday Rate:</strong> ${meter.TAR_RATE_WEEKDAY.toFixed(2)}</p>
-                            )}
-                            {meter.TAR_RATE_AH_WE && (
-                                <p><strong>Weekend/After Hours Rate:</strong> ${meter.TAR_RATE_AH_WE.toFixed(2)}</p>
-                            )}
-                            <p><strong>Zone:</strong> {meter.TAR_ZONE}</p>
+                        <!-- Vehicle Information -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-bold mb-3 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#2073E0]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                                </svg>
+                                Vehicle Information
+                            </h3>
+                            <div class="space-y-2">
+                                <p class="flex justify-between">
+                                    <span class="text-slate-600">Vehicle Bays:</span>
+                                    <span class="font-medium">{meter.VEH_BAYS}</span>
+                                </p>
+                                <p class="flex justify-between">
+                                    <span class="text-slate-600">Motorcycle Bays:</span>
+                                    <span class="font-medium">{meter.MC_BAYS}</span>
+                                </p>
+                                {meter.MC_RATE && (
+                                    <p class="flex justify-between">
+                                        <span class="text-slate-600">Motorcycle Rate:</span>
+                                        <span class="font-medium">${Number(meter.MC_RATE).toFixed(2)}</span>
+                                    </p>
+                                )}
+                                {meter.CATEGORY && (
+                                    <p class="flex justify-between">
+                                        <span class="text-slate-600">Category:</span>
+                                        <span class="font-medium">{meter.CATEGORY}</span>
+                                    </p>
+                                )}
+                            </div>
                         </div>
 
-                        <div class="info-group">
-                            <h2>Additional Information</h2>
-                            <p><strong>Category:</strong> {meter.CATEGORY}</p>
-                            {meter.RESTRICTIONS && (
-                                <p><strong>Restrictions:</strong> {meter.RESTRICTIONS}</p>
-                            )}
-                            <p><strong>Vehicle Bays:</strong> {meter.VEH_BAYS}</p>
-                            <p><strong>Motorcycle Bays:</strong> {meter.MC_BAYS}</p>
-                            {meter.MC_RATE && (
-                                <p><strong>Motorcycle Rate:</strong> ${Number(meter.MC_RATE).toFixed(2)}</p>
-                            )}
+                        <!-- Map Link -->
+                        <div class="mb-6">
+                            <a href={`https://www.google.com/maps?q=${meter.LATITUDE},${meter.LONGITUDE}`} 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 text-[#2073E0] hover:text-[#1b65c8] transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                </svg>
+                                View on Google Maps
+                            </a>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="border-t border-slate-200 pt-6 mt-6">
+                            <a href="/parking-meters" 
+                               class="block text-center bg-[#2073E0] text-white px-6 py-3 rounded-md font-semibold hover:bg-[#1b65c8] transition-colors">
+                                Back to Parking Meters
+                            </a>
                         </div>
                     </div>
                 </div>
-
-                <div class="meter-actions">
-                    <a href="/parking-meters" class="button secondary full-width">Back to Parking Meters</a>
-                </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 </Layout>
+
+<style>
+/* Fix for overflow issues with HTML content */
+.prose {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.prose :where(img) {
+  max-width: 100%;
+  height: auto;
+}
+</style>

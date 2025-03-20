@@ -1,0 +1,144 @@
+---
+import { getEventsByPage } from '../utils/eventsCache';
+import { createSlug } from '../utils/slug';
+import type { Event } from '../types/types';
+import EventCard from './EventCard.astro';
+
+const { page = 1, searchQuery = '', limit, includeExpired = false, events: propEvents, totalPages: propTotalPages, title = "Featured Events" } = Astro.props;
+
+// Use provided events and totalPages if available, otherwise fetch them
+const { events, totalPages } = propEvents && propTotalPages !== undefined
+    ? { events: propEvents, totalPages: propTotalPages }
+    : await getEventsByPage(Astro.locals.runtime.env.DB, page, searchQuery, includeExpired);
+
+// If limit is provided, slice the events array
+const displayEvents = limit ? events.slice(0, limit) : events;
+
+---
+
+<!-- Events Section -->
+<section class="py-8">
+    <div class="mx-auto px-4">
+        <h2 class="text-4xl font-bold mb-8">{title}</h2>
+        
+        <div class="relative overflow-hidden" id="carousel-container">
+
+            <div class="flex transition-transform duration-500 ease-in-out space-x-6 overflow-visible" id="carousel-track">
+                {displayEvents.map((event: Event) => (
+                    <div class="flex-shrink-0 w-[85%] md:w-[45%] lg:w-[30%]">
+                        <div class="h-full">
+                            <EventCard event={event} />
+                        </div>
+                    </div>
+                ))}
+            </div>
+            
+            <button
+                id="prev-button"
+                class="absolute left-5 top-1/2 -translate-y-1/2 bg-black text-white w-10 h-10 flex items-center justify-center opacity-0 transition-opacity cursor-pointer hover:opacity-100 z-100"
+                aria-label="Previous slide"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+            </button>
+            
+            <button
+                id="next-button"
+                class="absolute right-5 top-1/2 -translate-y-1/2 bg-black text-white w-10 h-10 flex items-center justify-center opacity-0 transition-opacity cursor-pointer hover:opacity-100 z-100"
+                aria-label="Next slide"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+            </button>
+         
+        </div>
+    </div>
+</section>
+
+<style>
+  @media (max-width: 768px) {
+    #carousel-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+    }
+    
+    #carousel-track {
+      scroll-snap-type: x mandatory;
+    }
+    
+    #carousel-track > div {
+      scroll-snap-align: start;
+    }
+  }
+</style>
+
+<script>
+    const container = document.getElementById('carousel-container');
+    const track = document.getElementById('carousel-track') as HTMLElement;
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
+    
+    let currentIndex = 0;
+    const slideCount = track?.children.length || 0;
+    
+    function getVisibleSlides() {
+        return window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+    }
+    
+    function updateButtons() {
+        if (!prevButton || !nextButton || !track) return;
+        
+        const maxIndex = slideCount - getVisibleSlides();
+        
+        prevButton.style.display = currentIndex <= 0 ? 'none' : 'flex';
+        nextButton.style.display = currentIndex >= maxIndex ? 'none' : 'flex';
+    }
+    
+    function slide(direction: 'next' | 'prev') {
+        if (!track) return;
+        
+        const visibleSlides = getVisibleSlides();
+        const maxIndex = slideCount - visibleSlides;
+        
+        if (direction === 'next' && currentIndex < maxIndex) {
+            currentIndex++;
+        } else if (direction === 'prev' && currentIndex > 0) {
+            currentIndex--;
+        }
+        
+        const slideWidth = 100 / visibleSlides;
+        const offset = -(currentIndex * slideWidth);
+        track.style.transform = `translateX(${offset}%)`;
+        updateButtons();
+    }
+    
+    // Desktop navigation
+    prevButton?.addEventListener('click', () => slide('prev'));
+    nextButton?.addEventListener('click', () => slide('next'));
+    
+    // Initial setup
+    updateButtons();
+    
+    // Show buttons on container hover (desktop only)
+    container?.addEventListener('mouseenter', () => {
+        if (window.innerWidth >= 768) {
+            prevButton?.classList.add('opacity-100');
+            nextButton?.classList.add('opacity-100');
+        }
+    });
+    
+    container?.addEventListener('mouseleave', () => {
+        prevButton?.classList.remove('opacity-100');
+        nextButton?.classList.remove('opacity-100');
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        currentIndex = 0;
+        track.style.transform = 'translateX(0)';
+        updateButtons();
+    });
+</script>

@@ -1,3 +1,11 @@
+// DEPRECATED: Breadcrumbs styling
+// This file is kept for backward compatibility but all breadcrumb styling
+// has been migrated to Tailwind CSS classes directly in the component.
+// See src/components/breadcrumbs.astro for the current implementation.
+//
+// If you need to modify breadcrumb styling, please update the component
+// directly instead of editing this file.
+
 // Breadcrumbs styling
 .breadcrumb-section {
   padding: 1rem 0;
