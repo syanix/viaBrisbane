@@ -1,19 +1,22 @@
 ---
-import { getEventsByPage } from '../utils/eventsCache';
-import { createSlug } from '../utils/slug';
 import type { Event } from '../types/types';
 import EventCard from './EventCard.astro';
 
-const { page = 1, searchQuery = '', limit, includeExpired = false, events: propEvents, totalPages: propTotalPages, title = "Featured Events" } = Astro.props;
+interface Props {
+  events: Partial<Event>[];
+  totalPages?: number;
+  title?: string;
+  limit?: number;
+}
 
-// Use provided events and totalPages if available, otherwise fetch them
-const { events, totalPages } = propEvents && propTotalPages !== undefined
-    ? { events: propEvents, totalPages: propTotalPages }
-    : await getEventsByPage(Astro.locals.runtime.env.DB, page, searchQuery, includeExpired);
+const { 
+  events = [], 
+  title = "Featured Events",
+  limit
+} = Astro.props;
 
 // If limit is provided, slice the events array
 const displayEvents = limit ? events.slice(0, limit) : events;
-
 ---
 
 <!-- Events Section -->
@@ -22,9 +25,8 @@ const displayEvents = limit ? events.slice(0, limit) : events;
         <h2 class="text-4xl font-bold mb-8">{title}</h2>
         
         <div class="relative overflow-hidden" id="carousel-container">
-
             <div class="flex transition-transform duration-500 ease-in-out space-x-6 overflow-visible" id="carousel-track">
-                {displayEvents.map((event: Event) => (
+                {displayEvents.map(event => (
                     <div class="flex-shrink-0 w-[85%] md:w-[45%] lg:w-[30%]">
                         <div class="h-full">
                             <EventCard event={event} />
@@ -52,7 +54,6 @@ const displayEvents = limit ? events.slice(0, limit) : events;
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
             </button>
-         
         </div>
     </div>
 </section>
@@ -111,7 +112,7 @@ const displayEvents = limit ? events.slice(0, limit) : events;
         
         const slideWidth = 100 / visibleSlides;
         const offset = -(currentIndex * slideWidth);
-        track.style.transform = `translateX(${offset}%)`;
+        track.style.transform = 'translateX(' + offset + '%)';
         updateButtons();
     }
     

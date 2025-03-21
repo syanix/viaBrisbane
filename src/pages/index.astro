@@ -3,6 +3,7 @@ import NewLayout from '../layouts/Layout.astro';
 import EventsCarousel from '../components/EventsCarousel.astro';
 import NewsSection from '../components/NewsSection.astro';
 import { Image } from 'astro:assets';
+import { getUpcomingEvents } from '../utils/eventsCache';
 const title = "Explore Brisbane: Your Guide to Events, Attractions & Experiences - Via Brisbane";
 const description = "Discover the best of Brisbane with Via Brisbane, your ultimate guide to local events, attractions, and hidden gems. Stay updated and explore the city like never before!";
 const keywords = "Brisbane, Brisbane guide, local events, Brisbane attractions, things to do in Brisbane, Brisbane experiences, explore Brisbane";
@@ -40,6 +41,9 @@ const organizationSchema: Record<string, any> = {
 
 // Combine schemas
 const schema = [websiteSchema, organizationSchema];
+
+// Fetch upcoming events for carousel
+const upcomingEvents = await getUpcomingEvents(Astro.locals.runtime.env.DB, 12);
 
 ---
 
@@ -141,7 +145,7 @@ const schema = [websiteSchema, organizationSchema];
   </section>
 
   <!-- Events Carousel Section -->
-  <EventsCarousel limit={6} title="Featured Events" />
+  <EventsCarousel events={upcomingEvents} totalPages={1} limit={12} title="Featured Events" />
   
   <!-- Explore Brisbane Section -->
   <!-- <section class="py-12">
