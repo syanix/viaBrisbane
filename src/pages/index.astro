@@ -5,7 +5,8 @@ import NewsSection from '../components/NewsSection.astro';
 import HotelCarousel from '../components/HotelCarousel.astro';
 import { Image } from 'astro:assets';
 import { getUpcomingEvents } from '../utils/eventsCache';
-import hotelData from '../../data/brisbaneHotels.json';
+import hotelsData from '../../data/hotels.json';
+import locationData from '../../data/locations.json';
 const title = "Explore Brisbane: Your Guide to Events, Attractions & Experiences - Via Brisbane";
 const description = "Discover the best of Brisbane with Via Brisbane, your ultimate guide to local events, attractions, and hidden gems. Stay updated and explore the city like never before!";
 const keywords = "Brisbane, Brisbane guide, local events, Brisbane attractions, things to do in Brisbane, Brisbane experiences, explore Brisbane";
@@ -47,15 +48,15 @@ const schema = [websiteSchema, organizationSchema];
 // Fetch upcoming events for carousel
 const upcomingEvents = await getUpcomingEvents(Astro.locals.runtime.env.DB, 12);
 
-// Extract all hotels from all locations and categories
-const allHotels = hotelData.locations.flatMap(location => 
-  location.categories.flatMap(category => 
-    category.hotels.map(hotel => ({
-      ...hotel,
-      location: location.name
-    }))
-  )
-);
+// Get hotels from the new hotels.json structure
+const allHotels = hotelsData.hotels.map(hotel => {
+  // Find the matching location name
+  const location = locationData.locations.find(loc => loc.id === hotel.area);
+  return {
+    ...hotel,
+    location: location ? location.name : hotel.area
+  };
+});
 
 ---
 

@@ -1,19 +1,27 @@
 ---
+import { Image } from 'astro:assets';
 import type { Hotel } from '../types/types.d';
+import { HotelCategory, HotelArea } from '../types/types.d';
 
-interface Props {
+export interface Props {
   hotel: Hotel;
-  viewDetailsUrl?: string;
+  showLocation?: boolean;
 }
 
-const { hotel, viewDetailsUrl } = Astro.props as Props;
+const { hotel, showLocation = true } = Astro.props;
+
+// Display nicely formatted category and area names using enums
+const displayCategory = hotel.category ? 
+  (HotelCategory[hotel.category as keyof typeof HotelCategory] || hotel.category) : 
+  '';
+  
+const displayArea = hotel.area ? 
+  (HotelArea[hotel.area as keyof typeof HotelArea] || hotel.area) : 
+  '';
 
 // Get display values with fallbacks
-const imageUrl = hotel.image || (hotel.images && hotel.images.length > 0 ? hotel.images[0].url : 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop');
-const categoryName = hotel.category?.name || 'Hotel';
-const areaName = hotel.area || '';
-const priceDisplay = hotel.price || '';
-const hotelUrl = viewDetailsUrl || hotel.affiliateLink || `https://www.expedia.com/Brisbane-Hotels.d179993.Travel-Guide-Hotels?`;
+const imageUrl = hotel.image || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop';
+const hotelUrl = hotel.affiliateLink || `https://expedia.com/affiliates/hotel-search-brisbane.7nJn5FH`;
 ---
 
 <div class="bg-white flex flex-col h-full shadow-[0px_2px_8px_rgba(0,0,0,0.1)]">
@@ -21,16 +29,17 @@ const hotelUrl = viewDetailsUrl || hotel.affiliateLink || `https://www.expedia.c
     <!-- Image container -->
     <div class="relative pb-[66%] overflow-hidden">
       <img 
-        src={imageUrl} 
+        src={hotel.image} 
         alt={hotel.name} 
         class="absolute inset-0 w-full h-full object-cover"
+        loading="lazy"
       />
     </div>
     
     <!-- Price badge -->
-    {priceDisplay && (
+    {hotel.price && (
       <div class="absolute bottom-2 left-2 bg-[#ffc800] text-black px-3 py-1 text-sm font-bold rounded-sm">
-        {priceDisplay}
+        {hotel.price}
       </div>
     )}
 
@@ -44,24 +53,42 @@ const hotelUrl = viewDetailsUrl || hotel.affiliateLink || `https://www.expedia.c
   
   <!-- Category tags -->
   <div class="flex flex-wrap gap-2 mt-4 px-4">
-    {areaName && (
-      <a href={`/where-to-stay?area=${areaName.toLowerCase()}`} 
-         class="bg-black text-white px-3 py-1 text-sm font-bold rounded-sm">
-        {areaName}
-      </a>
+    {showLocation && displayArea && (
+      <span class="bg-black text-white px-3 py-1 text-sm font-bold rounded-sm">
+        {displayArea}
+      </span>
     )}
-    {categoryName && (
-      <a href={`/where-to-stay?category=${categoryName.toLowerCase()}`} 
-         class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0]">
-        {categoryName}
-      </a>
+    {displayCategory && (
+      <span class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0]">
+        {displayCategory}
+      </span>
     )}
   </div>
   
   <!-- Content -->
   <div class="p-4 flex flex-col flex-1">
     <div class="flex-1">
-      <h3 class="text-2xl font-bold line-clamp-2 mb-2">{hotel.name}</h3>
+      <div class="flex items-center">
+        <h3 class="text-2xl font-bold line-clamp-2 my-1">{hotel.name}</h3>
+      </div>
+      
+      <!-- {hotel.guestRating && (
+        <div class="mb-2 flex items-center">
+          <span class="bg-green-600 text-white text-sm font-bold px-2 py-0.5 rounded mr-2">{hotel.guestRating.value.toFixed(1)}</span>
+          <span class="text-sm text-gray-600">{hotel.guestRating.count} reviews</span>
+        </div>
+      )} -->
+
+      {hotel.starRating && (
+        <div class="flex">
+          {Array.from({ length: Math.floor(hotel.starRating) }).map(() => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-yellow-500">
+              <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
+            </svg>
+          ))}
+        </div>
+      )}
+      
       <p class="text-gray-700 text-base mb-4 line-clamp-3">{hotel.description}</p>
     </div>
     

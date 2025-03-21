@@ -1,22 +1,29 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import hotelData from '../../../data/brisbaneHotels.json';
+import hotelsData from '../../../data/hotels.json';
 import locationData from '../../../data/locations.json';
 import HotelCard from '../../components/HotelCard.astro';
 import HotelCarousel from '../../components/HotelCarousel.astro';
 import { Image } from 'astro:assets';
 import type { Hotel } from '../../types/types.d';
+import { HotelCategory, HotelArea } from '../../types/types.d';
 import HeroBanner from '../../components/base/HeroBanner.astro';
 
-// Extract all hotels from all locations and categories
-const allHotels = hotelData.locations.flatMap(location => 
-  location.categories.flatMap(category => 
-    category.hotels.map(hotel => ({
-      ...hotel,
-      location: location.name
-    }))
-  )
-);
+// Get hotels from the new hotels.json structure
+const allHotels = hotelsData.hotels.map(hotel => {
+  // Find the matching location name
+  const location = locationData.locations.find(loc => loc.id === hotel.area);
+  
+  // Use the enum for better display of areas
+  const displayArea = hotel.area ? 
+    (HotelArea[hotel.area as keyof typeof HotelArea] || hotel.area) : 
+    '';
+    
+  return {
+    ...hotel,
+    location: location ? location.name : displayArea
+  };
+});
 
 // Use locations from the locations.json file
 const locations = locationData.locations;

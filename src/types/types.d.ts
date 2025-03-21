@@ -51,28 +51,43 @@ export interface ImageMetadata {
   format: string;
 }
 
+export enum HotelCategory {
+  luxury = "Luxury",
+  "mid-range" = "Mid-Range",
+  boutique = "Boutique",
+  budget = "Budget-Friendly",
+  "budget-friendly" = "Budget-Friendly",
+  other = "Other"
+}
+
+export enum HotelArea {
+  cbd = "Brisbane CBD",
+  southbank = "South Bank",
+  "fortitude-valley" = "Fortitude Valley",
+  "south-inner-suburbs" = "South/Inner Suburbs",
+  "north-inner-suburbs" = "North/Inner Suburbs",
+  "airport-surrounds" = "Airport & Surrounds"
+}
+
 export interface Hotel {
   id: string;
   name: string;
   description: string;
-  category?: {
-    id: string;
-    name: string;
-  };
-  area?: string;
+  category?: string;
+  area: string;
   location?: string;
-  price?: string;
-  image?: string;
+  price: string;
+  image: string;
   images?: {
     url: string;
     caption?: string;
-    category: string;
+    category?: string;
   }[];
   dealBadge?: string;
   affiliateLink?: string;
   featured?: boolean;
-  starRating?: number;
-  guestRating?: {
+  starRating: number;
+  guestRating: {
     value: number;
     count: number;
   };

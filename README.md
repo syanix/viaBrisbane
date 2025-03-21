@@ -11,6 +11,17 @@ A comprehensive guide to Brisbane city, featuring events, accommodation options,
 
 ## Recent Updates
 
+### Hotel Data Structure Improvements
+
+We've enhanced our hotel data structure for better maintainability and display:
+
+- **Flattened Data Structure**: Reorganized from nested objects to a flat array in `hotels.json`
+- **Type-Safe Enums**: Added enum mappings for hotel categories and areas
+  - `HotelCategory`: Maps codes to display names (e.g., "luxury" → "Luxury")
+  - `HotelArea`: Maps location codes to readable names (e.g., "cbd" → "Brisbane CBD")
+- **Improved Component Display**: Updated hotel cards to use the new enum mappings for consistent presentation
+- **Enhanced Filtering**: Simplified filtering by category and location with the new structure
+
 ### Brisbane Hotels Feature
 
 We've added a comprehensive hotel guide for Brisbane:
@@ -130,7 +141,8 @@ All commands are run from the root of the project, from a terminal:
 │   ├── images/
 │   └── favicon.svg
 ├── data/
-│   └── brisbaneHotels.json
+│   ├── hotels.json
+│   └── locations.json
 ├── src/
 │   ├── assets/
 │   │   └── sass/

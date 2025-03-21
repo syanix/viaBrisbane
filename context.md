@@ -59,6 +59,12 @@ We've implemented a comprehensive hotel guide to help visitors find accommodatio
    - Further categorized by hotel type (luxury, mid-range, boutique, budget-friendly)
    - Added detailed hotel metadata including images, descriptions, and pricing
    - Included affiliate links for each hotel to support monetization
+   - **Updated Structure (2024-XX-XX)**: 
+     - Reorganized hotel data from nested structure to flat list
+     - Created separate `hotels.json` with hotels array 
+     - Each hotel has an `area` field that maps to location `id` in `locations.json`
+     - Added consistent hotel schema with standardized fields
+     - Improved type safety with updated TypeScript interfaces
 
 2. **Component System**
    - Created reusable `HotelCard` component for consistent display across the site
@@ -101,6 +107,27 @@ We've implemented a comprehensive hotel guide to help visitors find accommodatio
    - Implement image lazy loading
    - Consider data fetching optimizations for faster page loads
    - Add caching for hotel data to reduce API calls
+
+## Data Structure Changes - Hotels (2023-07-12)
+
+We've made significant changes to the hotel data structure:
+
+1. Reorganized from a nested structure to a flat list:
+   - Created a `hotels.json` file containing an array of hotels
+   - Each hotel has an `area` field that maps to a location `id` in `locations.json`
+   - This makes the data more manageable and easier to filter
+
+2. Improved type safety:
+   - Updated TypeScript interfaces in `src/types/types.d.ts`
+   - Added enum mappings for better display of hotel categories and areas:
+     - `HotelCategory` enum maps category IDs to display names (e.g., "luxury" → "Luxury")
+     - `HotelArea` enum maps area IDs to display names (e.g., "cbd" → "Brisbane CBD")
+
+3. Updated components to use the new structure:
+   - Modified `HotelCard.astro` to display the formatted category and area names using the enums
+   - Updated hotel listing pages to utilize the new data format
+
+These changes improve code maintainability, type safety, and display formatting across the site.
 
 ## Events System Enhancements
 
