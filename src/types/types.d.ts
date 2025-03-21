@@ -167,6 +167,11 @@ export interface Location {
   heroImage: string;
   description: string;
   tips: LocationTips;
+  categories: {
+    id: string;
+    name: string;
+    hotels: Hotel[];
+  }[];
 }
 
 export {};

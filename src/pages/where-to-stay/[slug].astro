@@ -1,9 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import LocationHotels from '../../components/LocationHotels.astro';
+import HotelLocationPage from '../../components/pages/HotelLocationPage.astro';
 import hotelData from '../../../data/brisbaneHotels.json';
 import locationData from '../../../data/locations.json';
-import type { LocationData } from '../../components/LocationHotels.astro';
+import type { Location } from '../../types/types.d';
+import { generateHotelLocationMetadata } from '../../utils/metadata';
 
 // Get the slug from the URL
 const { slug } = Astro.params;
@@ -13,74 +14,38 @@ if (!slug) {
 }
 
 // Find the location data from the locations.json file using the SEO-friendly slug
-const location = locationData.locations.find(loc => loc.slug === slug);
+const locationInfo = locationData.locations.find(loc => loc.slug === slug);
 
-if (!location) {
+if (!locationInfo) {
   return Astro.redirect('/404');
 }
 
 // Find the corresponding hotel data from the brisbaneHotels.json file
-// We use the location.id to match with hotelLocationData.id
-const hotelLocationData = hotelData.locations.find(loc => loc.id === location.id);
+// We use the locationInfo.id to match with hotelLocationData.id
+const hotelLocationData = hotelData.locations.find(loc => loc.id === locationInfo.id);
 
 // If hotel data not found, redirect to 404
 if (!hotelLocationData) {
   return Astro.redirect('/404');
 }
 
-// Map the location data to the format expected by the LocationHotels component
-const mappedLocationData: LocationData = {
-  id: hotelLocationData.id,
-  name: location.name,
-  description: location.description,
+// Create a complete Location object that matches the type
+const location: Location = {
+  id: locationInfo.id,
+  name: locationInfo.name,
+  slug: locationInfo.slug,
+  heroImage: locationInfo.heroImage || "",
+  description: locationInfo.description,
+  tips: locationInfo.tips,
   categories: hotelLocationData.categories
 };
 
-// Use the tips from our dedicated locations data
-const tips = location.tips;
-
-// Prepare metadata for the page
-const title = `${location.name} Hotels | Best Places to Stay in ${location.name}`;
-const description = `Discover the best hotels in ${location.name}. From luxury stays to mid-range and budget-friendly accommodations in this popular Brisbane area.`;
-const keywords = `${location.name} hotels, Brisbane accommodation, where to stay in ${location.name}, hotels in ${location.name}, Brisbane`;
+// Get metadata from the utility function
+const { title, description, keywords } = generateHotelLocationMetadata(location);
 ---
 
 <Layout title={title} description={description} keywords={keywords}>
   <main>
-    <LocationHotels 
-      location={mappedLocationData} 
-      heroImage={location.heroImage}
-    >
-      <p slot="local-highlights">
-        {tips.highlights}
-      </p>
-      
-      <p slot="transportation">
-        {tips.transportation}
-      </p>
-      
-      <p slot="best-for">
-        {tips.bestFor}
-      </p>
-    </LocationHotels>
+    <HotelLocationPage location={location} />
   </main>
-</Layout>
-
-<script define:vars={{ locationName: location.name }}>
-// Add structured data for the location
-document.addEventListener('DOMContentLoaded', () => {
-  const script = document.createElement('script');
-  script.type = 'application/ld+json';
-  
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'TouristDestination',
-    'name': `${locationName} - Brisbane, Australia`,
-    'description': `Accommodation options in the ${locationName} area of Brisbane`,
-    'touristType': ['couples', 'business', 'family', 'sightseeing']
-  };
-  
-  script.textContent = JSON.stringify(structuredData);
-  document.head.appendChild(script);
-});
-</script> 
+</Layout> 
