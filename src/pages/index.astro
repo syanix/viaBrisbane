@@ -6,7 +6,6 @@ import HotelCarousel from '../components/HotelCarousel.astro';
 import { Image } from 'astro:assets';
 import { getUpcomingEvents } from '../utils/eventsCache';
 import hotelData from '../../data/brisbaneHotels.json';
-import locationData from '../../data/locations.json';
 const title = "Explore Brisbane: Your Guide to Events, Attractions & Experiences - Via Brisbane";
 const description = "Discover the best of Brisbane with Via Brisbane, your ultimate guide to local events, attractions, and hidden gems. Stay updated and explore the city like never before!";
 const keywords = "Brisbane, Brisbane guide, local events, Brisbane attractions, things to do in Brisbane, Brisbane experiences, explore Brisbane";
@@ -57,18 +56,6 @@ const allHotels = hotelData.locations.flatMap(location =>
     }))
   )
 );
-
-// Extract all featured hotels for the main carousel
-const featuredHotels = allHotels.filter(hotel => hotel.featured);
-
-// Generate location URLs
-const getLocationUrl = (locationSlug: string) => {
-  // Use the SEO-friendly slug directly
-  return `/where-to-stay/${locationSlug}`;
-};
-
-// Use locations from the locations.json file
-const locations = locationData.locations;
 
 ---
 
