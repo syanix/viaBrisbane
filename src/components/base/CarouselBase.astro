@@ -1,0 +1,305 @@
+---
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  sectionId?: string;
+  viewAllLink?: string;
+  viewAllText?: string;
+  background?: string;
+}
+
+const { 
+  title = "", 
+  subtitle = "",
+  sectionId = "base-carousel",
+  viewAllLink = "",
+  viewAllText = "View All",
+  background = "bg-gray-50"
+} = Astro.props;
+
+// Generate unique IDs for carousel elements
+const nextBtnId = `${sectionId}-next`;
+const prevBtnId = `${sectionId}-prev`;
+const trackId = `${sectionId}-track`;
+const containerId = `${sectionId}-container`;
+---
+
+<section class={`carousel-section py-12 ${background}`} data-carousel-id={sectionId}>
+  <div class="mx-auto px-4">
+    {title && (
+      <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900">{title}</h2>
+          {subtitle && <p class="text-lg text-gray-600 mt-2 max-w-2xl">{subtitle}</p>}
+        </div>
+        <div class="flex items-center mt-4 md:mt-0">
+          {viewAllLink && (
+            <a href={viewAllLink} class="inline-flex items-center text-black text-lg uppercase group focus:border-dashed">
+              <span class="font-black border-b-2 border-transparent group-hover:border-black transition-colors duration-200">{viewAllText}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+         
+          )}
+          <div class="hidden md:flex items-center space-x-2">
+            <button
+              id={prevBtnId}
+              class="carousel-prev p-2 rounded-full bg-white border border-gray-200 text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 transition-all"
+              disabled
+            >
+              <span class="sr-only">Previous</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                class="w-5 h-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15.75 19.5L8.25 12l7.5-7.5"
+                />
+              </svg>
+            </button>
+            <button
+              id={nextBtnId}
+              class="carousel-next p-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-all"
+            >
+              <span class="sr-only">Next</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                class="w-5 h-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <div id={containerId} class="carousel-container overflow-hidden">
+      <div
+        id={trackId}
+        class="carousel-track flex space-x-6 transition-transform duration-300 ease-out"
+      >
+        <!-- Slot for slides -->
+        <slot />
+      </div>
+    </div>
+
+    <!-- Mobile navigation buttons -->
+    <div class="flex justify-center mt-6 md:hidden space-x-2">
+      <button
+        id={`${prevBtnId}-mobile`}
+        class="carousel-prev-mobile p-2 rounded-full bg-white border border-gray-200 text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 transition-all"
+        disabled
+      >
+        <span class="sr-only">Previous</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 19.5L8.25 12l7.5-7.5"
+          />
+        </svg>
+      </button>
+      <button
+        id={`${nextBtnId}-mobile`}
+        class="carousel-next-mobile p-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-all"
+      >
+        <span class="sr-only">Next</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M8.25 4.5l7.5 7.5-7.5 7.5"
+          />
+        </svg>
+      </button>
+    </div>
+    
+    {viewAllLink && (
+      <div class="mt-10 text-center">
+        <a 
+          href={viewAllLink}
+          class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-lg font-bold rounded-md text-white bg-[#2073E0] hover:bg-blue-500 md:py-3 md:text-lg md:px-8 transition duration-150 ease-in-out"
+        >
+          {viewAllText}
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    )}
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize all carousels on the page
+  document.querySelectorAll('.carousel-section').forEach(carousel => {
+    const carouselId = (carousel as HTMLElement).dataset.carouselId;
+    const track = carousel.querySelector('.carousel-track') as HTMLElement;
+    const container = carousel.querySelector('.carousel-container') as HTMLElement;
+    const prevBtn = carousel.querySelector('.carousel-prev') as HTMLButtonElement;
+    const nextBtn = carousel.querySelector('.carousel-next') as HTMLButtonElement;
+    const prevBtnMobile = carousel.querySelector('.carousel-prev-mobile') as HTMLButtonElement;
+    const nextBtnMobile = carousel.querySelector('.carousel-next-mobile') as HTMLButtonElement;
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    
+    if (!track || !container || !slides.length) return;
+    
+    // Carousel state
+    let currentIndex = 0;
+    let slideWidth = 0;
+    let slidesPerView = 1;
+    
+    // Calculate how many slides to show based on screen width
+    const updateSlidesPerView = () => {
+      if (window.innerWidth >= 1280) {
+        slidesPerView = 4;
+      } else if (window.innerWidth >= 1024) {
+        slidesPerView = 3;
+      } else if (window.innerWidth >= 640) {
+        slidesPerView = 2;
+      } else {
+        slidesPerView = 1;
+      }
+    };
+    
+    // Calculate slide dimensions
+    const updateSlideWidth = () => {
+      updateSlidesPerView();
+      const containerWidth = container.clientWidth;
+      const gap = 24; // gap in pixels (space-x-6 = 1.5rem = 24px)
+      
+      if (slidesPerView > 1) {
+        // Account for gaps between slides
+        slideWidth = (containerWidth - (gap * (slidesPerView - 1))) / slidesPerView;
+      } else {
+        slideWidth = containerWidth;
+      }
+      
+      // Apply width to slides
+      slides.forEach(slide => {
+        (slide as HTMLElement).style.width = `${slideWidth}px`;
+      });
+      
+      // Ensure track width accommodates all slides
+      const totalWidth = (slideWidth * slides.length) + (gap * (slides.length - 1));
+      track.style.width = `${totalWidth}px`;
+      
+      // Reset position when resizing
+      goToSlide(currentIndex, false);
+    };
+    
+    // Enable/disable navigation buttons
+    const updateButtons = () => {
+      const maxIndex = Math.max(0, slides.length - slidesPerView);
+      
+      if (prevBtn) prevBtn.disabled = currentIndex <= 0;
+      if (nextBtn) nextBtn.disabled = currentIndex >= maxIndex;
+      if (prevBtnMobile) prevBtnMobile.disabled = currentIndex <= 0;
+      if (nextBtnMobile) nextBtnMobile.disabled = currentIndex >= maxIndex;
+    };
+    
+    // Go to specific slide
+    const goToSlide = (index: number, animate = true) => {
+      const maxIndex = Math.max(0, slides.length - slidesPerView);
+      currentIndex = Math.max(0, Math.min(index, maxIndex));
+      
+      const gap = 24; // space-x-6 = 1.5rem = 24px
+      const xOffset = currentIndex * (slideWidth + gap);
+      
+      if (!animate) {
+        track.style.transition = 'none';
+        requestAnimationFrame(() => {
+          track.style.transform = `translateX(-${xOffset}px)`;
+          requestAnimationFrame(() => {
+            track.style.transition = 'transform 300ms ease-out';
+          });
+        });
+      } else {
+        track.style.transform = `translateX(-${xOffset}px)`;
+      }
+      
+      updateButtons();
+    };
+    
+    // Event handlers
+    const handleNext = () => goToSlide(currentIndex + 1);
+    const handlePrev = () => goToSlide(currentIndex - 1);
+    
+    // Add event listeners
+    if (nextBtn) nextBtn.addEventListener('click', handleNext);
+    if (prevBtn) prevBtn.addEventListener('click', handlePrev);
+    if (nextBtnMobile) nextBtnMobile.addEventListener('click', handleNext);
+    if (prevBtnMobile) prevBtnMobile.addEventListener('click', handlePrev);
+    
+    // Touch/swipe handling
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX = e.changedTouches[0].screenX;
+    };
+    
+    const handleTouchEnd = (e: TouchEvent) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    };
+    
+    const handleSwipe = () => {
+      const swipeThreshold = 50;
+      if (touchStartX - touchEndX > swipeThreshold) {
+        // Swipe left, go next
+        handleNext();
+      } else if (touchEndX - touchStartX > swipeThreshold) {
+        // Swipe right, go prev
+        handlePrev();
+      }
+    };
+    
+    // Add touch events for mobile
+    container.addEventListener('touchstart', handleTouchStart, {passive: true});
+    container.addEventListener('touchend', handleTouchEnd, {passive: true});
+    
+    // Initialize carousel
+    updateSlideWidth();
+    updateButtons();
+    
+    // Handle resize
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateSlideWidth, 200);
+    });
+  });
+});
+</script> 

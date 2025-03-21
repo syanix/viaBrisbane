@@ -1,14 +1,24 @@
 # Via Brisbane
 
-A comprehensive guide to Brisbane city, featuring events, parking meters, and food trucks.
+A comprehensive guide to Brisbane city, featuring events, accommodation options, parking meters, and food trucks.
 
 ## Features
 
 - **Events Listing**: Browse upcoming and past events in Brisbane
+- **Hotel Guide**: Find the best accommodations in Brisbane with affiliate links
 - **Parking Meters**: Find parking meters throughout Brisbane
 - **Food Trucks**: Discover food trucks in Brisbane
 
 ## Recent Updates
+
+### Brisbane Hotels Feature
+
+We've added a comprehensive hotel guide for Brisbane:
+
+- **Structured Data**: JSON-based hotel information organized by location and category
+- **Carousel Display**: Interactive carousels for exploring hotel options
+- **Affiliate Links**: Direct links to booking sites for all listed hotels
+- **Location-Based Organization**: Hotels sorted by areas like CBD, South Bank, Fortitude Valley, and more
 
 ### URL Structure Improvements
 
@@ -94,6 +104,7 @@ MIT
 ## 🚀 Features
 
 - **Events System**: Browse upcoming and past events with search functionality
+- **Accommodation Guide**: Find hotels, hostels, and apartments in Brisbane
 - **Parking Information**: Find parking locations and availability
 - **Food Trucks**: Discover food truck locations and schedules
 - **Local Resources**: Access information about Brisbane facilities and services
@@ -118,6 +129,8 @@ All commands are run from the root of the project, from a terminal:
 ├── public/
 │   ├── images/
 │   └── favicon.svg
+├── data/
+│   └── brisbaneHotels.json
 ├── src/
 │   ├── assets/
 │   │   └── sass/
@@ -126,6 +139,8 @@ All commands are run from the root of the project, from a terminal:
 │   │       └── main.scss
 │   ├── components/
 │   │   ├── events.astro
+│   │   ├── HotelCard.astro
+│   │   ├── HotelCarousel.astro
 │   │   └── ...
 │   ├── layouts/
 │   │   └── Layout.astro
@@ -133,6 +148,9 @@ All commands are run from the root of the project, from a terminal:
 │   │   ├── events/
 │   │   │   ├── index.astro
 │   │   │   └── [...slug].astro
+│   │   ├── where-to-stay/
+│   │   │   ├── index.astro
+│   │   │   └── brisbane-hotels.astro
 │   │   └── index.astro
 │   ├── types/
 │   │   └── types.ts
@@ -144,6 +162,7 @@ All commands are run from the root of the project, from a terminal:
 
 ## 🔄 Recent Updates
 
+- **Brisbane Hotels Guide**: Added comprehensive hotel listings with interactive carousels
 - **Events Archive System**: Implemented a SEO-friendly approach to viewing past events
 - **Responsive Design**: Enhanced mobile experience across all pages
 - **Performance Optimizations**: Improved loading times and caching strategies

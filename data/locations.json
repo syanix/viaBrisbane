@@ -1,0 +1,112 @@
+{
+  "locations": [
+    {
+      "id": "cbd",
+      "name": "Brisbane CBD",
+      "slug": "brisbane-cbd-hotels",
+      "heroImage": "https://images.unsplash.com/photo-1598264294394-ba29cf557627?q=80&w=2070&auto=format&fit=crop",
+      "description": "Brisbane's Central Business District (CBD) puts you at the heart of the city with easy access to shopping, dining, and cultural attractions.",
+      "tips": {
+        "highlights": "Brisbane CBD offers excellent access to the city's main attractions including Queen Street Mall, City Botanic Gardens, and the Eagle Street Pier dining precinct. Most hotels are within walking distance of these key locations, as well as cultural spots like QPAC and the Queensland Museum at South Bank.",
+        "transportation": "The CBD has excellent public transport links with Central Station providing train connections to the suburbs and airport. The free CityHopper ferry service is perfect for traveling along the river to attractions like South Bank and New Farm. The CBD is also well-served by buses and has dedicated bikeways.",
+        "bestFor": "The CBD is ideal for business travelers, first-time visitors to Brisbane, shoppers, and those wanting to be at the heart of the action. It's perfect if you value convenience and want to minimize travel time between attractions."
+      }
+    },
+    {
+      "id": "southbank",
+      "name": "South Bank",
+      "slug": "brisbane-south-bank-hotels",
+      "heroImage": "https://images.unsplash.com/photo-1577366899402-0465e1747925?q=80&w=2069&auto=format&fit=crop",
+      "description": "South Bank is Brisbane's premier lifestyle and cultural destination. Staying here gives you access to the South Bank Parklands, Queensland Cultural Centre, and numerous restaurants and cafes.",
+      "tips": {
+        "highlights": "South Bank is home to Brisbane's cultural precinct including QPAC, Queensland Museum, and GOMA. The beautiful parklands feature a man-made beach, gardens, and numerous restaurants and cafes along the waterfront.",
+        "transportation": "South Bank is serviced by its own train station and the Cultural Centre bus station. The CityCat and CityHopper ferry services stop at South Bank, making it easy to travel along the river to other destinations.",
+        "bestFor": "South Bank is perfect for families with children, culture enthusiasts, and those who want a balance of green space and city convenience. It's also great for those attending events at QPAC or the convention center."
+      }
+    },
+    {
+      "id": "fortitude-valley-new-farm",
+      "name": "Fortitude Valley & New Farm",
+      "slug": "brisbane-fortitude-valley-new-farm-hotels",
+      "heroImage": "https://images.unsplash.com/photo-1608501947097-86951ad612a3?q=80&w=2070&auto=format&fit=crop",
+      "description": "Known as \"The Valley,\" this vibrant neighborhood is Brisbane's entertainment precinct, packed with nightlife, boutique shopping, and a thriving music scene. Adjacent New Farm offers a more relaxed atmosphere with excellent dining and beautiful riverside parks.",
+      "tips": {
+        "highlights": "Fortitude Valley offers Brisbane's best nightlife, boutique shopping in James Street, and a vibrant dining scene. Nearby New Farm features beautiful parks, including the iconic New Farm Park, and charming residential streets.",
+        "transportation": "Fortitude Valley has its own train station and frequent bus services. The CityHopper ferry service connects New Farm to the CBD. The areas are also walkable, with paths connecting to the CBD and riverside walkways.",
+        "bestFor": "These areas are ideal for nightlife enthusiasts, foodies, and those seeking a more local, trendy experience. The Valley suits those wanting vibrant energy, while New Farm is perfect for travelers seeking a quieter but still well-connected location."
+      }
+    },
+    {
+      "id": "kangaroo-point",
+      "name": "Kangaroo Point",
+      "slug": "brisbane-kangaroo-point-hotels",
+      "heroImage": "https://images.unsplash.com/photo-1673938936134-d4ebe8d5e5c8?q=80&w=2070&auto=format&fit=crop",
+      "description": "Kangaroo Point offers spectacular views of Brisbane's skyline and the Brisbane River. It's home to the iconic Kangaroo Point Cliffs and provides convenient access to the CBD via the free City Hopper ferry service, while remaining a peaceful place to stay.",
+      "tips": {
+        "highlights": "Kangaroo Point is known for its spectacular cliffs offering panoramic city views. It's home to the famous Story Bridge Adventure Climb and Captain Burke Park, perfect for watching the city light up at sunset.",
+        "transportation": "While there's no train station, Kangaroo Point is serviced by buses and is within walking distance to the CBD via the Story Bridge. The CityHopper ferry connects Kangaroo Point to the CBD and other riverside locations.",
+        "bestFor": "Kangaroo Point is ideal for active travelers who enjoy outdoor activities like rock climbing, kayaking, and cycling. It's also suitable for those who want a quieter location while maintaining easy access to the CBD."
+      }
+    },
+    {
+      "id": "spring-hill",
+      "name": "Spring Hill",
+      "slug": "brisbane-spring-hill-hotels",
+      "heroImage": "https://images.unsplash.com/photo-1559090008-0f6454c3a235?q=80&w=2070&auto=format&fit=crop",
+      "description": "Spring Hill is one of Brisbane's oldest neighborhoods, featuring charming heritage buildings and tree-lined streets. Located just north of the CBD, it offers a quiet retreat while remaining within walking distance of the city's attractions and business district.",
+      "tips": {
+        "highlights": "Spring Hill is one of Brisbane's oldest neighborhoods, featuring heritage buildings and tree-lined streets. It's home to Roma Street Parkland, a spectacular urban garden, and is close to the CBD's northern edge.",
+        "transportation": "The area is serviced by Central and Roma Street stations at its southern edge. Multiple bus routes run through Spring Hill, and it's an easy walk downhill to the CBD.",
+        "bestFor": "Spring Hill suits business travelers, medical tourists visiting nearby hospitals, and those who prefer a quieter residential feel while remaining within walking distance of the CBD."
+      }
+    },
+    {
+      "id": "west-end",
+      "name": "West End",
+      "slug": "brisbane-west-end-hotels",
+      "heroImage": "https://images.unsplash.com/photo-1677563778513-07219ba3b328?q=80&w=2070&auto=format&fit=crop",
+      "description": "West End is Brisbane's bohemian district, known for its diverse community, alternative culture, and eclectic mix of restaurants and cafes. The area offers a unique accommodation experience with easy access to the CBD and South Bank.",
+      "tips": {
+        "highlights": "West End is Brisbane's bohemian district, known for its diverse community, eclectic shops, and global dining scene. It hosts the popular Saturday morning markets and has a distinctly alternative vibe.",
+        "transportation": "While there's no train station in West End itself, South Brisbane station is nearby. The area is well-serviced by buses, and many city locations are within walking distance via the Kurilpa Bridge.",
+        "bestFor": "West End is perfect for travelers seeking a multicultural, artistic experience away from the mainstream tourist areas. It's ideal for foodies, those interested in alternative culture, and travelers wanting an authentic local experience."
+      }
+    },
+    {
+      "id": "south-inner-suburbs",
+      "name": "South/Inner Suburbs",
+      "slug": "brisbane-south-inner-suburbs-hotels",
+      "heroImage": "https://images.unsplash.com/photo-1572255210127-1a5a8efabc2a?q=80&w=2070&auto=format&fit=crop",
+      "description": "Brisbane's southern inner suburbs like Woolloongabba and Highgate Hill offer a local experience with a mix of heritage-listed buildings, trendy cafes and proximity to major sporting venues like The Gabba. Stay here for a more residential feel while remaining close to the action.",
+      "tips": {
+        "highlights": "These southern inner suburbs offer a mix of heritage buildings, trendy cafes, and proximity to sporting venues like The Gabba. Woolloongabba is known for its antique shops, while Highgate Hill offers panoramic city views.",
+        "transportation": "Woolloongabba is served by numerous bus routes and is close to South Bank train station. The suburbs are also accessible via the CityCat ferry services at nearby terminals.",
+        "bestFor": "These areas are ideal for sports enthusiasts attending events at The Gabba, travelers seeking a more residential experience, and those who want access to the city while staying in a quieter neighborhood."
+      }
+    },
+    {
+      "id": "north-inner-suburbs",
+      "name": "North/Inner Suburbs",
+      "slug": "brisbane-north-inner-suburbs-hotels",
+      "heroImage": "https://images.unsplash.com/photo-1502989642968-94fbdc57eace?q=80&w=2070&auto=format&fit=crop",
+      "description": "Brisbane's northern inner suburbs including Bowen Hills and Lutwyche offer convenient access to the city center while providing a more relaxed, residential atmosphere. These areas are well-connected by public transport and offer a variety of accommodation options.",
+      "tips": {
+        "highlights": "Brisbane's northern inner suburbs offer a mix of residential charm and urban convenience. Bowen Hills is home to the RNA Showgrounds (Brisbane Exhibition), while Lutwyche features leafy streets and quality local shops.",
+        "transportation": "Both areas are well-connected with their own train stations. Multiple bus routes service these suburbs, making travel to the CBD quick and convenient.",
+        "bestFor": "These suburbs are perfect for travelers seeking a local experience in residential areas. They're also ideal for those attending events at the Brisbane Showgrounds or those wanting affordable accommodation with easy city access."
+      }
+    },
+    {
+      "id": "airport-surrounds",
+      "name": "Airport & Surrounds",
+      "slug": "brisbane-airport-hotels",
+      "heroImage": "https://images.unsplash.com/photo-1610237542099-4dd2b62c33b8?q=80&w=2070&auto=format&fit=crop",
+      "description": "The Brisbane Airport area and nearby suburbs like Hamilton and Eagle Farm offer convenient options for travelers with early or late flights. These areas also provide easy access to dining along Racecourse Road, the Brisbane Cruise Terminal, and the DFO shopping center.",
+      "tips": {
+        "highlights": "The areas around Brisbane Airport include the upscale Portside Wharf precinct in Hamilton, with its cruise terminal, restaurants and shopping. Eagle Farm features the DFO outlet shopping center and racing precinct.",
+        "transportation": "The Airtrain connects the airport to the CBD in about 20 minutes. Local buses service the area, and there's easy access to major roads for those with a car.",
+        "bestFor": "This area is ideal for travelers with early flights or late arrivals, cruise ship passengers, and shoppers looking to visit DFO. It's also suitable for business travelers needing quick access to both the airport and CBD."
+      }
+    }
+  ]
+} 

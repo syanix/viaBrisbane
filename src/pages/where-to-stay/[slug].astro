@@ -1,0 +1,86 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LocationHotels from '../../components/LocationHotels.astro';
+import hotelData from '../../../data/brisbaneHotels.json';
+import locationData from '../../../data/locations.json';
+import type { LocationData } from '../../components/LocationHotels.astro';
+
+// Get the slug from the URL
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/404');
+}
+
+// Find the location data from the locations.json file using the SEO-friendly slug
+const location = locationData.locations.find(loc => loc.slug === slug);
+
+if (!location) {
+  return Astro.redirect('/404');
+}
+
+// Find the corresponding hotel data from the brisbaneHotels.json file
+// We use the location.id to match with hotelLocationData.id
+const hotelLocationData = hotelData.locations.find(loc => loc.id === location.id);
+
+// If hotel data not found, redirect to 404
+if (!hotelLocationData) {
+  return Astro.redirect('/404');
+}
+
+// Map the location data to the format expected by the LocationHotels component
+const mappedLocationData: LocationData = {
+  id: hotelLocationData.id,
+  name: location.name,
+  description: location.description,
+  categories: hotelLocationData.categories
+};
+
+// Use the tips from our dedicated locations data
+const tips = location.tips;
+
+// Prepare metadata for the page
+const title = `${location.name} Hotels | Best Places to Stay in ${location.name}`;
+const description = `Discover the best hotels in ${location.name}. From luxury stays to mid-range and budget-friendly accommodations in this popular Brisbane area.`;
+const keywords = `${location.name} hotels, Brisbane accommodation, where to stay in ${location.name}, hotels in ${location.name}, Brisbane`;
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+  <main>
+    <LocationHotels 
+      location={mappedLocationData} 
+      heroImage={location.heroImage}
+    >
+      <p slot="local-highlights">
+        {tips.highlights}
+      </p>
+      
+      <p slot="transportation">
+        {tips.transportation}
+      </p>
+      
+      <p slot="best-for">
+        {tips.bestFor}
+      </p>
+    </LocationHotels>
+  </main>
+</Layout>
+
+<script define:vars={{ locationName: location.name }}>
+// Add structured data for the location
+document.addEventListener('DOMContentLoaded', () => {
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristDestination',
+    'name': `${locationName} - Brisbane, Australia`,
+    'description': `Accommodation options in the ${locationName} area of Brisbane`,
+    'touristType': ['couples', 'business', 'family', 'sightseeing']
+  };
+  
+  script.textContent = JSON.stringify(structuredData);
+  document.head.appendChild(script);
+});
+</script> 

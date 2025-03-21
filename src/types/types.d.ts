@@ -51,6 +51,33 @@ export interface ImageMetadata {
   format: string;
 }
 
+export interface Hotel {
+  id: string;
+  name: string;
+  description: string;
+  category?: {
+    id: string;
+    name: string;
+  };
+  area?: string;
+  location?: string;
+  price?: string;
+  image?: string;
+  images?: {
+    url: string;
+    caption?: string;
+    category: string;
+  }[];
+  dealBadge?: string;
+  affiliateLink?: string;
+  featured?: boolean;
+  starRating?: number;
+  guestRating?: {
+    value: number;
+    count: number;
+  };
+}
+
 export interface ParkingMeter {
   ObjectId: number;
   METER_NO: number;
@@ -125,6 +152,21 @@ export interface FoodTruck {
   facebook_url: string;
   instagram_handle: string;
   twitter_handle: string;
+}
+
+export interface LocationTips {
+  highlights: string;
+  transportation: string;
+  bestFor: string;
+}
+
+export interface Location {
+  id: string;
+  name: string;
+  slug: string;
+  heroImage: string;
+  description: string;
+  tips: LocationTips;
 }
 
 export {};
