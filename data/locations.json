@@ -1,0 +1,43 @@
+{
+  "locations": [
+    {
+      "id": "cbd",
+      "name": "Brisbane CBD",
+      "slug": "brisbane-cbd-hotels",
+      "heroImage": "/images/banner-brisbane-cbd.jpg",
+      "description": "Brisbane's Central Business District (CBD) puts you at the heart of the city with easy access to shopping, dining, and cultural attractions.",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/brisbane-cbd",
+      "tips": {
+        "highlights": "Brisbane CBD offers excellent access to the city's main attractions including Queen Street Mall, City Botanic Gardens, and the Eagle Street Pier dining precinct. Most hotels are within walking distance of these key locations, as well as cultural spots like QPAC and the Queensland Museum at South Bank.",
+        "transportation": "The CBD has excellent public transport links with Central Station providing train connections to the suburbs and airport. The free CityHopper ferry service is perfect for traveling along the river to attractions like South Bank and New Farm. The CBD is also well-served by buses and has dedicated bikeways.",
+        "bestFor": "The CBD is ideal for business travelers, first-time visitors to Brisbane, shoppers, and those wanting to be at the heart of the action. It's perfect if you value convenience and want to minimize travel time between attractions."
+      }
+    },
+    {
+      "id": "southbank",
+      "name": "South Bank",
+      "slug": "brisbane-south-bank-hotels",
+      "heroImage": "/images/banner-southbank.jpg",
+      "description": "South Bank is Brisbane's premier lifestyle and cultural destination. Staying here gives you access to the South Bank Parklands, Queensland Cultural Centre, and numerous restaurants and cafes.",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/south-bank",
+      "tips": {
+        "highlights": "South Bank is home to Brisbane's cultural precinct including QPAC, Queensland Museum, and GOMA. The beautiful parklands feature a man-made beach, gardens, and numerous restaurants and cafes along the waterfront.",
+        "transportation": "South Bank is serviced by its own train station and the Cultural Centre bus station. The CityCat and CityHopper ferry services stop at South Bank, making it easy to travel along the river to other destinations.",
+        "bestFor": "South Bank is perfect for families with children, culture enthusiasts, and those who want a balance of green space and city convenience. It's also great for those attending events at QPAC or the convention center."
+      }
+    },
+    {
+      "id": "fortitude-valley",
+      "name": "Fortitude Valley",
+      "slug": "brisbane-fortitude-valley-hotels",
+      "heroImage": "/images/banner-fortitude-valley.jpg",
+      "description": "Known as \"The Valley,\" this vibrant neighborhood is Brisbane's entertainment precinct, packed with nightlife, boutique shopping, and a thriving music scene. Adjacent New Farm offers a more relaxed atmosphere with excellent dining and beautiful riverside parks.",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/fortitude-valley",
+      "tips": {
+        "highlights": "Fortitude Valley offers Brisbane's best nightlife, boutique shopping in James Street, and a vibrant dining scene. Nearby New Farm features beautiful parks, including the iconic New Farm Park, and charming residential streets.",
+        "transportation": "Fortitude Valley has its own train station and frequent bus services. The CityHopper ferry service connects New Farm to the CBD. The areas are also walkable, with paths connecting to the CBD and riverside walkways.",
+        "bestFor": "These areas are ideal for nightlife enthusiasts, foodies, and those seeking a more local, trendy experience. The Valley suits those wanting vibrant energy, while New Farm is perfect for travelers seeking a quieter but still well-connected location."
+      }
+    }
+  ]
+} 

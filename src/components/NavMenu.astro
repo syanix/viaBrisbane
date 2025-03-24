@@ -1,5 +1,9 @@
 ---
 // JavaScript will be included for toggling menu functionality
+import locationData from '../../data/locations.json';
+
+// Use locations from the locations.json file
+const locations = locationData.locations;
 ---
 
 <div class="relative z-50 w-full flex items-center justify-end">
@@ -21,9 +25,20 @@
               <a href="/food-trucks" class="block px-4 py-2 text-white hover:bg-blue-400 font-bold">Food Trucks</a>
           </div>
       </div>
-      <a href="/where-to-stay" class="text-white hover:text-blue-400 font-bold uppercase tracking-wide transition duration-150 ease-in-out py-1">
-          Where to Stay
-      </a>
+      <div class="group relative">
+          <a href="/where-to-stay" class="text-white hover:text-blue-400 font-bold uppercase tracking-wide transition duration-150 ease-in-out py-1 flex items-center">
+              Where to Stay
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+          </a>
+          <div class="absolute right-0 mt-0 w-64 bg-slate-800 rounded-none shadow-lg py-2 z-10 hidden group-hover:block">
+              <a href="/where-to-stay" class="block px-4 py-2 text-white hover:bg-blue-400 font-bold">Where to Stay in Brisbane</a>
+              {locations.map((location) => (
+                <a href={`/where-to-stay/${location.slug}`} class="block px-4 py-2 text-white hover:bg-blue-400 font-bold">{location.name} Hotels</a>
+              ))}
+          </div>
+      </div>
       <div class="group relative">
           <a href="#" class="text-white hover:text-blue-400 font-bold uppercase tracking-wide transition duration-150 ease-in-out py-1 flex items-center">
               Maps & Guides
@@ -80,9 +95,25 @@
             </div>
             
             <div class="border-b border-gray-800">
-                <a href="/where-to-stay" class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5">
-                    WHERE TO STAY
-                </a>
+                <!-- Menu item with submenu -->
+                <div class="mobile-menu-item">
+                    <div class="flex justify-between items-center text-white text-2xl leading-tight font-bold py-5 cursor-pointer">
+                        <span class="font-bold">WHERE TO STAY</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mobile-menu-arrow h-6 w-6 text-white transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="mobile-submenu hidden pl-4 pb-4">
+                        <a href="/where-to-stay" class="block text-white text-xl py-3 border-l-2 border-gray-700 pl-4 hover:border-blue-400 hover:text-blue-400 transition-colors">
+                            Where to Stay in Brisbane
+                        </a>
+                        {locations.map((location) => (
+                          <a href={`/where-to-stay/${location.slug}`} class="block text-white text-xl py-3 border-l-2 border-gray-700 pl-4 hover:border-blue-400 hover:text-blue-400 transition-colors">
+                              {location.name} Hotels
+                          </a>
+                        ))}
+                    </div>
+                </div>
             </div>
             
             <div class="border-b border-gray-800">

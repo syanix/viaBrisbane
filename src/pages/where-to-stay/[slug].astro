@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import HotelLocationPage from '../../components/pages/HotelLocationPage.astro';
+import hotelsData from '../../../data/hotels.json';
+import locationData from '../../../data/locations.json';
+import type { Location } from '../../types/types.d';
+import { generateHotelLocationMetadata } from '../../utils/metadata';
+
+// Get the slug from the URL
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/404');
+}
+
+// Find the location data from the locations.json file using the SEO-friendly slug
+const locationInfo = locationData.locations.find(loc => loc.slug === slug);
+
+if (!locationInfo) {
+  return Astro.redirect('/404');
+}
+
+// Filter hotels for this location using the locationInfo.id to match with hotel.area
+const locationHotels = hotelsData.hotels.filter(hotel => hotel.area === locationInfo.id);
+
+// Group hotels by category for the location
+const categories = Array.from(
+  new Set(locationHotels.map(hotel => hotel.category || 'Other'))
+).map(categoryName => {
+  return {
+    id: categoryName.toLowerCase().replace(/\s+/g, '-'),
+    name: categoryName,
+    hotels: locationHotels.filter(hotel => (hotel.category || 'Other') === categoryName)
+  };
+});
+
+// If no hotels found, redirect to 404
+if (categories.length === 0) {
+  return Astro.redirect('/404');
+}
+
+// Create a complete Location object that matches the type
+const location: Location = {
+  id: locationInfo.id,
+  name: locationInfo.name,
+  slug: locationInfo.slug,
+  heroImage: locationInfo.heroImage || "",
+  description: locationInfo.description,
+  affiliateLink: locationInfo.affiliateLink,
+  tips: locationInfo.tips,
+  categories: categories
+};
+
+// Get metadata from the utility function
+const { title, description, keywords } = generateHotelLocationMetadata(location);
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+  <main>
+    <HotelLocationPage location={location} />
+  </main>
+</Layout> 

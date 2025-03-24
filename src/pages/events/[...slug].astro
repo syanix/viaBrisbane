@@ -1,8 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getEventBySlug } from '../../utils/eventsCache';
+import { getEventBySlug, getRelatedEventsBySubject } from '../../utils/eventsCache';
 import { createSlug } from '../../utils/slug';
 import Breadcrumbs from '../../components/breadcrumbs.astro';
+import EventsCarousel from '../../components/EventsCarousel.astro';
+import type { Event } from '../../types/types';
 
 // The slug will contain the full path after /events/
 const { slug = '' } = Astro.params;
@@ -107,6 +109,18 @@ const eventSchema = {
   "image": event.eventimage || `${BASE_URL}/images/viaBrisbane.png`,
   "url": `${BASE_URL}${eventUrl}`
 };
+
+// Fetch related events with the same subject but different locations
+let relatedEvents: Partial<Event>[] = [];
+if (event) {
+    relatedEvents = await getRelatedEventsBySubject(
+        Astro.locals.runtime.env.DB, 
+        event.subject,
+        event.event_id,
+        event.slug || createSlug(event.subject, event.location),
+        10
+    );
+}
 ---
 
 <Layout 
@@ -410,4 +424,15 @@ const eventSchema = {
             </div>
         </div>
     </section>
+
+    <!-- Related Events Section -->
+    {relatedEvents.length > 0 && (
+        <section class="bg-slate-50 py-12">
+            <EventsCarousel 
+                events={relatedEvents} 
+                totalPages={1} 
+                title={`More "${event.subject}" Events Around Brisbane`} 
+            />
+        </section>
+    )}
 </Layout>

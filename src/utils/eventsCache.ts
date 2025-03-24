@@ -448,3 +448,187 @@ export async function getEventsByCategory(
     
     return result;
 }
+
+/**
+ * Get upcoming events for carousel components without pagination or search 
+ * @param dbInstance D1Database instance
+ * @param limit Maximum number of events to return (default: 10)
+ */
+export async function getUpcomingEvents(
+    dbInstance: D1Database,
+    limit: number = 10
+): Promise<Partial<Event>[]> {
+    const cacheKey = `upcoming_events_${limit}`;
+    const now = Date.now();
+    
+    // Check cache
+    if (globalThis._eventsCache[cacheKey] && globalThis._eventsCache[cacheKey].expiry > now) {
+        return globalThis._eventsCache[cacheKey].data.events;
+    }
+    
+    // Query to get upcoming events
+    let query = `
+        SELECT 
+            event_id,
+            subject,
+            eventimage,
+            venue,
+            venueaddress,
+            event_type,
+            primaryeventtype,
+            formatteddatetime,
+            location,
+            description,
+            end_datetime,
+            slug
+        FROM events
+        WHERE datetime(end_datetime) > datetime('now')
+        ORDER BY 
+            CASE 
+                WHEN formatteddatetime LIKE '%ongoing%' THEN 1 
+                ELSE 0 
+            END,
+            datetime(start_datetime) ASC 
+        LIMIT ?
+    `;
+    
+    const { results } = await dbInstance.prepare(query).bind(limit).all();
+    
+    // Process the events
+    const events = results.map(result => {
+        // Generate slug if missing
+        const slug = result.slug || createSlug(result.subject as string, result.location as string);
+        
+        return {
+            event_id: result.event_id as number,
+            subject: result.subject as string,
+            eventimage: result.eventimage as string,
+            venue: result.venue as string,
+            venueaddress: result.venueaddress as string,
+            event_type: result.event_type as string,
+            primaryeventtype: result.primaryeventtype as string,
+            formatteddatetime: result.formatteddatetime as string,
+            location: result.location as string,
+            description: result.description as string,
+            slug: slug
+        };
+    }) as Partial<Event>[];
+    
+    // Cache the results
+    globalThis._eventsCache[cacheKey] = {
+        data: { events, totalPages: 1 },
+        expiry: now + CACHE_EXPIRY_MS
+    };
+    
+    return events;
+}
+
+/**
+ * Get upcoming events with same subject but different locations
+ * Shows one most recent upcoming event per location
+ * @param dbInstance D1Database instance
+ * @param subject Event subject to match
+ * @param currentEventId Optional ID of current event to exclude
+ * @param currentSlug Optional slug of current event to exclude
+ * @param limit Maximum number of events to return (default: 10)
+ */
+export async function getRelatedEventsBySubject(
+    dbInstance: D1Database,
+    subject: string,
+    currentEventId?: number,
+    currentSlug?: string,
+    limit: number = 10
+): Promise<Partial<Event>[]> {
+    const cacheKey = `related_events_${subject}_${currentEventId}_${currentSlug}_${limit}`;
+    const now = Date.now();
+    
+    // Check cache
+    if (globalThis._eventsCache[cacheKey] && globalThis._eventsCache[cacheKey].expiry > now) {
+        return globalThis._eventsCache[cacheKey].data.events;
+    }
+    
+    // This is a more complex query:
+    // 1. We need one event per location for the same subject
+    // 2. Only upcoming events
+    // 3. Exclude current event ID if provided
+    // 4. Exclude events with the same slug as the current event
+    // 5. Get the most recent one for each location
+    
+    // We'll use a subquery with ROW_NUMBER to get the most recent event per location
+    let query = `
+        WITH RankedEvents AS (
+            SELECT 
+                event_id,
+                subject,
+                eventimage,
+                venue,
+                venueaddress,
+                event_type,
+                primaryeventtype,
+                formatteddatetime,
+                start_datetime,
+                end_datetime,
+                location,
+                description,
+                slug,
+                ROW_NUMBER() OVER (PARTITION BY location ORDER BY start_datetime ASC) as row_num
+            FROM events
+            WHERE LOWER(subject) = LOWER(?)
+            AND datetime(end_datetime) > datetime('now')
+            ${currentEventId ? 'AND event_id != ?' : ''}
+            ${currentSlug ? 'AND (slug IS NULL OR LOWER(slug) != LOWER(?))' : ''}
+        )
+        SELECT 
+            event_id,
+            subject,
+            eventimage,
+            venue,
+            venueaddress,
+            event_type,
+            primaryeventtype,
+            formatteddatetime,
+            location,
+            description,
+            slug
+        FROM RankedEvents
+        WHERE row_num = 1
+        ORDER BY datetime(start_datetime) ASC
+        LIMIT ?
+    `;
+    
+    // Prepare the parameters based on whether we have a currentEventId and currentSlug
+    let params: (string | number)[] = [subject];
+    if (currentEventId) params.push(currentEventId);
+    if (currentSlug) params.push(currentSlug);
+    params.push(limit);
+    
+    const { results } = await dbInstance.prepare(query).bind(...params).all();
+    
+    // Process the events
+    const events = results.map(result => {
+        // Generate slug if missing
+        const slug = result.slug || createSlug(result.subject as string, result.location as string);
+        
+        return {
+            event_id: result.event_id as number,
+            subject: result.subject as string,
+            eventimage: result.eventimage as string,
+            venue: result.venue as string,
+            venueaddress: result.venueaddress as string,
+            event_type: result.event_type as string,
+            primaryeventtype: result.primaryeventtype as string,
+            formatteddatetime: result.formatteddatetime as string,
+            location: result.location as string,
+            description: result.description as string,
+            slug: slug
+        };
+    }) as Partial<Event>[];
+    
+    // Cache the results
+    globalThis._eventsCache[cacheKey] = {
+        data: { events, totalPages: 1 },
+        expiry: now + CACHE_EXPIRY_MS
+    };
+    
+    return events;
+}

@@ -51,6 +51,48 @@ export interface ImageMetadata {
   format: string;
 }
 
+export enum HotelCategory {
+  luxury = "Luxury",
+  "mid-range" = "Mid-Range",
+  boutique = "Boutique",
+  budget = "Budget-Friendly",
+  "budget-friendly" = "Budget-Friendly",
+  other = "Other"
+}
+
+export enum HotelArea {
+  cbd = "Brisbane CBD",
+  southbank = "South Bank",
+  "fortitude-valley" = "Fortitude Valley",
+  "south-inner-suburbs" = "South/Inner Suburbs",
+  "north-inner-suburbs" = "North/Inner Suburbs",
+  "airport-surrounds" = "Airport & Surrounds"
+}
+
+export interface Hotel {
+  id: string;
+  name: string;
+  description: string;
+  category?: string;
+  area: string;
+  location?: string;
+  price: string;
+  image: string;
+  images?: {
+    url: string;
+    caption?: string;
+    category?: string;
+  }[];
+  dealBadge?: string;
+  affiliateLink?: string;
+  featured?: boolean;
+  starRating: number;
+  guestRating: {
+    value: number;
+    count: number;
+  };
+}
+
 export interface ParkingMeter {
   ObjectId: number;
   METER_NO: number;
@@ -125,6 +167,27 @@ export interface FoodTruck {
   facebook_url: string;
   instagram_handle: string;
   twitter_handle: string;
+}
+
+export interface LocationTips {
+  highlights: string;
+  transportation: string;
+  bestFor: string;
+}
+
+export interface Location {
+  id: string;
+  name: string;
+  slug: string;
+  heroImage: string;
+  description: string;
+  affiliateLink?: string;
+  tips: LocationTips;
+  categories: {
+    id: string;
+    name: string;
+    hotels: Hotel[];
+  }[];
 }
 
 export {};

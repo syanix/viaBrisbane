@@ -1,0 +1,40 @@
+---
+export interface Props {
+  title: string;
+  subtitle?: string;
+  imageSrc: string;
+  imageAlt?: string;
+  height?: string;
+  opacity?: string;
+}
+
+const {
+  title,
+  subtitle,
+  imageSrc,
+  imageAlt = "",
+  height = "h-[50vh] min-h-[400px]",
+  opacity = "opacity-60"
+} = Astro.props;
+---
+
+<section class="relative">
+  <div class={`${height} bg-slate-800 overflow-hidden`}>
+    <img 
+      src={imageSrc} 
+      alt={imageAlt || title} 
+      class={`w-full h-full object-cover ${opacity}`}
+    />
+    <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+        {title}
+      </h1>
+      {subtitle && (
+        <p class="text-xl text-white max-w-3xl">
+          {subtitle}
+        </p>
+      )}
+      <slot />
+    </div>
+  </div>
+</section> 

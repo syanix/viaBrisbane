@@ -1,0 +1,105 @@
+---
+import type { Hotel, Location } from '../types/types.d';
+import HotelCarousel from './HotelCarousel.astro';
+import HeroBanner from './base/HeroBanner.astro';
+
+export interface Props {
+  location: Location;
+}
+
+const { location } = Astro.props;
+
+// Use heroImage from location if available
+const heroImage = location.heroImage || "/images/banner-hotel.jpg";
+---
+
+<div>
+  <!-- Hero Section -->
+  <HeroBanner 
+    title={`${location.name} Hotels`}
+    subtitle={`Find your perfect place to stay in ${location.name}`}
+    imageSrc={heroImage}
+    imageAlt={`Hotels in ${location.name}, Brisbane`}
+  />
+
+  <!-- Introduction -->
+  <section class="py-12 bg-white">
+    <div class="mx-auto px-4">
+      <h2 class="text-3xl font-bold mb-8 text-center">Overview</h2>
+      <div class="max-w-6xl mx-auto">
+        <p class="text-lg text-gray-700 mb-6">
+          {location.description}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 bg-white">
+    <div class="mx-auto">
+      <h2 class="text-3xl font-bold mb-8 text-center">Find Your Perfect Stay</h2>
+      <div class="p-6 rounded-lg shadow-sm mb-8">
+        <div class="eg-widget" data-widget="search" data-program="au-expedia" data-lobs="stays,flights" data-network="pz" data-camref="1100l4Zb9G" data-pubref="viaBrisbane-hotel"></div>
+        <script class="eg-widgets-script" src="https://affiliates.expediagroup.com/products/widgets/assets/eg-widgets.js"></script>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hotel Categories Sections -->
+  {location.categories?.map((category) => (
+    <section class="py-12 bg-gray-50">
+      <div class="mx-auto px-4">
+        <HotelCarousel 
+          title={category.name} 
+          hotels={category.hotels} 
+          sectionId={`${location.id}-${category.id}`} 
+          viewAllLink="/where-to-stay"
+          viewAllText="Browse All"
+        />
+      </div>
+    </section>
+  ))}
+
+  <!-- Tips Section -->
+  <section class="py-16 bg-gray-50 border-t border-gray-200">
+    <div class="mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Tips for Staying in {location.name}</h2>
+        
+        <div class="space-y-6">
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">Local Highlights</h3>
+            <p class="text-gray-700">
+              {location.tips?.highlights || (
+                <slot name="local-highlights">
+                  Discover the best local attractions, dining options, and hidden gems in the {location.name} area.
+                </slot>
+              )}
+            </p>
+          </div>
+          
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">Transportation</h3>
+            <p class="text-gray-700">
+              {location.tips?.transportation || (
+                <slot name="transportation">
+                  Find out how to get around {location.name} and access the rest of Brisbane from this location.
+                </slot>
+              )}
+            </p>
+          </div>
+          
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">Best For</h3>
+            <p class="text-gray-700">
+              {location.tips?.bestFor || (
+                <slot name="best-for">
+                  Learn who would benefit most from staying in the {location.name} area.
+                </slot>
+              )}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div> 

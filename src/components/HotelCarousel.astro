@@ -1,0 +1,56 @@
+---
+import HotelCard from './HotelCard.astro';
+import type { Hotel } from '../types/types.d';
+import CarouselBase from './base/CarouselBase.astro';
+
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  hotels: Hotel[];
+  limit?: number;
+  sectionId?: string;
+  viewAllLink?: string;
+  viewAllText?: string;
+  background?: string;
+  filterFeatured?: boolean;
+}
+
+const { 
+  title = "Brisbane Hotels", 
+  subtitle = "",
+  hotels = [], 
+  limit = 12, 
+  sectionId = "hotel-carousel",
+  viewAllLink = "",
+  viewAllText = "View All Hotels",
+  background = "bg-gray-50",
+  filterFeatured = false
+} = Astro.props;
+
+// Filter hotels if needed
+const filteredHotels = filterFeatured ? hotels.filter(hotel => hotel.featured) : hotels;
+
+// Apply limit
+const displayHotels = filteredHotels.slice(0, limit);
+
+// Generate unique IDs for carousel elements
+const nextBtnId = `${sectionId}-next`;
+const prevBtnId = `${sectionId}-prev`;
+const trackId = `${sectionId}-track`;
+const containerId = `${sectionId}-container`;
+---
+
+<CarouselBase
+  title={title}
+  subtitle={subtitle}
+  sectionId={sectionId}
+  viewAllLink={viewAllLink}
+  viewAllText={viewAllText}
+  background={background}
+>
+  {displayHotels.map((hotel) => (
+    <div class="carousel-slide w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] flex-shrink-0">
+      <HotelCard hotel={hotel} />
+    </div>
+  ))}
+</CarouselBase> 
