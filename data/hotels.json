@@ -33,14 +33,78 @@
       }
     },
     {
+      "id": "brisbane-marriott-hotel",
+      "name": "Brisbane Marriott Hotel",
+      "description": "Sophisticated luxury hotel offering panoramic views of the Brisbane River, featuring bespoke dining experiences and elegant rooms.",
+      "category": "luxury",
+      "area": "cbd",
+      "price": "From $368 per night",
+      "image": "/images/hotels/hotel-brisbane-marriott-hotel.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/brisbane-marriott-hotel",
+      "featured": true,
+      "starRating": 5,
+      "guestRating": {
+        "value": 4.8,
+        "count": 924
+      }
+    },
+    {
+      "id": "hilton-brisbane",
+      "name": "Hilton Brisbane",
+      "description": "Iconic 5-star hotel located in Queen Street Mall with spacious rooms, a tennis court and award-winning dining options.",
+      "category": "luxury",
+      "area": "cbd",
+      "price": "From $295 per night",
+      "image": "/images/hotels/hotel-hilton-brisbane.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/hilton-brisbane",
+      "featured": true,
+      "starRating": 5,
+      "guestRating": {
+        "value": 4.5,
+        "count": 1052
+      }
+    },
+    {
+      "id": "sofitel-brisbane",
+      "name": "Sofitel Brisbane Central",
+      "description": "Refined French luxury in the heart of Brisbane with Club Millésime privileges, signature restaurants and Stephanie's Spa Retreat.",
+      "category": "luxury",
+      "area": "cbd",
+      "price": "From $310 per night",
+      "image": "/images/hotels/hotel-sofitel-brisbane.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/sofitel-brisbane",
+      "featured": false,
+      "starRating": 5,
+      "guestRating": {
+        "value": 4.4,
+        "count": 1248
+      }
+    },
+    {
+      "id": "stamford-plaza-brisbane",
+      "name": "Stamford Plaza Brisbane",
+      "description": "Luxurious riverside hotel with breathtaking views, multiple dining venues and an outdoor pool overlooking the Brisbane River.",
+      "category": "luxury",
+      "area": "cbd",
+      "price": "From $289 per night",
+      "image": "/images/hotels/hotel-stamford-plaza-brisbane.webp",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/stamford-plaza-brisbane",
+      "featured": false,
+      "starRating": 5,
+      "guestRating": {
+        "value": 4.3,
+        "count": 1035
+      }
+    },
+    {
       "id": "vincent-brisbane",
       "name": "Crystalbrook Vincent",
       "description": "Art-inspired hotel at Howard Smith Wharves with sustainable ethos and riverside dining options.",
       "category": "luxury",
       "area": "cbd",
       "price": "From $290 per night",
-      "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=2070&auto=format&fit=crop",
-      "affiliateLink": "https://www.crystalbrookcollection.com/vincent",
+      "image": "/images/hotels/hotel-vincent-brisbane.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/vincent-brisbane",
       "starRating": 5,
       "guestRating": {
         "value": 4.5,
@@ -49,13 +113,13 @@
     },
     {
       "id": "ibis-brisbane",
-      "name": "Ibis Brisbane",
+      "name": "Ibis Styles Brisbane",
       "description": "Centrally located budget-friendly option with modern rooms and easy access to Queen Street Mall.",
       "category": "mid-range",
       "area": "cbd",
       "price": "From $120 per night",
-      "image": "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=2070&auto=format&fit=crop",
-      "affiliateLink": "https://all.accor.com/hotel/1750/index.en.shtml",
+      "image": "/images/hotels/hotel-ibis-brisbane.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/ibis-brisbane",
       "starRating": 3,
       "guestRating": {
         "value": 3.9,
@@ -69,8 +133,8 @@
       "category": "mid-range",
       "area": "cbd",
       "price": "From $150 per night",
-      "image": "https://images.unsplash.com/photo-1584132915807-fd1f5fbc078f?q=80&w=2070&auto=format&fit=crop",
-      "affiliateLink": "https://www.mantra.com.au/queensland/brisbane-and-surrounds/brisbane/accommodation/hotels/mantra-on-queen/",
+      "image": "/images/hotels/hotel-mantra-queen.webp",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/mantra-queen",
       "featured": true,
       "starRating": 4,
       "guestRating": {
@@ -85,8 +149,8 @@
       "category": "mid-range",
       "area": "cbd",
       "price": "From $170 per night",
-      "image": "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=2070&auto=format&fit=crop",
-      "affiliateLink": "https://www.royalonthepark.com.au/",
+      "image": "/images/hotels/hotel-royal-park.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/royal-on-the-park-park",
       "starRating": 4,
       "guestRating": {
         "value": 4.2,
@@ -100,9 +164,8 @@
       "category": "luxury",
       "area": "southbank",
       "price": "From $320 per night",
-      "image": "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2074&auto=format&fit=crop",
-      "dealBadge": "Best Rate",
-      "affiliateLink": "https://www.emporiumhotels.com.au/south-bank/",
+      "image": "/images/hotels/hotel-emporium-southbank.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/emporium-southbank",
       "featured": true,
       "starRating": 5,
       "guestRating": {
@@ -117,8 +180,8 @@
       "category": "luxury",
       "area": "southbank",
       "price": "From $240 per night",
-      "image": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2070&auto=format&fit=crop",
-      "affiliateLink": "https://all.accor.com/hotel/B0X0/index.en.shtml",
+      "image": "/images/hotels/hotel-sebel-southbank.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/sebel-southbank",
       "featured": true,
       "starRating": 4.5,
       "guestRating": {
@@ -133,8 +196,9 @@
       "category": "mid-range",
       "area": "southbank",
       "price": "From $180 per night",
-      "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=2070&auto=format&fit=crop",
-      "affiliateLink": "https://www.mantra.com.au/queensland/brisbane-and-surrounds/south-bank/accommodation/hotels/mantra-south-bank/",
+      "image": "/images/hotels/hotel-mantra-southbank.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/mantra-southbank",
+      "featured": true,
       "starRating": 4,
       "guestRating": {
         "value": 4.1,
@@ -148,8 +212,8 @@
       "category": "mid-range",
       "area": "southbank",
       "price": "From $190 per night",
-      "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=2070&auto=format&fit=crop",
-      "affiliateLink": "https://all.accor.com/hotel/B0N7/index.en.shtml",
+      "image": "/images/hotels/hotel-novotel-southbank.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/novotel-southbank",
       "featured": true,
       "starRating": 4,
       "guestRating": {
@@ -164,8 +228,8 @@
       "category": "mid-range",
       "area": "southbank",
       "price": "From $200 per night",
-      "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=2070&auto=format&fit=crop",
-      "affiliateLink": "https://www.rydges.com/accommodation/brisbane-qld/brisbane-south-bank/",
+      "image": "/images/hotels/hotel-rydges-southbank.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/rydges-southbank",
       "featured": true,
       "starRating": 4,
       "guestRating": {
@@ -180,9 +244,8 @@
       "category": "boutique",
       "area": "fortitude-valley",
       "price": "From $280 per night",
-      "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop",
-      "dealBadge": "Hot Deal",
-      "affiliateLink": "https://thecalilehotel.com/",
+      "image": "/images/hotels/hotel-calile-hotel.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/calile-hotel",
       "featured": true,
       "starRating": 5,
       "guestRating": {
@@ -197,28 +260,13 @@
       "category": "boutique",
       "area": "fortitude-valley",
       "price": "From $250 per night",
-      "image": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2070&auto=format&fit=crop",
-      "affiliateLink": "https://ovolohotels.com/ovolo/the-valley/",
+      "image": "/images/hotels/hotel-ovolo-valley.avif",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/ovolo-valley",
       "featured": true,
       "starRating": 5,
       "guestRating": {
         "value": 4.7,
         "count": 954
-      }
-    },
-    {
-      "id": "fantauzzo",
-      "name": "The Fantauzzo",
-      "description": "Art-inspired hotel at Howard Smith Wharves with spectacular views of the Story Bridge.",
-      "category": "boutique",
-      "area": "fortitude-valley",
-      "price": "From $270 per night",
-      "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop",
-      "affiliateLink": "https://www.crystalbrookcollection.com/fantauzzo",
-      "starRating": 5,
-      "guestRating": {
-        "value": 4.8,
-        "count": 745
       }
     }
   ]

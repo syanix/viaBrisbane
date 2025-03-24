@@ -58,7 +58,7 @@ const heroImage = location.heroImage || "/images/banner-hotel.jpg";
           title={category.name} 
           hotels={category.hotels} 
           sectionId={`${location.id}-${category.id}`} 
-          viewAllLink="/where-to-stay"
+          viewAllLink={location.affiliateLink || "/where-to-stay"}
           viewAllText="Browse All"
         />
       </div>

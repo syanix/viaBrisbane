@@ -181,6 +181,7 @@ export interface Location {
   slug: string;
   heroImage: string;
   description: string;
+  affiliateLink?: string;
   tips: LocationTips;
   categories: {
     id: string;

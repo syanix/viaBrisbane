@@ -6,6 +6,7 @@
       "slug": "brisbane-cbd-hotels",
       "heroImage": "/images/banner-brisbane-cbd.jpg",
       "description": "Brisbane's Central Business District (CBD) puts you at the heart of the city with easy access to shopping, dining, and cultural attractions.",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/brisbane-cbd",
       "tips": {
         "highlights": "Brisbane CBD offers excellent access to the city's main attractions including Queen Street Mall, City Botanic Gardens, and the Eagle Street Pier dining precinct. Most hotels are within walking distance of these key locations, as well as cultural spots like QPAC and the Queensland Museum at South Bank.",
         "transportation": "The CBD has excellent public transport links with Central Station providing train connections to the suburbs and airport. The free CityHopper ferry service is perfect for traveling along the river to attractions like South Bank and New Farm. The CBD is also well-served by buses and has dedicated bikeways.",
@@ -18,6 +19,7 @@
       "slug": "brisbane-south-bank-hotels",
       "heroImage": "/images/banner-southbank.jpg",
       "description": "South Bank is Brisbane's premier lifestyle and cultural destination. Staying here gives you access to the South Bank Parklands, Queensland Cultural Centre, and numerous restaurants and cafes.",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/south-bank",
       "tips": {
         "highlights": "South Bank is home to Brisbane's cultural precinct including QPAC, Queensland Museum, and GOMA. The beautiful parklands feature a man-made beach, gardens, and numerous restaurants and cafes along the waterfront.",
         "transportation": "South Bank is serviced by its own train station and the Cultural Centre bus station. The CityCat and CityHopper ferry services stop at South Bank, making it easy to travel along the river to other destinations.",
@@ -30,46 +32,11 @@
       "slug": "brisbane-fortitude-valley-hotels",
       "heroImage": "/images/banner-fortitude-valley.jpg",
       "description": "Known as \"The Valley,\" this vibrant neighborhood is Brisbane's entertainment precinct, packed with nightlife, boutique shopping, and a thriving music scene. Adjacent New Farm offers a more relaxed atmosphere with excellent dining and beautiful riverside parks.",
+      "affiliateLink": "https://expedia.com/affiliates/viabrisbane/fortitude-valley",
       "tips": {
         "highlights": "Fortitude Valley offers Brisbane's best nightlife, boutique shopping in James Street, and a vibrant dining scene. Nearby New Farm features beautiful parks, including the iconic New Farm Park, and charming residential streets.",
         "transportation": "Fortitude Valley has its own train station and frequent bus services. The CityHopper ferry service connects New Farm to the CBD. The areas are also walkable, with paths connecting to the CBD and riverside walkways.",
         "bestFor": "These areas are ideal for nightlife enthusiasts, foodies, and those seeking a more local, trendy experience. The Valley suits those wanting vibrant energy, while New Farm is perfect for travelers seeking a quieter but still well-connected location."
-      }
-    },
-    {
-      "id": "south-inner-suburbs",
-      "name": "South/Inner Suburbs",
-      "slug": "brisbane-south-inner-suburbs-hotels",
-      "heroImage": "/images/banner-inner-south.jpg",
-      "description": "Brisbane's southern inner suburbs like Woolloongabba and Highgate Hill offer a local experience with a mix of heritage-listed buildings, trendy cafes and proximity to major sporting venues like The Gabba. Stay here for a more residential feel while remaining close to the action.",
-      "tips": {
-        "highlights": "These southern inner suburbs offer a mix of heritage buildings, trendy cafes, and proximity to sporting venues like The Gabba. Woolloongabba is known for its antique shops, while Highgate Hill offers panoramic city views.",
-        "transportation": "Woolloongabba is served by numerous bus routes and is close to South Bank train station. The suburbs are also accessible via the CityCat ferry services at nearby terminals.",
-        "bestFor": "These areas are ideal for sports enthusiasts attending events at The Gabba, travelers seeking a more residential experience, and those who want access to the city while staying in a quieter neighborhood."
-      }
-    },
-    {
-      "id": "north-inner-suburbs",
-      "name": "North/Inner Suburbs",
-      "slug": "brisbane-north-inner-suburbs-hotels",
-      "heroImage": "/images/banner-inner-north.jpg",
-      "description": "Brisbane's northern inner suburbs including Bowen Hills and Lutwyche offer convenient access to the city center while providing a more relaxed, residential atmosphere. These areas are well-connected by public transport and offer a variety of accommodation options.",
-      "tips": {
-        "highlights": "Brisbane's northern inner suburbs offer a mix of residential charm and urban convenience. Bowen Hills is home to the RNA Showgrounds (Brisbane Exhibition), while Lutwyche features leafy streets and quality local shops.",
-        "transportation": "Both areas are well-connected with their own train stations. Multiple bus routes service these suburbs, making travel to the CBD quick and convenient.",
-        "bestFor": "These suburbs are perfect for travelers seeking a local experience in residential areas. They're also ideal for those attending events at the Brisbane Showgrounds or those wanting affordable accommodation with easy city access."
-      }
-    },
-    {
-      "id": "airport-surrounds",
-      "name": "Airport & Surrounds",
-      "slug": "brisbane-airport-hotels",
-      "heroImage": "/images/banner-airport.jpg",
-      "description": "The Brisbane Airport area and nearby suburbs like Hamilton and Eagle Farm offer convenient options for travelers with early or late flights. These areas also provide easy access to dining along Racecourse Road, the Brisbane Cruise Terminal, and the DFO shopping center.",
-      "tips": {
-        "highlights": "The areas around Brisbane Airport include the upscale Portside Wharf precinct in Hamilton, with its cruise terminal, restaurants and shopping. Eagle Farm features the DFO outlet shopping center and racing precinct.",
-        "transportation": "The Airtrain connects the airport to the CBD in about 20 minutes. Local buses service the area, and there's easy access to major roads for those with a car.",
-        "bestFor": "This area is ideal for travelers with early flights or late arrivals, cruise ship passengers, and shoppers looking to visit DFO. It's also suitable for business travelers needing quick access to both the airport and CBD."
       }
     }
   ]
