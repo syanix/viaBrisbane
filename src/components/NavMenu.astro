@@ -33,9 +33,9 @@ const locations = locationData.locations;
               </svg>
           </a>
           <div class="absolute right-0 mt-0 w-64 bg-slate-800 rounded-none shadow-lg py-2 z-10 hidden group-hover:block">
-              <a href="/where-to-stay" class="block px-4 py-2 text-white hover:bg-blue-400 font-bold">Overview</a>
+              <a href="/where-to-stay" class="block px-4 py-2 text-white hover:bg-blue-400 font-bold">Where to Stay in Brisbane</a>
               {locations.map((location) => (
-                <a href={`/where-to-stay/${location.slug}`} class="block px-4 py-2 text-white hover:bg-blue-400 font-bold">{location.name}</a>
+                <a href={`/where-to-stay/${location.slug}`} class="block px-4 py-2 text-white hover:bg-blue-400 font-bold">{location.name} Hotels</a>
               ))}
           </div>
       </div>
@@ -105,11 +105,11 @@ const locations = locationData.locations;
                     </div>
                     <div class="mobile-submenu hidden pl-4 pb-4">
                         <a href="/where-to-stay" class="block text-white text-xl py-3 border-l-2 border-gray-700 pl-4 hover:border-blue-400 hover:text-blue-400 transition-colors">
-                            Overview
+                            Where to Stay in Brisbane
                         </a>
                         {locations.map((location) => (
                           <a href={`/where-to-stay/${location.slug}`} class="block text-white text-xl py-3 border-l-2 border-gray-700 pl-4 hover:border-blue-400 hover:text-blue-400 transition-colors">
-                              {location.name}
+                              {location.name} Hotels
                           </a>
                         ))}
                     </div>
