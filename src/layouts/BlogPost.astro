@@ -1,0 +1,53 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import NewLayout from './Layout.astro';
+import { Image } from 'astro:assets';
+import { formatDate } from '../utils/formatDate';
+
+type Props = {
+  post: CollectionEntry<'blog'>;
+};
+
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, alt, author, tags } = post.data;
+---
+
+<NewLayout title={`${title} | BNE Insider | Via Brisbane`} description={description}>
+  <article class="max-w-4xl mx-auto px-4 py-12">
+    <div class="mb-8">
+      <div class="flex flex-wrap gap-2 mb-4">
+        {tags && tags.length > 0 && tags.map((tag: string) => (
+          <span class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0] cursor-pointer">
+            {tag}
+          </span>
+        ))}
+      </div>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">{title}</h1>
+      <div class="flex items-center text-sm text-gray-600 mb-6">
+        {author && <span class="mr-4">By {author}</span>}
+        <time datetime={pubDate.toISOString()}>
+          {formatDate(pubDate)}
+        </time>
+        {updatedDate && (
+          <span class="ml-4">
+            Updated: <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time>
+          </span>
+        )}
+      </div>
+    </div>
+
+    {heroImage && (
+      <div class="mb-10">
+        <img 
+          src={heroImage} 
+          alt={alt || title} 
+          class="w-full rounded-lg max-h-[500px] object-cover"
+        />
+      </div>
+    )}
+
+    <div class="prose prose-lg max-w-none">
+      <slot />
+    </div>
+  </article>
+</NewLayout> 

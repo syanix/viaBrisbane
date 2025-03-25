@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
+
+// Use static for SSG
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  console.log(`Found ${posts.length} blog posts`);
+  
+  return posts.map((post: CollectionEntry<'blog'>) => {
+    console.log(`Creating route for: ${post.slug}`);
+    return {
+      params: { slug: post.slug },
+      props: { post },
+    };
+  });
+}
+
+type Props = {
+  post: CollectionEntry<'blog'>;
+};
+
+const { post } = Astro.props;
+console.log('Post slug in render:', Astro.params['slug']);
+console.log('Post data available:', !!post);
+
+// Check if post exists before rendering
+if (!post) {
+  return new Response('Post not found', { status: 404 });
+}
+
+const { Content } = await post.render();
+---
+
+<BlogPost post={post}>
+  <Content />
+</BlogPost> 
