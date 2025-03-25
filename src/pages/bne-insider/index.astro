@@ -1,6 +1,8 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import NewLayout from '../../layouts/Layout.astro';
+import ArticleCarousel from '../../components/ArticleCarousel.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
 import { formatDate } from '../../utils/formatDate';
 
 // Get all blog posts sorted by publication date using collection API for SSG
@@ -14,6 +16,15 @@ const sortedPosts = posts.sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'
 
 // Get featured posts
 const featuredPosts = sortedPosts.filter((post: CollectionEntry<'blog'>) => post.data.featured);
+
+// Get non-featured posts for the latest section
+let latestPosts = sortedPosts.filter((post: CollectionEntry<'blog'>) => !post.data.featured);
+
+// If there are no non-featured posts, show all posts
+if (latestPosts.length === 0) {
+  console.log("No non-featured posts found, showing all posts in Latest Articles section");
+  latestPosts = sortedPosts;
+}
 ---
 
 <NewLayout
@@ -36,61 +47,26 @@ const featuredPosts = sortedPosts.filter((post: CollectionEntry<'blog'>) => post
     </div>
   </section>
 
-  <!-- Featured Posts Section (if any) -->
+  <!-- Featured Posts Carousel -->
   {featuredPosts.length > 0 && (
-    <section class="py-16 bg-white">
-      <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold mb-12 text-center">Featured Articles</h2>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {featuredPosts.map((post: CollectionEntry<'blog'>) => (
-            <div class="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm flex flex-col h-full">
-              {post.data.heroImage && (
-                <div class="h-52 overflow-hidden">
-                  <img 
-                    src={post.data.heroImage} 
-                    alt={post.data.alt || post.data.title} 
-                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              )}
-              <div class="p-6 flex flex-col flex-grow">
-                {post.data.tags && post.data.tags.length > 0 && (
-                  <div class="flex flex-wrap gap-2 mb-3">
-                    {post.data.tags.slice(0, 2).map((tag: string) => (
-                      <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">{tag}</span>
-                    ))}
-                  </div>
-                )}
-                <h3 class="font-bold text-xl mb-2">{post.data.title}</h3>
-                <p class="text-sm text-gray-600 mb-2">{formatDate(post.data.pubDate)}</p>
-                <p class="text-sm mb-4 flex-grow">{post.data.description}</p>
-                
-                {/* Button */}
-                <div class="flex items-center mt-auto">
-                  <a href={`/bne-insider/${post.slug}`} 
-                     class="inline-flex items-center text-black text-md uppercase group focus:border-dashed">
-                    <span class="font-black border-b-2 border-transparent group-hover:border-black transition-colors duration-200">READ ARTICLE</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 ml-2 -mt-[3px]" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+    <ArticleCarousel 
+      posts={featuredPosts}
+      title="Featured Articles"
+      subtitle="Our most popular guides and tips for Brisbane"
+      sectionId="featured-articles"
+      background="bg-white"
+    />
   )}
 
-  <!-- All Posts Section -->
-  <section class="py-16 bg-slate-50">
+  <!-- Latest Articles Section -->
+  <section id="all-articles" class="py-16 bg-slate-50">
     <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-12 text-center">Latest Articles</h2>
+      <div class="flex items-center justify-between mb-10">
+        <h2 class="text-3xl font-bold">Latest Articles</h2>
+      </div>
       
-      <div class="max-w-5xl mx-auto grid grid-cols-1 gap-8">
-        {sortedPosts.map((post: CollectionEntry<'blog'>) => (
+      <div class="max-w-full mx-auto grid grid-cols-1 gap-8">
+        {latestPosts.map((post: CollectionEntry<'blog'>) => (
           <div class="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm">
             <div class="flex flex-col md:flex-row">
               {post.data.heroImage && (
@@ -103,24 +79,29 @@ const featuredPosts = sortedPosts.filter((post: CollectionEntry<'blog'>) => post
                 </div>
               )}
               <div class="p-6 md:w-2/3">
-                {post.data.tags && post.data.tags.length > 0 && (
-                  <div class="flex flex-wrap gap-2 mb-3">
-                    {post.data.tags.slice(0, 3).map((tag: string) => (
-                      <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">{tag}</span>
-                    ))}
-                  </div>
-                )}
-                <h3 class="font-bold text-xl mb-2">{post.data.title}</h3>
+                <div class="flex flex-wrap gap-2 mb-3">
+                  <span class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#E62E77]">
+                    Article
+                  </span>
+                  {post.data.tags && post.data.tags.slice(0, 3).map((tag: string) => (
+                    <span class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0] cursor-pointer">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <a href={`/bne-insider/${post.slug}/`} class="text-black visited:text-black cursor-pointer">
+                  <h3 class="text-2xl font-bold mb-2 line-clamp-3">{post.data.title}</h3>
+                </a>
                 <p class="text-sm text-gray-600 mb-2">
                   {formatDate(post.data.pubDate)}
                   {post.data.author && <span class="ml-2">· By {post.data.author}</span>}
                 </p>
-                <p class="text-sm mb-4">{post.data.description}</p>
+                <p class="text-base mb-4 line-clamp-4">{post.data.description}</p>
                 
-                {/* Button */}
+                <!-- Button -->
                 <div class="flex items-center mt-auto">
-                  <a href={`/bne-insider/${post.slug}`} 
-                     class="inline-flex items-center text-black text-md uppercase group focus:border-dashed">
+                  <a href={`/bne-insider/${post.slug}/`} 
+                     class="inline-flex items-center text-black visited:text-black text-md uppercase group focus:border-dashed cursor-pointer">
                     <span class="font-black border-b-2 border-transparent group-hover:border-black transition-colors duration-200">READ ARTICLE</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 ml-2 -mt-[3px]" viewBox="0 0 20 20" fill="currentColor">
                       <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />

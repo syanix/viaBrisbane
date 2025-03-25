@@ -15,13 +15,13 @@ const { title, description, pubDate, updatedDate, heroImage, alt, author, tags }
 <NewLayout title={`${title} | BNE Insider | Via Brisbane`} description={description}>
   <article class="max-w-4xl mx-auto px-4 py-12">
     <div class="mb-8">
-      {tags && tags.length > 0 && (
-        <div class="flex flex-wrap gap-2 mb-4">
-          {tags.map((tag: string) => (
-            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">{tag}</span>
-          ))}
-        </div>
-      )}
+      <div class="flex flex-wrap gap-2 mb-4">
+        {tags && tags.length > 0 && tags.map((tag: string) => (
+          <span class="text-white px-3 py-1 text-sm font-bold rounded-sm bg-[#2073E0] cursor-pointer">
+            {tag}
+          </span>
+        ))}
+      </div>
       <h1 class="text-4xl md:text-5xl font-bold mb-4">{title}</h1>
       <div class="flex items-center text-sm text-gray-600 mb-6">
         {author && <span class="mr-4">By {author}</span>}
