@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ArticleCard from './ArticleCard.astro';
+import CarouselBase from './base/CarouselBase.astro';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  title?: string;
+  subtitle?: string;
+  limit?: number;
+  sectionId?: string;
+  viewAllLink?: string;
+  viewAllText?: string;
+  background?: string;
+}
+
+const { 
+  posts = [], 
+  title = "Featured Articles",
+  subtitle = "",
+  limit,
+  sectionId = "articles-carousel",
+  viewAllLink = "/bne-insider",
+  viewAllText = "All Articles",
+  background = "bg-slate-50"
+} = Astro.props;
+
+// If limit is provided, slice the posts array
+const displayPosts = limit ? posts.slice(0, limit) : posts;
+---
+
+<CarouselBase
+  title={title}
+  subtitle={subtitle}
+  sectionId={sectionId}
+  viewAllLink={viewAllLink}
+  viewAllText={viewAllText}
+  background={background}
+>
+  {displayPosts.map(post => (
+    <div class="carousel-slide w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] flex-shrink-0">
+      <ArticleCard post={post} />
+    </div>
+  ))}
+</CarouselBase> 

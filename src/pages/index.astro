@@ -3,8 +3,10 @@ import NewLayout from '../layouts/Layout.astro';
 import EventsCarousel from '../components/EventsCarousel.astro';
 import NewsSection from '../components/NewsSection.astro';
 import HotelCarousel from '../components/HotelCarousel.astro';
+import ArticleCarousel from '../components/ArticleCarousel.astro';
 import { Image } from 'astro:assets';
 import { getUpcomingEvents } from '../utils/eventsCache';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import hotelsData from '../../data/hotels.json';
 import locationData from '../../data/locations.json';
 const title = "Explore Brisbane: Your Guide to Events, Attractions & Experiences - Via Brisbane";
@@ -57,6 +59,15 @@ const allHotels = hotelsData.hotels.map(hotel => {
     location: location ? location.name : hotel.area
   };
 });
+
+// Get featured blog posts
+const allPosts = await getCollection('blog');
+const featuredArticles = allPosts
+  .filter((post: CollectionEntry<'blog'>) => post.data.featured)
+  .sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => 
+    new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
+  )
+  .slice(0, 8);
 
 ---
 
@@ -170,6 +181,19 @@ const allHotels = hotelsData.hotels.map(hotel => {
     background="bg-gray-50"
   />
   
+  <!-- Featured Articles Carousel -->
+  {featuredArticles.length > 0 && (
+    <ArticleCarousel 
+      posts={featuredArticles}
+      title="BNE Insider"
+      subtitle="Local insights, tips, and guides for exploring Brisbane"
+      viewAllLink="/bne-insider"
+      viewAllText="Read All Articles"
+      sectionId="featured-articles"
+      background="bg-white"
+    />
+  )}
+  
   <!-- Featured Hotels Section -->
   <HotelCarousel 
     hotels={allHotels} 
@@ -180,7 +204,7 @@ const allHotels = hotelsData.hotels.map(hotel => {
     sectionId="featured-hotels"
     limit={8}
     filterFeatured={true}
-    background="bg-white"
+    background="bg-gray-50"
   />
   
   

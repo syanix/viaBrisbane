@@ -5,8 +5,9 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'server', // Enable SSR for Cloudflare Pages
+  output: 'server', // Enable SSR for Cloudflare Pages, we'll use per-page prerendering
   site: 'https://www.viabrisbane.com', // Replace with your site URL
+  // Content collections are enabled by default in Astro 2.0+
   adapter: cloudflare({
     platformProxy: {
       enabled: true,

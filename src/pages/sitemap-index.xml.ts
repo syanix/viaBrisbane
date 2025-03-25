@@ -30,7 +30,8 @@ export const GET: APIRoute = async ({ request }) => {
     { name: 'static', priority: '1.0' },
     { name: 'events', priority: '0.8' },
     { name: 'parking-meters', priority: '0.7' },
-    { name: 'food-trucks', priority: '0.7' }
+    { name: 'food-trucks', priority: '0.7' },
+    { name: 'bne-insider', priority: '0.5' }
   ];
   
   // Build sitemap index XML
