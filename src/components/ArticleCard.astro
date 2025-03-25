@@ -10,7 +10,7 @@ const { post } = Astro.props;
 ---
 
 <div class="bg-white flex flex-col h-full shadow-[0px_2px_8px_rgba(0,0,0,0.1)] hover:shadow-lg transition-shadow duration-300">
-  <a href={`/bne-insider/${post.slug}/`} class="group cursor-pointer text-black visited:text-black">
+  <a href={`/bne-insider/${post.slug}`} class="group cursor-pointer text-black visited:text-black">
     <div class="relative">
       <!-- Image container -->
       <div class="relative pb-[66%] overflow-hidden">
@@ -43,7 +43,7 @@ const { post } = Astro.props;
   <!-- Content -->
   <div class="p-4 flex flex-col flex-1">
     <div class="flex-1">
-      <a href={`/bne-insider/${post.slug}/`} class="cursor-pointer text-black visited:text-black">
+      <a href={`/bne-insider/${post.slug}`} class="cursor-pointer text-black visited:text-black">
         <h3 class="text-2xl font-bold mb-2 line-clamp-3">{post.data.title}</h3>
       </a>
       {post.data.author && <p class="text-sm text-gray-600 mb-2">By {post.data.author}</p>}
@@ -52,7 +52,7 @@ const { post } = Astro.props;
     
     <!-- Button -->
     <div class="flex items-center mt-auto">
-      <a href={`/bne-insider/${post.slug}/`} 
+      <a href={`/bne-insider/${post.slug}`} 
          class="inline-flex items-center text-black visited:text-black text-md uppercase group focus:border-dashed cursor-pointer">
         <span class="font-black border-b-2 border-transparent group-hover:border-black transition-colors duration-200">READ ARTICLE</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 ml-2 -mt-[3px]" viewBox="0 0 20 20" fill="currentColor">
