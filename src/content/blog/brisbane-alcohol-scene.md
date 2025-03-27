@@ -1,8 +1,8 @@
 ---
 title: "A Sip Through the Sunshine State: Brisbane's Alcohol Scene Compared to Other Aussie Cities"
 description: "Discover the unique quirks of Brisbane's drinking culture, from licensing laws to bottle shop hours, and why Costco doesn't stock your favourite tipple in Queensland."
-pubDate: 2025-04-15
-updatedDate: 2025-04-15
+pubDate: 2025-03-28
+updatedDate: 2025-03-28
 heroImage: "/images/bne-insider/brisbane-nightlife.jpg"
 alt: "Brisbane nightlife"
 author: "Via Brisbane Team"
