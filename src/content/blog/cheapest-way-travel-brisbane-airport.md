@@ -10,8 +10,6 @@ tags: ["transportation", "budget travel", "brisbane airport", "public transport"
 featured: true
 ---
 
-# The Cheapest Way to Travel from Brisbane Airport
-
 Brisbane Airport is located approximately 12km from the city centre, and transportation costs can make a significant dent in your holiday budget if you're not in the know. While the Airtrain is convenient, a single adult ticket to the city costs $22.30, and taxis or rideshare services can exceed $45 one-way.
 
 Fortunately, there's a much cheaper alternative that locals know about but isn't widely advertised to tourists. This guide will show you how to travel from Brisbane Airport to the city and beyond for just **50 cents total** using Queensland's permanent budget public transport fares.
