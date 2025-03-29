@@ -1,0 +1,96 @@
+/* Markdown Content Styling */
+.markdown-content {
+  @apply max-w-none w-full;
+}
+
+/* Headings */
+.markdown-content h1 {
+  @apply text-4xl font-bold mb-8 mt-6 text-gray-900;
+}
+
+.markdown-content h2 {
+  @apply text-3xl font-bold mb-6 mt-8 text-gray-800;
+}
+
+.markdown-content h3 {
+  @apply text-2xl font-bold mb-4 mt-6 text-gray-800;
+}
+
+.markdown-content h4 {
+  @apply text-xl font-bold mb-4 mt-6 text-gray-800;
+}
+
+/* Paragraphs and Lists */
+.markdown-content p {
+  @apply mb-6 leading-relaxed text-gray-700;
+}
+
+.markdown-content ul {
+  @apply list-disc pl-6 mb-6 text-gray-700;
+}
+
+.markdown-content ol {
+  @apply list-decimal pl-6 mb-6 text-gray-700;
+}
+
+.markdown-content li {
+  @apply mb-2;
+}
+
+/* Tables */
+.markdown-content table {
+  @apply w-full my-8 border-collapse bg-white rounded-lg overflow-hidden shadow-lg;
+}
+
+.markdown-content thead {
+  @apply bg-gray-100;
+}
+
+.markdown-content th {
+  @apply text-left py-4 px-6 font-bold text-gray-700 border-b border-gray-200;
+}
+
+.markdown-content td {
+  @apply py-4 px-6 border-b border-gray-200 text-gray-700;
+}
+
+.markdown-content tr:hover {
+  @apply bg-gray-50;
+}
+
+/* Blockquotes */
+.markdown-content blockquote {
+  @apply pl-4 py-1 my-6 border-l-4 border-gray-300 bg-gray-50 rounded;
+}
+
+.markdown-content blockquote p {
+  @apply italic text-gray-700 mb-0;
+}
+
+/* Code Blocks */
+.markdown-content pre {
+  @apply p-4 mb-6 rounded-lg bg-gray-900 overflow-x-auto;
+}
+
+.markdown-content code {
+  @apply font-mono text-sm;
+}
+
+.markdown-content p code {
+  @apply bg-gray-100 rounded px-2 py-1 text-gray-800;
+}
+
+/* Links */
+.markdown-content a {
+  @apply text-blue-600 hover:text-blue-800 underline;
+}
+
+/* Images */
+.markdown-content img {
+  @apply rounded-lg shadow-md max-w-full h-auto my-6;
+}
+
+/* Horizontal Rule */
+.markdown-content hr {
+  @apply my-8 border-t border-gray-200;
+} 

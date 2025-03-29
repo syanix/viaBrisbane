@@ -18,7 +18,7 @@ const sortedPosts = posts.sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'
 const featuredPosts = sortedPosts.filter((post: CollectionEntry<'blog'>) => post.data.featured);
 
 // Get non-featured posts for the latest section
-let latestPosts = sortedPosts.filter((post: CollectionEntry<'blog'>) => !post.data.featured);
+let latestPosts = sortedPosts;
 
 // If there are no non-featured posts, show all posts
 if (latestPosts.length === 0) {
