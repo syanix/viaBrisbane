@@ -9,6 +9,8 @@ const typedPaths: PathItem[] = paths;
 
 // Create BreadcrumbList schema
 const BASE_URL = import.meta.env.PUBLIC_BASE_URL || 'https://www.viabrisbane.com';
+const currentUrl = Astro.url.pathname;
+
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -19,12 +21,23 @@ const breadcrumbSchema = {
       "name": "Home",
       "item": BASE_URL
     },
-    ...typedPaths.map((path, index) => ({
-      "@type": "ListItem",
-      "position": (index + 2).toString(),
-      "name": path.name,
-      "item": path.url ? `${BASE_URL}${path.url}` : undefined
-    }))
+    ...typedPaths.map((path, index) => {
+      const item: any = {
+        "@type": "ListItem",
+        "position": index + 2,
+        "name": path.name
+      };
+      
+      // Add item URL - use provided URL or current page URL as fallback
+      if (path.url) {
+        item.item = `${BASE_URL}${path.url}`;
+      } else {
+        // Use current page URL for items without explicit URL (especially the last item)
+        item.item = `${BASE_URL}${currentUrl}`;
+      }
+      
+      return item;
+    })
   ]
 };
 ---
