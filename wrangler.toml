@@ -5,6 +5,7 @@ compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "./dist"
 
 [vars]
+NODE_VERSION = 18.20.8
 UPDATED_DATE = "2025-02-05T00:00:00Z"
 PUBLIC_GOOGLE_MAPS_API_KEY= "AIzaSyCCQ8ZqAJjDm1O-ToZopbRlv4-zg9jpph4"
 PUBLIC_BASE_URL= "https://www.viabrisbane.com"
