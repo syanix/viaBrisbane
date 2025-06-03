@@ -20,9 +20,6 @@
     "db:deploy:preview": "npm run db:generate && npm run db:migrate:preview",
     "db:deploy:prod": "npm run db:generate && npm run db:migrate:prod"
   },
-  "engines": {
-    "node": ">=18.20.8"
-  },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/cloudflare": "^12.0.1",
