@@ -52,7 +52,7 @@ const schema = [websiteSchema, organizationSchema];
 const upcomingEvents = await getUpcomingEvents(Astro.locals.runtime.env.DB, 12);
 
 // Fetch featured events for hero banner
-const featuredEvents = await getFeaturedEvents(Astro.locals.runtime.env.DB, 5);
+const featuredEvents = await getFeaturedEvents(Astro.locals.runtime.env.DB, 12);
 
 // Get hotels from the new hotels.json structure
 const allHotels = hotelsData.hotels.map(hotel => {

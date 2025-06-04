@@ -31,7 +31,7 @@ const { featuredEvents } = Astro.props;
               <div class="mx-auto px-4">
                 <div class="max-w-2xl">
                   <h1 class="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">{event.subject}</h1>
-                  <p class="text-xl text-white mb-2 drop-shadow-md">{event.venue}{event.location && `, ${event.location}`}</p>
+                  <p class="text-xl text-white mb-2 drop-shadow-md">{event.location}`}</p>
                   <p class="text-lg text-white mb-8 drop-shadow-md">{event.formatteddatetime}</p>
                   <a href={`/events/${event.slug}`} class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 text-lg transition-colors shadow-md rounded-lg">
                     View Event
