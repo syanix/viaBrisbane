@@ -632,3 +632,93 @@ export async function getRelatedEventsBySubject(
     
     return events;
 }
+
+/**
+ * Get featured events for hero carousel
+ * Shows one most recent upcoming event per subject for events marked as "featured"
+ * @param dbInstance D1Database instance
+ * @param limit Maximum number of events to return (default: 5)
+ */
+export async function getFeaturedEvents(
+    dbInstance: D1Database,
+    limit: number = 5
+): Promise<Partial<Event>[]> {
+    const cacheKey = `featured_events_${limit}`;
+    const now = Date.now();
+    
+    // Check cache
+    if (globalThis._eventsCache[cacheKey] && globalThis._eventsCache[cacheKey].expiry > now) {
+        return globalThis._eventsCache[cacheKey].data.events;
+    }
+    
+    // Use a subquery with ROW_NUMBER to get the most recent upcoming event per subject
+    // Only include events where event_type contains "featured"
+    let query = `
+        WITH RankedFeaturedEvents AS (
+            SELECT 
+                event_id,
+                subject,
+                eventimage,
+                venue,
+                venueaddress,
+                event_type,
+                primaryeventtype,
+                formatteddatetime,
+                start_datetime,
+                end_datetime,
+                location,
+                description,
+                slug,
+                ROW_NUMBER() OVER (PARTITION BY LOWER(subject) ORDER BY start_datetime ASC) as row_num
+            FROM events
+            WHERE event_type LIKE '%featured%'
+            AND datetime(end_datetime) > datetime('now')
+        )
+        SELECT 
+            event_id,
+            subject,
+            eventimage,
+            venue,
+            venueaddress,
+            event_type,
+            primaryeventtype,
+            formatteddatetime,
+            location,
+            description,
+            slug
+        FROM RankedFeaturedEvents
+        WHERE row_num = 1
+        ORDER BY datetime(start_datetime) ASC
+        LIMIT ?
+    `;
+    
+    const { results } = await dbInstance.prepare(query).bind(limit).all();
+    
+    // Process the events
+    const events = results.map(result => {
+        // Generate slug if missing
+        const slug = result.slug || createSlug(result.subject as string, result.location as string);
+        
+        return {
+            event_id: result.event_id as number,
+            subject: result.subject as string,
+            eventimage: result.eventimage as string,
+            venue: result.venue as string,
+            venueaddress: result.venueaddress as string,
+            event_type: result.event_type as string,
+            primaryeventtype: result.primaryeventtype as string,
+            formatteddatetime: result.formatteddatetime as string,
+            location: result.location as string,
+            description: result.description as string,
+            slug: slug
+        };
+    }) as Partial<Event>[];
+    
+    // Cache the results
+    globalThis._eventsCache[cacheKey] = {
+        data: { events, totalPages: 1 },
+        expiry: now + CACHE_EXPIRY_MS
+    };
+    
+    return events;
+}
