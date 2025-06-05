@@ -120,7 +120,7 @@ const eventSchema = {
   "url": `${BASE_URL}${eventUrl}`,
   "organizer": {
     "@type": "Organization",
-    "name": "Via Brisbane",
+    "name": event.venue || event.location || "Via Brisbane",
     "url": BASE_URL,
     "logo": `${BASE_URL}/images/viaBrisbane.png`
   },
@@ -134,6 +134,8 @@ const eventSchema = {
     "price": event.cost.includes('Free') || event.cost.includes('free') ? "0" : event.cost.replace(/[^0-9.-]/g, '') || "0",
     "priceCurrency": "AUD",
     "availability": isEventPast ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+    "validFrom": convertUTCtoBrisbane(new Date().toISOString()),
+    "validThrough": convertUTCtoBrisbane(event.start_datetime),
     "url": event.bookings && event.bookings.includes('href=') ? 
       event.bookings.match(/href="([^"]*)"/)?.pop() || `${BASE_URL}${eventUrl}` : 
       `${BASE_URL}${eventUrl}`,
@@ -143,6 +145,8 @@ const eventSchema = {
     "price": "0",
     "priceCurrency": "AUD",
     "availability": isEventPast ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+    "validFrom": convertUTCtoBrisbane(new Date().toISOString()),
+    "validThrough": convertUTCtoBrisbane(event.start_datetime),
     "url": `${BASE_URL}${eventUrl}`,
     "description": "Free event"
   }
