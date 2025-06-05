@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getEventBySlug, getRelatedEventsBySubject } from '../../utils/eventsCache';
 import { createSlug } from '../../utils/slug';
+import { convertUTCtoBrisbane } from '../../utils/timezone';
 import Breadcrumbs from '../../components/breadcrumbs.astro';
 import EventsCarousel from '../../components/EventsCarousel.astro';
 import type { Event } from '../../types/types';
@@ -94,20 +95,51 @@ const eventSchema = {
   "@type": "Event",
   "name": event.subject,
   "description": event.description,
-  "startDate": dates[0]?.formatteddatetime || "",
-  "endDate": dates[dates.length - 1]?.formatteddatetime || dates[0]?.formatteddatetime || "",
+  "startDate": convertUTCtoBrisbane(event.start_datetime),
+  "endDate": convertUTCtoBrisbane(event.end_datetime),
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode", // Physical events
+  "eventStatus": isEventPast ? "https://schema.org/EventPostponed" : "https://schema.org/EventScheduled",
   "location": {
     "@type": "Place",
     "name": event.location,
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": event.venueaddress,
       "addressLocality": "Brisbane",
       "addressRegion": "QLD",
       "addressCountry": "AU"
     }
   },
   "image": event.eventimage || `${BASE_URL}/images/viaBrisbane.png`,
-  "url": `${BASE_URL}${eventUrl}`
+  "url": `${BASE_URL}${eventUrl}`,
+  "organizer": {
+    "@type": "Organization",
+    "name": "Via Brisbane",
+    "url": BASE_URL,
+    "logo": `${BASE_URL}/images/viaBrisbane.png`
+  },
+  "performer": {
+    "@type": "Organization",
+    "name": event.venue || event.location || "Via Brisbane",
+    "url": BASE_URL
+  },
+  "offers": event.cost ? {
+    "@type": "Offer",
+    "price": event.cost.includes('Free') || event.cost.includes('free') ? "0" : event.cost.replace(/[^0-9.-]/g, '') || "0",
+    "priceCurrency": "AUD",
+    "availability": isEventPast ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+    "url": event.bookings && event.bookings.includes('href=') ? 
+      event.bookings.match(/href="([^"]*)"/)?.pop() || `${BASE_URL}${eventUrl}` : 
+      `${BASE_URL}${eventUrl}`,
+    "description": event.cost
+  } : {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "AUD",
+    "availability": isEventPast ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+    "url": `${BASE_URL}${eventUrl}`,
+    "description": "Free event"
+  }
 };
 
 // Fetch related events with the same subject but different locations
