@@ -130,7 +130,7 @@ dates: { event_id: number; formatteddatetime: string; start_datetime: string; en
         } else {
             // New format: Use the slug field directly - just get events with this exact slug
             const { results: eventResults } = await dbInstance
-                .prepare('SELECT * FROM events WHERE slug = ? ORDER BY start_datetime ASC')
+                .prepare('SELECT * FROM events WHERE slug = ? ORDER BY start_datetime DESC')
                 .bind(slug)
                 .all();
                 
@@ -179,7 +179,7 @@ dates: { event_id: number; formatteddatetime: string; start_datetime: string; en
                     AND LOWER(e.subject) = LOWER(main.subject)
                     AND LOWER(e.location) = LOWER(main.location)
                 )
-                ORDER BY e.start_datetime ASC
+                ORDER BY e.start_datetime DESC
             `)
             .bind(eventId)
             .all();
