@@ -29,43 +29,49 @@ if (isOldFormat) {
     return Astro.redirect(`/events/${newSlug}`, 301); // 301 permanent redirect for SEO
 }
 
-// Current date for comparison
-const currentDate = new Date();
+// Current UTC datetime for accurate comparison
+const currentUTC = new Date();
 
-// Filter dates into future and past
+// Filter dates into future and past based on actual UTC timestamps
+// The dates array now includes start_datetime and end_datetime from getEventBySlug
 const futureDates = dates.filter(date => {
-    // Extract date from formatted string (assuming format like "Sunday, 5 January 2025, 6 - 11am")
-    const dateStr = date.formatteddatetime;
-    // Skip if it's an "ongoing" event without a specific date
-    if (dateStr.toLowerCase().includes('ongoing')) return true;
+    // For ongoing events, always show as future
+    if (date.formatteddatetime.toLowerCase().includes('ongoing')) return true;
     
-    // Try to extract the date part
-    const match = dateStr.match(/(\d+)\s+(\w+)\s+(\d{4})/);
-    if (!match) return false;
+    // Use end_datetime for comparison (event hasn't ended yet)
+    if (date.end_datetime) {
+        const eventEndTime = new Date(date.end_datetime);
+        return eventEndTime >= currentUTC;
+    }
     
-    const day = parseInt(match[1]);
-    const month = match[2];
-    const year = parseInt(match[3]);
+    // If no end_datetime, use start_datetime
+    if (date.start_datetime) {
+        const eventStartTime = new Date(date.start_datetime);
+        return eventStartTime >= currentUTC;
+    }
     
-    // Map month names to numbers
-    const monthMap: {[key: string]: number} = {
-        'january': 0, 'february': 1, 'march': 2, 'april': 3, 'may': 4, 'june': 5,
-        'july': 6, 'august': 7, 'september': 8, 'october': 9, 'november': 10, 'december': 11
-    };
-    
-    const monthNum = monthMap[month.toLowerCase()];
-    if (monthNum === undefined) return false;
-    
-    const eventDate = new Date(year, monthNum, day);
-    return eventDate >= currentDate;
+    // Fallback: if no datetime info, consider it future
+    return true;
 });
 
 const pastDates = dates.filter(date => {
-    // If it's an "ongoing" event, it's not in the past
+    // Ongoing events are never in the past
     if (date.formatteddatetime.toLowerCase().includes('ongoing')) return false;
     
-    // If it's in futureDates, it's not in the past
-    return !futureDates.some(fd => fd.formatteddatetime === date.formatteddatetime);
+    // Use end_datetime for comparison (event has ended)
+    if (date.end_datetime) {
+        const eventEndTime = new Date(date.end_datetime);
+        return eventEndTime < currentUTC;
+    }
+    
+    // If no end_datetime, use start_datetime
+    if (date.start_datetime) {
+        const eventStartTime = new Date(date.start_datetime);
+        return eventStartTime < currentUTC;
+    }
+    
+    // Fallback: if no datetime info, consider it not past
+    return false;
 });
 
 // Determine if we should show the past event notice
@@ -79,7 +85,7 @@ const datesToDisplay = hasFutureDates ? futureDates : dates;
 const venue = event.venue ? event.venue.split(',')[0].trim() : '';
 
 // Check if the event has already ended (for schema)
-const isEventPast = new Date(event.end_datetime) < currentDate;
+const isEventPast = event.end_datetime ? new Date(event.end_datetime) < currentUTC : false;
 
 const title = `${event.subject} ${event.location ? `at ${event.location}` : ''} - Via Brisbane`;
 const description = event.description?.slice(0, 160) || 'Event details';
