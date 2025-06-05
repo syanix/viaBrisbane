@@ -117,7 +117,7 @@ export async function getEventsByPage(
 
 export async function getEventBySlug(dbInstance: D1Database, slug: string):Promise<{ 
 event: Event | null; 
-dates: { event_id: number; formatteddatetime: string }[] 
+dates: { event_id: number; formatteddatetime: string; start_datetime: string; end_datetime: string }[] 
 }> {
     try {
         // Check if the slug is a numeric ID (old format)
@@ -147,7 +147,9 @@ dates: { event_id: number; formatteddatetime: string }[]
             // Extract dates from all matching events
             const dates = eventResults.map((result: Record<string, unknown>) => ({
                 event_id: result.event_id as number,
-                formatteddatetime: result.formatteddatetime as string
+                formatteddatetime: result.formatteddatetime as string,
+                start_datetime: result.start_datetime as string,
+                end_datetime: result.end_datetime as string
             }));
             
             // Convert the main event to the expected type
@@ -164,7 +166,7 @@ dates: { event_id: number; formatteddatetime: string }[]
 // Keep getEventById for backward compatibility with old URLs
 export async function getEventById(dbInstance: D1Database, eventId: number):Promise<{ 
 event: Event | null; 
-dates: { event_id: number; formatteddatetime: string }[] 
+dates: { event_id: number; formatteddatetime: string; start_datetime: string; end_datetime: string }[] 
 }> {
     try {
         // Optimized: Get both main event and all related events in a single query using JOIN
@@ -194,7 +196,9 @@ dates: { event_id: number; formatteddatetime: string }[]
         // Extract dates from all related events
         const dates = allResults.map((result: Record<string, unknown>) => ({
             event_id: result.event_id as number,
-            formatteddatetime: result.formatteddatetime as string
+            formatteddatetime: result.formatteddatetime as string,
+            start_datetime: result.start_datetime as string,
+            end_datetime: result.end_datetime as string
         }));
         
         // Convert the main event to the expected type
