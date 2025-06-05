@@ -167,32 +167,32 @@ event: Event | null;
 dates: { event_id: number; formatteddatetime: string }[] 
 }> {
     try {
-        // Get the event by ID without any date filtering
-        const { results: eventResults } = await dbInstance
-            .prepare('SELECT * FROM events WHERE event_id = ?')
+        // Optimized: Get both main event and all related events in a single query using JOIN
+        const { results: allResults } = await dbInstance
+            .prepare(`
+                SELECT e.*, main.event_id as main_event_id
+                FROM events e
+                JOIN events main ON (
+                    main.event_id = ? 
+                    AND LOWER(e.subject) = LOWER(main.subject)
+                    AND LOWER(e.location) = LOWER(main.location)
+                )
+                ORDER BY e.start_datetime ASC
+            `)
             .bind(eventId)
             .all();
             
-        if (!eventResults[0]) return { event: null, dates: [] };
+        if (!allResults.length) return { event: null, dates: [] };
 
-        const mainEvent = eventResults[0];
+        // Find the main event (the one with matching event_id)
+        const mainEvent = allResults.find((result: Record<string, unknown>) => 
+            result.event_id === eventId
+        );
+        
+        if (!mainEvent) return { event: null, dates: [] };
 
-        // For related events (same subject and location), get all instances
-        const { results: relatedResults } = await dbInstance
-            .prepare(`
-                SELECT * FROM events 
-                WHERE LOWER(subject) = LOWER(?)
-                AND LOWER(location) = LOWER(?)
-                ORDER BY start_datetime ASC
-            `)
-            .bind(
-                mainEvent.subject,
-                mainEvent.location
-            )
-            .all();
-
-        // Extract dates from related events
-        const dates = relatedResults.map((result: Record<string, unknown>) => ({
+        // Extract dates from all related events
+        const dates = allResults.map((result: Record<string, unknown>) => ({
             event_id: result.event_id as number,
             formatteddatetime: result.formatteddatetime as string
         }));
@@ -281,9 +281,9 @@ export async function getEventsByVenue(
             event_type,
             primaryeventtype,
             formatteddatetime,
+            start_datetime,
             location,
             description,
-            end_datetime,
             slug
         FROM events
         WHERE venue LIKE ? 
@@ -381,9 +381,9 @@ export async function getEventsByCategory(
             event_type,
             primaryeventtype,
             formatteddatetime,
+            start_datetime,
             location,
             description,
-            end_datetime,
             slug
         FROM events
         WHERE (event_type LIKE ? OR primaryeventtype LIKE ?)
@@ -477,9 +477,9 @@ export async function getUpcomingEvents(
             event_type,
             primaryeventtype,
             formatteddatetime,
+            start_datetime,
             location,
             description,
-            end_datetime,
             slug
         FROM events
         WHERE datetime(end_datetime) > datetime('now')
@@ -488,7 +488,7 @@ export async function getUpcomingEvents(
                 WHEN formatteddatetime LIKE '%ongoing%' THEN 1 
                 ELSE 0 
             END,
-            datetime(start_datetime) ASC 
+            start_datetime ASC 
         LIMIT ?
     `;
     
@@ -547,37 +547,9 @@ export async function getRelatedEventsBySubject(
         return globalThis._eventsCache[cacheKey].data.events;
     }
     
-    // This is a more complex query:
-    // 1. We need one event per location for the same subject
-    // 2. Only upcoming events
-    // 3. Exclude current event ID if provided
-    // 4. Exclude events with the same slug as the current event
-    // 5. Get the most recent one for each location
-    
-    // We'll use a subquery with ROW_NUMBER to get the most recent event per location
+    // Optimized query using slug as unique identifier (already contains subject + location)
+    // Get the earliest upcoming event per unique slug for the same subject
     let query = `
-        WITH RankedEvents AS (
-            SELECT 
-                event_id,
-                subject,
-                eventimage,
-                venue,
-                venueaddress,
-                event_type,
-                primaryeventtype,
-                formatteddatetime,
-                start_datetime,
-                end_datetime,
-                location,
-                description,
-                slug,
-                ROW_NUMBER() OVER (PARTITION BY location ORDER BY start_datetime ASC) as row_num
-            FROM events
-            WHERE LOWER(subject) = LOWER(?)
-            AND datetime(end_datetime) > datetime('now')
-            ${currentEventId ? 'AND event_id != ?' : ''}
-            ${currentSlug ? 'AND (slug IS NULL OR LOWER(slug) != LOWER(?))' : ''}
-        )
         SELECT 
             event_id,
             subject,
@@ -589,10 +561,17 @@ export async function getRelatedEventsBySubject(
             formatteddatetime,
             location,
             description,
-            slug
-        FROM RankedEvents
-        WHERE row_num = 1
-        ORDER BY datetime(start_datetime) ASC
+            slug,
+            MIN(start_datetime) as next_start_datetime
+        FROM events
+        WHERE LOWER(subject) = LOWER(?)
+        AND datetime(end_datetime) > datetime('now')
+        AND slug IS NOT NULL
+        AND slug != ''
+        ${currentEventId ? 'AND event_id != ?' : ''}
+        ${currentSlug ? 'AND LOWER(slug) != LOWER(?)' : ''}
+        GROUP BY slug
+        ORDER BY next_start_datetime ASC
         LIMIT ?
     `;
     
@@ -651,29 +630,9 @@ export async function getFeaturedEvents(
         return globalThis._eventsCache[cacheKey].data.events;
     }
     
-    // Use a subquery with ROW_NUMBER to get the most recent upcoming event per subject
-    // Only include events where event_type contains "featured"
+    // Optimized query using slug as unique identifier (subject + location combination)
+    // Get the earliest upcoming featured event per unique slug
     let query = `
-        WITH RankedFeaturedEvents AS (
-            SELECT 
-                event_id,
-                subject,
-                eventimage,
-                venue,
-                venueaddress,
-                event_type,
-                primaryeventtype,
-                formatteddatetime,
-                start_datetime,
-                end_datetime,
-                location,
-                description,
-                slug,
-                ROW_NUMBER() OVER (PARTITION BY LOWER(subject) ORDER BY start_datetime ASC) as row_num
-            FROM events
-            WHERE event_type LIKE '%featured%'
-            AND datetime(end_datetime) > datetime('now')
-        )
         SELECT 
             event_id,
             subject,
@@ -685,10 +644,15 @@ export async function getFeaturedEvents(
             formatteddatetime,
             location,
             description,
-            slug
-        FROM RankedFeaturedEvents
-        WHERE row_num = 1
-        ORDER BY datetime(start_datetime) ASC
+            slug,
+            MIN(start_datetime) as next_start_datetime
+        FROM events
+        WHERE event_type LIKE '%featured%'
+        AND datetime(end_datetime) > datetime('now')
+        AND slug IS NOT NULL
+        AND slug != ''
+        GROUP BY slug
+        ORDER BY next_start_datetime ASC
         LIMIT ?
     `;
     
